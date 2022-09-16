@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: b0f4ce5611260c044b5f3ca049fa75e4
+guid: 4f912e9857f4eb741a51a327627f399e
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_GlassDoor
+    second: {fileID: 2100000, guid: 1853a5b91c30eec4fab46bc068eae318, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

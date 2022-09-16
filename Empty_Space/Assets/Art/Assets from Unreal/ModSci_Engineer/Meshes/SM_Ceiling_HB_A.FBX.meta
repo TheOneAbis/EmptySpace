@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: 71c78d6106851d44d81826b4e7ec326b
+guid: b4c90f717c48d544ca986d9eb9619654
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_DarkGray
+    second: {fileID: 2100000, guid: ce9483bd5cfacad469bd222a266cda35, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_Shiny_Scr2
+    second: {fileID: 2100000, guid: 8ff95ed58b2ede64d868886663cc2871, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

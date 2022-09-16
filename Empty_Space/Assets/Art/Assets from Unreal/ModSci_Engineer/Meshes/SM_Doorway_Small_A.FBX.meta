@@ -1,9 +1,24 @@
 fileFormatVersion: 2
-guid: bbf477ae6a7964845b99da4f950a17b9
+guid: d4fc1270f2ea98f4d836b60861e4bdbb
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_Black
+    second: {fileID: 2100000, guid: 9a772e804db7aad45a800ef01814c602, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_DarkGray
+    second: {fileID: 2100000, guid: ee38e3ee52e93af4ea5e1b40017a9a04, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_Shiny
+    second: {fileID: 2100000, guid: 8ff95ed58b2ede64d868886663cc2871, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

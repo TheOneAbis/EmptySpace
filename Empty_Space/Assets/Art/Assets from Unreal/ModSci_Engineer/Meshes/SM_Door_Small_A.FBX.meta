@@ -1,9 +1,45 @@
 fileFormatVersion: 2
-guid: 1287c6d44e2cf1f42afd70dd5fd7ea9c
+guid: d9cc9be430e550049ad48023dd62b6c1
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_GlossyBlack
+    second: {fileID: 2972656300779343601, guid: 3f1fac223f7ab1445ad6c0944552d43c,
+      type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_Black
+    second: {fileID: 2100000, guid: 9a772e804db7aad45a800ef01814c602, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_GlossLight
+    second: {fileID: 2100000, guid: ee38e3ee52e93af4ea5e1b40017a9a04, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_OliveGray
+    second: {fileID: 2100000, guid: ee38e3ee52e93af4ea5e1b40017a9a04, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_Red2
+    second: {fileID: 2100000, guid: ce9483bd5cfacad469bd222a266cda35, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_Shiny
+    second: {fileID: 2100000, guid: 8ff95ed58b2ede64d868886663cc2871, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Trim_A_Shiny2
+    second: {fileID: 2100000, guid: 8ff95ed58b2ede64d868886663cc2871, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: c37cd3c5ae3ecb6438938bf94cbe1b8b
+guid: 8cf1934d11dbf2b4e9b7d12ad5916d2b
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Door_Locked
+    second: {fileID: 2100000, guid: 26d4e0c288bd11744b2403d0c6bd38a2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
