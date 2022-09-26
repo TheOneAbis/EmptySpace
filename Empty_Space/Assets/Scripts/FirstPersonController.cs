@@ -21,12 +21,6 @@ namespace StarterAssets
 		[Tooltip("Acceleration and deceleration")]
 		public float SpeedChangeRate = 10.0f;
 
-		[Header("Functional Options")]
-		[SerializeField] private bool canInteract = true;
-
-		[Header("Controls")]
-		[SerializeField] private KeyCode interactKey = KeyCode.E;
-
 		[Space(10)]
 		[Tooltip("The height the player can jump")]
 		public float JumpHeight = 1.2f;
@@ -56,13 +50,6 @@ namespace StarterAssets
 		public float TopClamp = 90.0f;
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
-
-		//attempt at interaction controller
-		[Header("Interaction")]
-		[SerializeField] private Vector3 interactionRayPoint = default;
-		[SerializeField] private float interactionDistance = default;
-		[SerializeField] private LayerMask interactionLayer = default;
-		private Interactable currentInteractable;
 
 
 		// cinemachine
