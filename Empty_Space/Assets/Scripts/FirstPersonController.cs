@@ -21,6 +21,12 @@ namespace StarterAssets
 		[Tooltip("Acceleration and deceleration")]
 		public float SpeedChangeRate = 10.0f;
 
+		[Header("Functional Options")]
+		[SerializeField] private bool canInteract = true;
+
+		[Header("Controls")]
+		[SerializeField] private KeyCode interactKey = KeyCode.E;
+
 		[Space(10)]
 		[Tooltip("The height the player can jump")]
 		public float JumpHeight = 1.2f;
@@ -51,6 +57,14 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+		//attempt at interaction controller
+		[Header("Interaction")]
+		[SerializeField] private Vector3 interactionRayPoint = default;
+		[SerializeField] private float interactionDistance = default;
+		[SerializeField] private LayerMask interactionLayer = default;
+		private Interactable currentInteractable;
+
+
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
@@ -71,6 +85,7 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
+		private Camera playerCamera;
 
 		private const float _threshold = 0.01f;
 
@@ -93,6 +108,7 @@ namespace StarterAssets
 			{
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
+			//playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
 		}
 
 		private void Start()
@@ -115,6 +131,15 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
+
+			/*
+			if(canInteract)
+            {
+				HandleInteractionCheck();
+				HandleInteractionInput();
+            }
+			*/
+
 		}
 
 		private void LateUpdate()
@@ -264,5 +289,23 @@ namespace StarterAssets
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
+
+		/*
+		private void HandleInteractionCheck()
+        {
+			if (Physics.Raycast(playerCamera.ViewPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance))
+            {
+
+            }
+        }
+
+		private void HandleInteractionInput()
+        {
+			if (Input.GetKeyDown(interactKey) && currentInteractable != null  && Physics.Raycast(playerCamera.ViewPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance, interactionLayer))
+            {
+				currentInteractable.OnInteract();
+            }
+        }
+		*/
 	}
 }
