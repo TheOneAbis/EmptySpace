@@ -119,15 +119,14 @@ namespace StarterAssets
 			GroundedCheck();
 			Move();
 
-			/*
+            /*
 			if(canInteract)
             {
 				HandleInteractionCheck();
 				HandleInteractionInput();
             }
 			*/
-
-		}
+        }
 
 		private void LateUpdate()
 		{
