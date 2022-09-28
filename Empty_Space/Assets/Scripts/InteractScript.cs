@@ -9,7 +9,7 @@ public class InteractScript : MonoBehaviour
 
     void OnTriggerStay(Collider col)
     {
-        if(Input.GetKeyDown (KeyCode.E))
+        if(Input.GetKey (KeyCode.E))
         {
             Debug.Log("Interacted");
             item.SetActive(false);
