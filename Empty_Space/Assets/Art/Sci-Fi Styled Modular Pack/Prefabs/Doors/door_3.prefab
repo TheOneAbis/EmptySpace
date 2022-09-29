@@ -610,3 +610,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openDistance: 4
   locked: 0
+  openAnimationString: door_3_open
+  closeAnimationString: door_3_close
