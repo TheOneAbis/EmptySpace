@@ -41,12 +41,14 @@ public class PuzzleUIManager : MonoBehaviour
     public GameObject canvas;
     public GameObject player;
     public GameObject door;
+    private bool complete = false;
 
     void Update()
     {
         //ungabunga check statement
-        if(R1B3state == 4 && R1B4state == 3 && R2B1state == 3 && R2B2state == 4 && (R2B3state % 2) == 0 && (R3B1state % 2) == 0 && (R3B2state % 2) == 1 && R3B3state == 1 && R3B4state == 4 && R4B1state == 2 && R4B2state == 1 && (R4B3state % 2) == 0 && R4B4state == 4)
+        if(!complete && R1B3state == 4 && R1B4state == 3 && R2B1state == 3 && R2B2state == 4 && (R2B3state % 2) == 0 && (R3B1state % 2) == 0 && (R3B2state % 2) == 1 && R3B3state == 1 && R3B4state == 4 && R4B1state == 2 && R4B2state == 1 && (R4B3state % 2) == 0 && R4B4state == 4)
         {
+            complete = true;
             Debug.Log("Finish");
             canvas.SetActive(false);
             player.GetComponent<FirstPersonController>().enabled = true;
