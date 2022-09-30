@@ -35,6 +35,11 @@ public class TitleManager : MonoBehaviour
         canvas.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        foreach (GameObject door in GameObject.FindGameObjectsWithTag("InteractableDoor"))
+        {
+            door.GetComponent<DoorController>().Load();
+        }
     }
 
     public void ExitButton()

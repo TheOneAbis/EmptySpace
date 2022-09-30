@@ -71,4 +71,8 @@ public class DoorController : MonoBehaviour
         doorAnimator.Play($"Base Layer.{closeAnimationString}", 0, 0);
         isOpen = false;
     }
+    public void Load()
+    {
+        Start();
+    }
 }
