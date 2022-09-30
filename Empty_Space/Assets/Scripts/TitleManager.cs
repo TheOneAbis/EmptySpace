@@ -33,6 +33,8 @@ public class TitleManager : MonoBehaviour
         player.GetComponent<FirstPersonController>().enabled = true;
         player.SetActive(true);
         canvas.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void ExitButton()
