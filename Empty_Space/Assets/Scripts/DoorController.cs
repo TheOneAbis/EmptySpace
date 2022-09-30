@@ -53,7 +53,7 @@ public class DoorController : MonoBehaviour
     }
 
     // Unlock this door.
-    void Unlock()
+    public void Unlock()
     {
         locked = false;
         if (!dynamic) Open();

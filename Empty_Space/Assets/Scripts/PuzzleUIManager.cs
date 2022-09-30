@@ -52,6 +52,7 @@ public class PuzzleUIManager : MonoBehaviour
             player.GetComponent<FirstPersonController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            door.GetComponent<DoorController>().Unlock();
         }
     }
 
