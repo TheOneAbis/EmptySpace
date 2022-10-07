@@ -28,19 +28,20 @@ public class PlayerInventoryManager : MonoBehaviour
         { 
             slot.Add(obj);
             obj.SetActive(false);
+            Debug.Log(slot.Count + " items in slot " + inventory.IndexOf(slot) + " of tag " + obj.tag);
         }
 
-        // Look for a slot with objects matching this type to add it to that pool
+        // Look for a slot with objects matching this one's tag to add it to that pool
         foreach (List<GameObject> slot in inventory)
         {
-            if (slot.Count > 0 && slot[0].GetType() == obj.GetType())
+            if (slot.Count > 0 && slot[0].tag == obj.tag)
             {
                 AddToSlot(obj, slot);
                 return;
             }
         }
 
-        // Did not find any existing slot with this gameobject type; find an empty slot to put it in
+        // Did not find any existing slot with this gameobject tag; find an empty slot to put it in
         foreach (List<GameObject> slot in inventory)
         {
             if (slot.Count == 0)
