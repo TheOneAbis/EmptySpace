@@ -24,7 +24,7 @@ public class PlayerInventoryManager : MonoBehaviour
     // Add a new game object to the player's inventory
     public void AddToInventory(GameObject obj)
     {
-        static void AddToSlot(GameObject obj, List<GameObject> slot) 
+        void AddToSlot(GameObject obj, List<GameObject> slot) 
         { 
             slot.Add(obj);
             obj.SetActive(false);
@@ -49,5 +49,8 @@ public class PlayerInventoryManager : MonoBehaviour
                 return;
             }
         }
+
+        // If the function reaches this point, player's inventory is too full for this item
+        Debug.Log($"Inventory full; cannot add {obj}");
     }
 }
