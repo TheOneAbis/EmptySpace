@@ -24,23 +24,24 @@ public class PlayerInventoryManager : MonoBehaviour
     // Add a new game object to the player's inventory
     public void AddToInventory(GameObject obj)
     {
-        static void AddToSlot(GameObject obj, List<GameObject> slot) 
+        void AddToSlot(GameObject obj, List<GameObject> slot) 
         { 
             slot.Add(obj);
             obj.SetActive(false);
+            Debug.Log(slot.Count + " items in slot " + inventory.IndexOf(slot) + " of tag " + obj.tag);
         }
 
-        // Look for a slot with objects matching this type to add it to that pool
+        // Look for a slot with objects matching this one's tag to add it to that pool
         foreach (List<GameObject> slot in inventory)
         {
-            if (slot.Count > 0 && slot[0].GetType() == obj.GetType())
+            if (slot.Count > 0 && slot[0].tag == obj.tag)
             {
                 AddToSlot(obj, slot);
                 return;
             }
         }
 
-        // Did not find any existing slot with this gameobject type; find an empty slot to put it in
+        // Did not find any existing slot with this gameobject tag; find an empty slot to put it in
         foreach (List<GameObject> slot in inventory)
         {
             if (slot.Count == 0)
@@ -49,5 +50,8 @@ public class PlayerInventoryManager : MonoBehaviour
                 return;
             }
         }
+
+        // If the function reaches this point, player's inventory is too full for this item
+        Debug.Log($"Inventory full; cannot add {obj}");
     }
 }
