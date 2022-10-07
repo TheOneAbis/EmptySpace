@@ -17,9 +17,12 @@ public class TitleManager : MonoBehaviour
     // Awake
     private void Awake()
     {
-        player.GetComponent<FirstPersonController>().enabled = false;
-        player.SetActive(false);
-        Cursor.visible = true;
+        //player.GetComponent<FirstPersonController>().enabled = false;
+        //player.SetActive(false);
+        //Cursor.visible = true;
+
+        // Disabling the canvas for now, since it's supposed to be a separate scene anyway
+        canvas.SetActive(false);
     }
 
     // Update is called once per frame
@@ -35,11 +38,6 @@ public class TitleManager : MonoBehaviour
         canvas.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        foreach (GameObject door in GameObject.FindGameObjectsWithTag("InteractableDoor"))
-        {
-            door.GetComponent<DoorController>().Load();
-        }
     }
 
     public void ExitButton()
