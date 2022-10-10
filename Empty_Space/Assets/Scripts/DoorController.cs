@@ -8,9 +8,12 @@ public class DoorController : MonoBehaviour
     private Animator doorAnimator; // this door's animation component
     private float distToPlayer; // player's distance from this door
     private bool isOpen = false; // is this door currently open? (not meant for public use; use 'locked' for that)
+    private Light doorLightFront, doorLightBack;
 
     [Tooltip("Minimum distance the player must be from the door for it to automatically open (if dynamic)")]
     public float openDistance = 4.0f;
+    [Tooltip("Is this door interactable, or just decor?")]
+    public bool interactable = true;
     [Tooltip("Is this door locked (will not open)?")]
     public bool locked = false;
     [Tooltip("When unlocked, does this door open and close automatically when the player is close?")]
@@ -25,38 +28,65 @@ public class DoorController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        doorLightFront = transform.Find("Point Light").GetComponent<Light>();
+        doorLightBack = transform.Find("Point Light 2").GetComponent<Light>();
         doorAnimator = GetComponent<Animator>();
+
         // make sure door is closed when the game starts, unless it is an unlocked non-dynamic door
-        if (locked || dynamic) doorAnimator.Play($"Base Layer.{closeAnimationString}", 0, 0);
-        else doorAnimator.Play($"Base Layer.{openAnimationString}", 0, 0);
+        if (locked || dynamic || !interactable) 
+            doorAnimator.Play($"Base Layer.{closeAnimationString}", 0, 0);
+        else 
+            doorAnimator.Play($"Base Layer.{openAnimationString}", 0, 0);
+
+        if (interactable)
+        {
+            doorLightFront.intensity = 0.5f;
+            doorLightFront.color = locked ? Color.red : Color.green;
+            doorLightBack.intensity = 0.5f;
+            doorLightBack.color = locked ? Color.red : Color.green;
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        // update player's distance from door
-        distToPlayer = Vector3.Distance(player.transform.position, transform.position);
-
-        // Automatic opening/closing if dynamic and unlocked
-        if (!locked && dynamic)
+        if (interactable)
         {
-            if (!isOpen && distToPlayer < openDistance) Open();
-            else if (isOpen && distToPlayer > openDistance) Close();
+            // update player's distance from door
+            distToPlayer = Vector3.Distance(player.transform.position, transform.position);
+
+            // Automatic opening/closing if dynamic and unlocked
+            if (!locked && dynamic)
+            {
+                if (!isOpen && distToPlayer < openDistance) Open();
+                else if (isOpen && distToPlayer > openDistance) Close();
+            }
         }
     }
 
     // Lock this door.
     void Lock()
     {
-        locked = true;
-        Close();
+        if (interactable)
+        {
+            locked = true;
+            doorLightFront.color = Color.red;
+            doorLightBack.color = Color.red;
+            Close();
+        }
     }
 
     // Unlock this door.
     public void Unlock()
     {
-        locked = false;
-        if (!dynamic) Open();
+        if (interactable)
+        {
+            locked = false;
+            doorLightFront.color = Color.green;
+            doorLightBack.color = Color.green;
+            if (!dynamic) Open();
+        }
     }
 
     // Internal helper function; opens the door, playing its respective open animation
@@ -70,9 +100,5 @@ public class DoorController : MonoBehaviour
     {
         doorAnimator.Play($"Base Layer.{closeAnimationString}", 0, 0);
         isOpen = false;
-    }
-    public void Load()
-    {
-        Start();
     }
 }

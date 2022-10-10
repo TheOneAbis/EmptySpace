@@ -28,8 +28,6 @@ public class Cryo_Pod_Script : MonoBehaviour
         // disable player physics, essentially
         player.GetComponent<FirstPersonController>().MoveSpeed = 0;
         player.GetComponent<FirstPersonController>().Gravity = 0;
-
-       
     }
 
     // Update is called once per frame
@@ -46,9 +44,10 @@ public class Cryo_Pod_Script : MonoBehaviour
 
     IEnumerator leavePodAnimSequence()
     {
-        player.GetComponent<FirstPersonController>().enabled = false;
         GetComponentInChildren<PlayableDirector>().Play();
         yield return new WaitForSeconds(1);
+
+        player.GetComponent<FirstPersonController>().enabled = false;
 
         float progress = 0, progressMax = 0.3f;
         Quaternion start = player.transform.rotation;
