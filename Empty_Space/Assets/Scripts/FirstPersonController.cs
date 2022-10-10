@@ -276,22 +276,30 @@ namespace StarterAssets
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
 
-		/*
-		private void HandleInteractionCheck()
-        {
-			if (Physics.Raycast(playerCamera.ViewPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance))
-            {
+        /// <summary>
+        /// Call this to update the implicit camera viewing pitch every time it is altered by way other than mouse input (i.e. animations)
+        /// </summary>
+        public void UpdateCinemachineTargetPitch()
+		{
+			_cinemachineTargetPitch = CinemachineCameraTarget.transform.localRotation.x;
+		}
 
-            }
-        }
-
-		private void HandleInteractionInput()
+    /*
+    private void HandleInteractionCheck()
+    {
+        if (Physics.Raycast(playerCamera.ViewPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance))
         {
-			if (Input.GetKeyDown(interactKey) && currentInteractable != null  && Physics.Raycast(playerCamera.ViewPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance, interactionLayer))
-            {
-				currentInteractable.OnInteract();
-            }
+
         }
-		*/
-	}
+    }
+
+    private void HandleInteractionInput()
+    {
+        if (Input.GetKeyDown(interactKey) && currentInteractable != null  && Physics.Raycast(playerCamera.ViewPointToRay(interactionRayPoint), out RaycastHit hit, interactionDistance, interactionLayer))
+        {
+            currentInteractable.OnInteract();
+        }
+    }
+    */
+}
 }
