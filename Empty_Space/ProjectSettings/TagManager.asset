@@ -8,6 +8,8 @@ TagManager:
   - PlayerCamera
   - InteractableDoor
   - interactableObject
+  - Battery
+  - Button
   layers:
   - Default
   - TransparentFX
