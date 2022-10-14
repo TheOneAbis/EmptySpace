@@ -76617,6 +76617,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Cryo_Pod
       objectReference: {fileID: 0}
+    - target: {fileID: 6735578443292070052, guid: 1dca1a1ce5516064eb84db46c5b0876d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dca1a1ce5516064eb84db46c5b0876d, type: 3}
 --- !u!222 &3611147724450587259

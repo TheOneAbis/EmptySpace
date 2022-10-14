@@ -22,7 +22,7 @@ public class Cryo_Pod_Script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UIManager = GameObject.FindGameObjectWithTag("UIManager");
+        UIManager = GameObject.Find("UIManager");
 
         switches = GameObject.FindGameObjectsWithTag("ExitLight");
         player = GameObject.FindGameObjectWithTag("Player");
