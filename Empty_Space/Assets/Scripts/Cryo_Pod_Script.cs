@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Rendering;
 using UnityEngine.Timeline;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Cryo_Pod_Script : MonoBehaviour
 {
     private GameObject player;
     private float playerSpeed, gravity;
+    private GameObject[] switches;
+    private bool canExit;
 
     private bool escaped = false;
 
@@ -19,6 +21,7 @@ public class Cryo_Pod_Script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        switches = GameObject.FindGameObjectsWithTag("ExitLight");
         player = GameObject.FindGameObjectWithTag("Player");
 
         // temporarily store these value for re-enabling movement
@@ -33,13 +36,19 @@ public class Cryo_Pod_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Player can exit if all lights are activated
+        canExit = true;
+        foreach (GameObject s in switches)
+            if (!s.GetComponent<ExitLightController>().Activated) 
+                canExit = false;
+
         // Interact to open the cryo pod and get out; can only do this once (obviously)
-        if (Input.GetKeyDown(KeyCode.E) && !escaped)
+        if (canExit && !escaped)
         {
             escaped = true;
+            foreach (GameObject s in switches) s.SetActive(false);
             StartCoroutine(leavePodAnimSequence()); // animation sequence
         }
-            
     }
 
     IEnumerator leavePodAnimSequence()
@@ -66,5 +75,6 @@ public class Cryo_Pod_Script : MonoBehaviour
         player.GetComponent<FirstPersonController>().Gravity = gravity;
         player.GetComponent<FirstPersonController>().enabled = true;
         player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
+        player.GetComponent<AudioSource>().Play(); // begin ambient music loop
     }
 }

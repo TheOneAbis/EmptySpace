@@ -10,6 +10,7 @@ TagManager:
   - interactableObject
   - Battery
   - Button
+  - ExitLight
   layers:
   - Default
   - TransparentFX
