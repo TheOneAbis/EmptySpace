@@ -13,6 +13,7 @@ public class Cryo_Pod_Script : MonoBehaviour
     private float playerSpeed, gravity;
     private GameObject[] switches;
     private bool canExit;
+    private GameObject UIManager;
 
     private bool escaped = false;
 
@@ -21,6 +22,8 @@ public class Cryo_Pod_Script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UIManager = GameObject.FindGameObjectWithTag("UIManager");
+
         switches = GameObject.FindGameObjectsWithTag("ExitLight");
         player = GameObject.FindGameObjectWithTag("Player");
 
@@ -45,6 +48,7 @@ public class Cryo_Pod_Script : MonoBehaviour
         // Interact to open the cryo pod and get out; can only do this once (obviously)
         if (canExit && !escaped)
         {
+            UIManager.GetComponent<UIManagement>().delay = true;
             escaped = true;
             foreach (GameObject s in switches) s.SetActive(false);
             StartCoroutine(leavePodAnimSequence()); // animation sequence

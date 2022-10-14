@@ -7,7 +7,7 @@ public class UIManagement : MonoBehaviour
     public bool eUI = true;
     public bool wASDUI = false;
     public bool sprintUI = false;
-    public bool delay = true;
+    public bool delay = false;
     private float timer = 0.0f;
     private float goal;
     public GameObject eCanvas;
