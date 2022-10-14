@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using StarterAssets;
+using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
 {
-    public GameObject player;
     public GameObject canvas;
+    public GameObject journal;
 
     // Start is called before the first frame update
     void Start()
@@ -17,12 +18,7 @@ public class TitleManager : MonoBehaviour
     // Awake
     private void Awake()
     {
-        //player.GetComponent<FirstPersonController>().enabled = false;
-        //player.SetActive(false);
-        //Cursor.visible = true;
-
-        // Disabling the canvas for now, since it's supposed to be a separate scene anyway
-        canvas.SetActive(false);
+        Cursor.visible = true;
     }
 
     // Update is called once per frame
@@ -31,13 +27,23 @@ public class TitleManager : MonoBehaviour
         
     }
 
-    public void StartButton()
+    private void FixedUpdate()
     {
-        player.GetComponent<FirstPersonController>().enabled = true;
-        player.SetActive(true);
-        canvas.SetActive(false);
+        Camera.main.transform.Rotate(0, 0.2f, 0);
+    }
+
+    public void CloseLogButton()
+    {
+        journal.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        SceneManager.LoadScene("Playground");
+    }
+
+    public void StartButton()
+    {
+        canvas.SetActive(false);
+        journal.SetActive(true);
     }
 
     public void ExitButton()
