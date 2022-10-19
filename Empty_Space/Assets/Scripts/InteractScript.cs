@@ -14,15 +14,24 @@ public class InteractScript : MonoBehaviour
 
     void OnTriggerStay(Collider col)
     {
-        if(Input.GetKey (KeyCode.E))
+        if(Input.GetKey(KeyCode.E))
         {
             if(inUI)
             {
-                //CloseUI();
+                
             }
             else
             {
                 OpenUI();
+                inUI = true;
+            }
+        }
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            if(inUI)
+            {
+                CloseUI();
+                inUI = false;
             }
         }
     }
