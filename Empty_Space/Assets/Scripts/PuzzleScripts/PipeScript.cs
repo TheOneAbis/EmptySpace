@@ -12,12 +12,7 @@ public class PipeScript : MonoBehaviour
     [SerializeField]
     private bool isPlaced = false;
 
-    GameObject puzzlemanager;
-
-    private void Awake()
-    {
-        puzzlemanager = GameObject.Find("PuzzleManager");
-    }
+    public GameObject puzzlemanager;
 
     void Start()
     {

@@ -55,7 +55,7 @@ public class InteractScript : MonoBehaviour
         inUI = true;
     }
 
-    float raycastDistance = 2; //Adjust to suit your use case
+    public float raycastDistance = 3; //Adjust to suit your use case
 
     public Text interactText; //Create GUI Canvas on your scene if you havnt already and a UI Text Element in a suitable location on your screen and apply it to this Text variable
 
