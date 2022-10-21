@@ -2,6 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Tooltip
+{
+    Interact,
+    Move,
+    Sprint,
+    Look,
+    LeftClick,
+    None
+};
 public class UIManagement : MonoBehaviour
 {
     public bool eUI = true;
@@ -10,26 +19,32 @@ public class UIManagement : MonoBehaviour
     public bool delay = false;
     private float timer = 0.0f;
     private float goal;
-    public GameObject eCanvas;
-    public GameObject wasdCanvas;
-    public GameObject sprintCanvas;
+    public GameObject[] HUDCanvases;
+    private Tooltip currentTooltip;
 
     // Start is called before the first frame update
     void Start()
     {
         goal = 10.0f;
+        DisplayTooltip(Tooltip.Look);
     }
 
     // Update is called once per frame
     void Update()
     {
+        foreach (GameObject canvas in HUDCanvases)
+            canvas.SetActive(false);
+        if (currentTooltip != Tooltip.None)
+            HUDCanvases[(int)currentTooltip].SetActive(true);
+        currentTooltip = Tooltip.None;
+
         if (eUI)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
                 timer = 0.0f;
                 eUI = false;
-                eCanvas.SetActive(false);
+                HUDCanvases[0].SetActive(false);
             }
         }
         else if (wASDUI)
@@ -40,8 +55,8 @@ public class UIManagement : MonoBehaviour
                 timer = 0.0f;
                 wASDUI = false;
                 sprintUI = true;
-                wasdCanvas.SetActive(false);
-                sprintCanvas.SetActive(true);
+                HUDCanvases[1].SetActive(false);
+                HUDCanvases[2].SetActive(true);
                 delay = false;
             }
         }
@@ -52,7 +67,7 @@ public class UIManagement : MonoBehaviour
             {
                 timer = 0.0f;
                 sprintUI = false;
-                sprintCanvas.SetActive(false);
+                HUDCanvases[2].SetActive(false);
             }
         }
         else if(delay)
@@ -61,9 +76,14 @@ public class UIManagement : MonoBehaviour
             if(timer >= 2.5f)
             {
                 wASDUI = true;
-                wasdCanvas.SetActive(true);
+                HUDCanvases[1].SetActive(true);
             }
         }
         Debug.Log(timer);
+    }
+   
+    public void DisplayTooltip(Tooltip tooltip)
+    {
+        currentTooltip = tooltip;
     }
 }

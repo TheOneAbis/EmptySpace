@@ -5,11 +5,12 @@ using UnityEngine;
 public class ExitLightController : MonoBehaviour
 {
     private bool active = false;
+    private GameObject UIManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        UIManager = GameObject.Find("UIManager");
     }
 
     // Update is called once per frame
@@ -19,6 +20,7 @@ public class ExitLightController : MonoBehaviour
         // If player is looking at the light, press E to activate it
         if (GetComponent<SphereCollider>().bounds.IntersectRay(lookRay))
         {
+            if (!active) UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.Interact);
             if (Input.GetKey(KeyCode.E))
             {
                 active = true;

@@ -1,3 +1,4 @@
+using Cinemachine;
 using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,12 +11,15 @@ using UnityEngine.Timeline;
 public class Cryo_Pod_Script : MonoBehaviour
 {
     private GameObject player;
+    private CinemachineVirtualCamera mainCam;
     private float playerSpeed, gravity;
     private GameObject[] switches;
     private bool canExit;
     private GameObject UIManager;
 
     private bool escaped = false;
+    private float camStartFOV;
+    private float clickForce; // max amt to force open the pod
 
     public float progress = 0;
 
@@ -26,6 +30,7 @@ public class Cryo_Pod_Script : MonoBehaviour
 
         switches = GameObject.FindGameObjectsWithTag("ExitLight");
         player = GameObject.FindGameObjectWithTag("Player");
+        mainCam = GameObject.Find("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>();
 
         // temporarily store these value for re-enabling movement
         playerSpeed = player.GetComponent<FirstPersonController>().MoveSpeed;
@@ -34,6 +39,8 @@ public class Cryo_Pod_Script : MonoBehaviour
         // disable player physics, essentially
         player.GetComponent<FirstPersonController>().MoveSpeed = 0;
         player.GetComponent<FirstPersonController>().Gravity = 0;
+
+        camStartFOV = mainCam.m_Lens.FieldOfView;
     }
 
     // Update is called once per frame
@@ -45,10 +52,21 @@ public class Cryo_Pod_Script : MonoBehaviour
             if (!s.GetComponent<ExitLightController>().Activated) 
                 canExit = false;
 
-        // Interact to open the cryo pod and get out; can only do this once (obviously)
-        if (canExit && !escaped)
+        // After pressing the buttons, force your way out by spamming left click
+        if (canExit)
+        {
+            UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.LeftClick);
+            mainCam.m_Lens.FieldOfView = camStartFOV - clickForce; // alter fov base on click amt
+            if (Input.GetMouseButtonDown(0) && !escaped) clickForce++;
+            if (clickForce > 0) // slowly decrease force - player must rapidly click
+                clickForce -= (Time.deltaTime * 3);
+        }
+
+        // If enough force applied (clicked enough), Begin cyo pod escape cutscene
+        if (clickForce > 10 && !escaped)
         {
             UIManager.GetComponent<UIManagement>().delay = true;
+            UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.None);
             escaped = true;
             foreach (GameObject s in switches) s.SetActive(false);
             StartCoroutine(leavePodAnimSequence()); // animation sequence
@@ -80,5 +98,6 @@ public class Cryo_Pod_Script : MonoBehaviour
         player.GetComponent<FirstPersonController>().enabled = true;
         player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
         player.GetComponent<AudioSource>().Play(); // begin ambient music loop
+        this.enabled = false;
     }
 }
