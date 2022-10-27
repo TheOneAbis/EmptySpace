@@ -12,6 +12,7 @@ public class InteractScript : MonoBehaviour
     public GameObject player;
     private bool inUI = false;
 
+    /*
     void OnTriggerStay(Collider col)
     {
         if(Input.GetKey(KeyCode.E))
@@ -35,7 +36,7 @@ public class InteractScript : MonoBehaviour
             }
         }
     }
-
+    */
 
     public void CloseUI()
     {
@@ -74,7 +75,23 @@ public class InteractScript : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
                 {
-                    //add stuff to do
+                    if (inUI)
+                    {
+
+                    }
+                    else
+                    {
+                        OpenUI();
+                        inUI = true;
+                    }
+                }
+                if (Input.GetKey(KeyCode.Escape))
+                {
+                    if (inUI)
+                    {
+                        CloseUI();
+                        inUI = false;
+                    }
                 }
             }
             /*
