@@ -1161,6 +1161,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: First4x4Puzzle
       objectReference: {fileID: 0}
+    - target: {fileID: 1785672937326545473, guid: ff548d830edffeb47b727366d4c5d057,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1785672937326545477, guid: ff548d830edffeb47b727366d4c5d057,
         type: 3}
       propertyPath: m_Pivot.x

@@ -11,6 +11,8 @@ TagManager:
   - Battery
   - Button
   - ExitLight
+  - puzzleOne
+  - puzzleTwo
   layers:
   - Default
   - TransparentFX

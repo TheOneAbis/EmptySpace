@@ -11,6 +11,7 @@ public class PipeManager : MonoBehaviour
     public GameObject door;
     public GameObject canvas;
     public GameObject player;
+    public GameObject interactionManager;
 
     [SerializeField]
     int totalPipes = 0;
@@ -44,6 +45,7 @@ public class PipeManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             door.GetComponent<DoorController>().Unlock();
+            interactionManager.GetComponent<InteractScript>().inUI = false;
         }
     }
 
