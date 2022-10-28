@@ -20,7 +20,8 @@ public class ExitLightController : MonoBehaviour
         // If player is looking at the light, press E to activate it
         if (GetComponent<SphereCollider>().bounds.IntersectRay(lookRay))
         {
-            if (!active) UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.Interact);
+            UIManager.GetComponent<UIManagement>().mouseUI = false;
+            if (!active && UIManager.GetComponent<UIManagement>().eUI) UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.Interact);
             if (Input.GetKey(KeyCode.E))
             {
                 active = true;

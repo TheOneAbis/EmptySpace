@@ -17,6 +17,7 @@ public class UIManagement : MonoBehaviour
     public bool wASDUI = false;
     public bool sprintUI = false;
     public bool delay = false;
+    public bool mouseUI = true;
     private float timer = 0.0f;
     private float goal;
     public GameObject[] HUDCanvases;
@@ -27,16 +28,24 @@ public class UIManagement : MonoBehaviour
     {
         goal = 10.0f;
         DisplayTooltip(Tooltip.Look);
+        foreach (GameObject canvas in HUDCanvases)
+            canvas.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        foreach (GameObject canvas in HUDCanvases)
-            canvas.SetActive(false);
+        //foreach (GameObject canvas in HUDCanvases)
+        //    canvas.SetActive(false);
+        HUDCanvases[4].SetActive(false);
         if (currentTooltip != Tooltip.None)
             HUDCanvases[(int)currentTooltip].SetActive(true);
         currentTooltip = Tooltip.None;
+
+        if (!mouseUI)
+        {
+            HUDCanvases[3].SetActive(false);
+        }
 
         if (eUI)
         {
@@ -57,7 +66,6 @@ public class UIManagement : MonoBehaviour
                 sprintUI = true;
                 HUDCanvases[1].SetActive(false);
                 HUDCanvases[2].SetActive(true);
-                delay = false;
             }
         }
         else if (sprintUI)
@@ -73,13 +81,13 @@ public class UIManagement : MonoBehaviour
         else if(delay)
         {
             timer += Time.deltaTime;
-            if(timer >= 2.5f)
+            if(timer >= 4.8f)
             {
                 wASDUI = true;
                 HUDCanvases[1].SetActive(true);
+                delay = false;
             }
         }
-        Debug.Log(timer);
     }
    
     public void DisplayTooltip(Tooltip tooltip)
