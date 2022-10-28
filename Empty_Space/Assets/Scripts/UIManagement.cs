@@ -38,6 +38,7 @@ public class UIManagement : MonoBehaviour
         //foreach (GameObject canvas in HUDCanvases)
         //    canvas.SetActive(false);
         HUDCanvases[4].SetActive(false);
+        HUDCanvases[0].SetActive(false);
         if (currentTooltip != Tooltip.None)
             HUDCanvases[(int)currentTooltip].SetActive(true);
         currentTooltip = Tooltip.None;

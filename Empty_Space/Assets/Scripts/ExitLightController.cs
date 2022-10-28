@@ -21,7 +21,7 @@ public class ExitLightController : MonoBehaviour
         if (GetComponent<SphereCollider>().bounds.IntersectRay(lookRay))
         {
             UIManager.GetComponent<UIManagement>().mouseUI = false;
-            if (!active && UIManager.GetComponent<UIManagement>().eUI) UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.Interact);
+            if (!active) UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.Interact);
             if (Input.GetKey(KeyCode.E))
             {
                 active = true;
