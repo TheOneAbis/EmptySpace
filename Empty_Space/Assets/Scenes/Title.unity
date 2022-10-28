@@ -159,7 +159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17, y: 17}
+  m_AnchoredPosition: {x: 17.73, y: 14.8}
   m_SizeDelta: {x: 645.1481, y: 223.7376}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &107194461
@@ -182,15 +182,15 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "     10/26/2222\r\n   Alright! It's the third day of this Space Exploration
-    mission! Still can't believe I am on such an elite team. Anyway, this new space
-    station we are on is massive, I should go exploring.\r\n   Finally finished exploring
-    the station, so exhausted. I should nap, but why is it so noisy outside? Someone
-    yelled magnetic... storms... nah, can't be, not out here... should go to... sleep...
-    now...\r\n   Woke up from my nap. My neck hurts like hell, must have slept in
-    a weird position... Wait what's going on? Why is it so dark? Am I in a cryo pod?
-    Why is it locked? How did I get here?! Where is everyone? Something is terribly
-    wrong...\n\n"
+  m_text: "     10/26/2222\r\n   10:30 AM -- Alright! It's the third day of this
+    Space Exploration mission! Still can't believe I am on such an elite team. Anyway,
+    this new space station we are on is massive, I should go exploring.\r\n   6:32
+    PM -- Finally finished exploring the station, so exhausted. I should nap, but
+    why is it so noisy outside? Someone yelled magnetic... storms... nah, can't be,
+    not out here... should go to... sleep... now...\r\n   10:31 PM -- Woke up from
+    my nap. My neck hurts like hell, must have slept in a weird position... Wait
+    what's going on? Why is it so dark? Am I in a cryo pod? Why is it locked? How
+    did I get here?! Where is everyone? Something is terribly wrong...\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c02d8536182b92140bcf30beca6ddaba, type: 2}
   m_sharedMaterial: {fileID: -147568759475144326, guid: 0106f0475bf186d41a16403d3d3fb2d5,
@@ -218,8 +218,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 11.5
+  m_fontSizeBase: 11.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -228,11 +228,11 @@ MonoBehaviour:
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_characterSpacing: 8.4
+  m_wordSpacing: -2.68
+  m_lineSpacing: 23.28
   m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
+  m_paragraphSpacing: 163.67
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
