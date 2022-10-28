@@ -21,7 +21,7 @@ public class PipeManager : MonoBehaviour
     int correctedPipes = 0;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         totalPipes = PipesHolder.transform.childCount;
 
