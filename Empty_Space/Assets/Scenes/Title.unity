@@ -182,15 +182,15 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "     10/26/2222\r\n   Alright! It\u2019s the third day of the mission!
-    Still can't believe I am in this space team! It's like a dream come true. Anyway,
-    this space station is massive, and I'm still unfamiliar with the place yet. I
-    need to get used to it quickly so I can start my job ASAP!\r\n   Finaaally finished
-    exploring the station. So exhausted, I need to go to sleep now, but why is so
-    noisy outside? I heard someone yell Geomagnetic\u2026 Storms\u2026Nah, that can\u2019t
-    be true\u2026 Anyway, I need to\u2026go to sleep\u2026now\u2026\r\n   Feel sooo
-    refreshed after a nap. Wait, what is going on, why is it so dark outside\u2026Why
-    I can\u2019t open my sleep pod\u2026Where is everybody? Oh no\u2026\r\n\n"
+  m_text: "     10/26/2222\r\n   Alright! It's the third day of this Space Exploration
+    mission! Still can't believe I am on such an elite team. Anyway, this new space
+    station we are on is massive, I should go exploring.\r\n   Finally finished exploring
+    the station, so exhausted. I should nap, but why is it so noisy outside? Someone
+    yelled magnetic... storms... nah, can't be, not out here... should go to... sleep...
+    now...\r\n   Woke up from my nap. My neck hurts like hell, must have slept in
+    a weird position... Wait what's going on? Why is it so dark? Am I in a cryo pod?
+    Why is it locked? How did I get here?! Where is everyone? Something is terribly
+    wrong...\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c02d8536182b92140bcf30beca6ddaba, type: 2}
   m_sharedMaterial: {fileID: -147568759475144326, guid: 0106f0475bf186d41a16403d3d3fb2d5,
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 8
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
