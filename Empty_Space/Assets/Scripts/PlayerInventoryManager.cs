@@ -54,4 +54,26 @@ public class PlayerInventoryManager : MonoBehaviour
         // If the function reaches this point, player's inventory is too full for this item
         Debug.Log($"Inventory full; cannot add {obj}");
     }
+
+    // Check to see if player's inventory contains items with the provided tag
+    public bool Contains(string objectTag)
+    {
+        foreach (List<GameObject> slot in inventory)
+        {
+            if (slot.Count > 0 && slot[0].tag == objectTag)
+                return true;
+        }
+        return false;
+    }
+
+    // Return how many gameobjects of the specified tag the player has in their inventory
+    public int GetAmount(string objectTag)
+    {
+        foreach (List<GameObject> slot in inventory)
+        {
+            if (slot.Count > 0 && slot[0].tag == objectTag)
+                return slot.Count;
+        }
+        return 0;
+    }
 }
