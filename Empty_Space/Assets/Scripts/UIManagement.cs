@@ -81,7 +81,7 @@ public class UIManagement : MonoBehaviour
         else if(delay)
         {
             timer += Time.deltaTime;
-            if(timer >= 5.5f)
+            if(timer >= 4.8f)
             {
                 wASDUI = true;
                 HUDCanvases[1].SetActive(true);
