@@ -57,8 +57,8 @@ public class Cryo_Pod_Script : MonoBehaviour
         {
             UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.LeftClick);
             mainCam.m_Lens.FieldOfView = camStartFOV - clickForce; // alter fov base on click amt
-            if (Input.GetMouseButtonDown(0) && !escaped) clickForce++;
-            if (clickForce > 0) // slowly decrease force - player must rapidly click
+            if (Input.GetMouseButton(0) && !escaped) clickForce += Time.deltaTime * 8;
+            else if (clickForce > 0) // slowly decrease force - player must hold down
                 clickForce -= (Time.deltaTime * 3);
         }
 
