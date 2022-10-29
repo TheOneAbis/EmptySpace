@@ -20,6 +20,8 @@ public class InteractScript : MonoBehaviour
     public GameObject battery1Holder;
     public GameObject battery2Holder;
 
+    private UIManagement UIManager;
+
 
     /*
     void OnTriggerStay(Collider col)
@@ -72,6 +74,11 @@ public class InteractScript : MonoBehaviour
 
     public Text interactText; //Create GUI Canvas on your scene if you havnt already and a UI Text Element in a suitable location on your screen and apply it to this Text variable
 
+    private void Start()
+    {
+        UIManager = GameObject.Find("UIManager").GetComponent<UIManagement>();
+    }
+
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // This creates a 'ray' at the Main Camera's Centre Point essentially the centre of the users Screen
@@ -83,7 +90,8 @@ public class InteractScript : MonoBehaviour
             //Item Raycast Detection
             if (hit.collider.CompareTag("puzzleOne"))
             {
-                interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                UIManager.DisplayTooltip(Tooltip.Interact);
+                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
                 if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
                 {
 
@@ -99,7 +107,8 @@ public class InteractScript : MonoBehaviour
             }
             else if (hit.collider.CompareTag("puzzleTwo"))
             {
-                interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                UIManager.DisplayTooltip(Tooltip.Interact);
+                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
                 if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
                 {
                     if (!inUI)
@@ -135,10 +144,10 @@ public class InteractScript : MonoBehaviour
             }
             else //If nothing at all with an above tag was hit with the Raycast within the specified distance then run this
             {
-                if (interactText.text != "")//If the interactText is not already set as nothing then set it to nothing - this is to help optimise and save from constantly spamming this request
-                {
-                    interactText.text = ""; //Removing the text as nothing was detected by the raycast
-                }
+                //if (interactText.text != "")//If the interactText is not already set as nothing then set it to nothing - this is to help optimise and save from constantly spamming this request
+                //{
+                //    interactText.text = ""; //Removing the text as nothing was detected by the raycast
+                //}
             }
         }
         
