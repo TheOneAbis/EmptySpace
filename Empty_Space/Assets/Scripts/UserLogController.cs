@@ -19,6 +19,5 @@ public class UserLogController : MonoBehaviour
     {
         intensity += Time.deltaTime * 3;
         light.intensity = (Mathf.Sin(intensity) + 1) / 2.0f;
-        Debug.Log(light.intensity);
     }
 }

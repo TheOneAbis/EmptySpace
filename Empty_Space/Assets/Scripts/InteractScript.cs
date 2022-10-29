@@ -96,17 +96,6 @@ public class InteractScript : MonoBehaviour
                         inUI = true;
                     }
                 }
-                if (Input.GetKey(KeyCode.Escape))
-                {
-                    if (inUI)
-                    {
-                        canvas1.SetActive(false);
-                        player.GetComponent<FirstPersonController>().enabled = true;
-                        Cursor.lockState = CursorLockMode.Locked;
-                        Cursor.visible = false;
-                        inUI = false;
-                    }
-                }
             }
             else if (hit.collider.CompareTag("puzzleTwo"))
             {
@@ -143,17 +132,6 @@ public class InteractScript : MonoBehaviour
                         inUI = true;
                     }
                 }
-                if (Input.GetKey(KeyCode.Escape))
-                {
-                    if (inUI)
-                    {
-                        canvas2.SetActive(false);
-                        player.GetComponent<FirstPersonController>().enabled = true;
-                        Cursor.lockState = CursorLockMode.Locked;
-                        Cursor.visible = false;
-                        inUI = false;
-                    }
-                }
             }
             else //If nothing at all with an above tag was hit with the Raycast within the specified distance then run this
             {
@@ -163,9 +141,19 @@ public class InteractScript : MonoBehaviour
                 }
             }
         }
+        
+        if (inUI && Input.GetKey(KeyCode.Escape))
+        {
+            canvas1.SetActive(false);
+            canvas2.SetActive(false);
+            player.GetComponent<FirstPersonController>().enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            inUI = false;
+        }
 
         //for battery stuff
-        if(battery1Holder.GetComponent<BatteryDrop>().placed == true)
+        if (battery1Holder.GetComponent<BatteryDrop>().placed == true)
         {
             for (int i = 0; i < inactivePipes.Length - 4; i++)
             {
