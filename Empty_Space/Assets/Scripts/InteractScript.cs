@@ -120,13 +120,13 @@ public class InteractScript : MonoBehaviour
                         {
                             inactivePipes[i].SetActive(false);
                         }
-                        /*
-                        if(player.GetComponent<PlayerInventoryManager>().inventory.len() == 2)
+                        
+                        if(player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 2)
                         {
                             battery1.SetActive(true);
                             battery2.SetActive(true);
                         }
-                        else if (player.GetComponent<PlayerInventoryManager>().inventory.len() == 2)
+                        else if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 1)
                         {
                             battery1.SetActive(true);
                             battery2.SetActive(false);
@@ -136,7 +136,7 @@ public class InteractScript : MonoBehaviour
                             battery1.SetActive(false);
                             battery2.SetActive(false);
                         }
-                        */
+                        
                         player.GetComponent<FirstPersonController>().enabled = false;
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
