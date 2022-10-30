@@ -108,13 +108,16 @@ public class Cryo_Pod_Script : MonoBehaviour
 
     private void DevSkip()
     {
-        escaped = true;
+        GameObject devStart = GameObject.FindGameObjectWithTag("Respawn");
         // TP player to DevStart, if it exists
-        if (GameObject.Find("DevStart") != null)
+        if (devStart != null)
         {
-            Debug.Log("asd");
-            player.transform.position = GameObject.Find("DevStart").transform.position;
-        }
+            Debug.Log(player.transform.position);
+            player.transform.position = devStart.transform.position;
+            Debug.Log(player.transform.position);
+        }  
+        //escaped = true;
+        UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.None);
         player.transform.rotation = Quaternion.Euler(0, 90, 0);
         player.transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, 0);
         foreach (GameObject s in switches) s.SetActive(false);
@@ -124,6 +127,6 @@ public class Cryo_Pod_Script : MonoBehaviour
         player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
         player.GetComponent<AudioSource>().Play(); // begin ambient music loop
 
-        enabled = false;
+        //enabled = false;
     }
 }
