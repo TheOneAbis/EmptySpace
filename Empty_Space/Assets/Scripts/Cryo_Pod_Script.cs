@@ -71,6 +71,11 @@ public class Cryo_Pod_Script : MonoBehaviour
             foreach (GameObject s in switches) s.SetActive(false);
             StartCoroutine(leavePodAnimSequence()); // animation sequence
         }
+
+
+        // -- DEV CHEAT - SKIP THIS MECHANIC -- \\
+        if (Input.GetKeyDown(KeyCode.Alpha1) && !escaped)
+            DevSkip();
     }
 
     IEnumerator leavePodAnimSequence()
@@ -98,6 +103,30 @@ public class Cryo_Pod_Script : MonoBehaviour
         player.GetComponent<FirstPersonController>().enabled = true;
         player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
         player.GetComponent<AudioSource>().Play(); // begin ambient music loop
-        this.enabled = false;
+        enabled = false; // disable this script
+    }
+
+    private void DevSkip()
+    {
+        GameObject devStart = GameObject.FindGameObjectWithTag("Respawn");
+        // TP player to DevStart, if it exists
+        if (devStart != null)
+        {
+            Debug.Log(player.transform.position);
+            player.transform.position = devStart.transform.position;
+            Debug.Log(player.transform.position);
+        }  
+        //escaped = true;
+        UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.None);
+        player.transform.rotation = Quaternion.Euler(0, 90, 0);
+        player.transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, 0);
+        foreach (GameObject s in switches) s.SetActive(false);
+        player.GetComponent<FirstPersonController>().MoveSpeed = playerSpeed;
+        player.GetComponent<FirstPersonController>().Gravity = gravity;
+        player.GetComponent<FirstPersonController>().enabled = true;
+        player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
+        player.GetComponent<AudioSource>().Play(); // begin ambient music loop
+
+        //enabled = false;
     }
 }
