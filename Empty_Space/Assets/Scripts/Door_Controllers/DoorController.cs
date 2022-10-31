@@ -146,8 +146,7 @@ public class DoorController : MonoBehaviour
                             {
                                 doorAnimator.SetFloat("SpeedMultiplier", 1.0f);
                                 interacted = false;
-                                isOpen = true;
-                                locked = false;
+                                Unlock();
                                 jammed = false;
                                 player.GetComponent<FirstPersonController>().enabled = true;
                             }
