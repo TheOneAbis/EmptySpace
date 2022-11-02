@@ -13,6 +13,8 @@ TagManager:
   - ExitLight
   - puzzleOne
   - puzzleTwo
+  - UIManager
+  - Enemy
   layers:
   - Default
   - TransparentFX
