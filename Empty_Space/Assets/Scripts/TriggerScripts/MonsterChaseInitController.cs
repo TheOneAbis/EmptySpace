@@ -27,8 +27,9 @@ public class MonsterChaseInitController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other == player)
+        if (other.gameObject == player)
         {
+
             if (doorToCheck.GetComponent<DoorController>().locked == false)
             {
                 triggered = true;

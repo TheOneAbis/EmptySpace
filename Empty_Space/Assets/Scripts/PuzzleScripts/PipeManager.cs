@@ -33,24 +33,33 @@ public class PipeManager : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            Complete();
+    }
+
     // Update is called once per frame
     public void correctMove()
     {
         correctedPipes += 1;
 
         if(correctedPipes == totalNeeded)
-        {
-            canvas.SetActive(false);
-            player.GetComponent<FirstPersonController>().enabled = true;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            door.GetComponent<DoorController>().Unlock();
-            interactionManager.GetComponent<InteractScript>().inUI = false;
-        }
+            Complete();
     }
 
     public void wrongMove()
     {
         correctedPipes -= 1;
+    }
+
+    public void Complete()
+    {
+        canvas.SetActive(false);
+        player.GetComponent<FirstPersonController>().enabled = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        door.GetComponent<DoorController>().Unlock();
+        interactionManager.GetComponent<InteractScript>().inUI = false;
     }
 }
