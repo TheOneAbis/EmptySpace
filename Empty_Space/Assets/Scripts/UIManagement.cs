@@ -22,6 +22,8 @@ public class UIManagement : MonoBehaviour
     public bool mouseUI = true;
     private float timer = 0.0f;
     private float goal;
+    private float rotationSpeed;
+    private float speed;
 
     public GameObject[] HUDCanvases;
     private Tooltip currentTooltip;
@@ -46,6 +48,10 @@ public class UIManagement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !interactionManager.GetComponent<InteractScript>().inUI)
         {
+            rotationSpeed = player.GetComponent<FirstPersonController>().RotationSpeed;
+            player.GetComponent<FirstPersonController>().RotationSpeed = 0;
+            speed = player.GetComponent<FirstPersonController>().MoveSpeed;
+            player.GetComponent<FirstPersonController>().MoveSpeed = 0;
             HUDCanvases[5].SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -123,6 +129,8 @@ public class UIManagement : MonoBehaviour
         HUDCanvases[5].SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        player.GetComponent<FirstPersonController>().RotationSpeed = rotationSpeed;
+        player.GetComponent<FirstPersonController>().MoveSpeed = speed;
     }
 
     public void ExitButton()
