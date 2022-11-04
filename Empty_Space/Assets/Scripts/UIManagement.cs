@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using StarterAssets;
 
 public enum Tooltip
 {
@@ -27,10 +25,6 @@ public class UIManagement : MonoBehaviour
     private Tooltip currentTooltip;
     private float tooltipTimer;
 
-    public GameObject interactionManager;
-    public Slider pauseSlider;
-    public GameObject player;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -38,19 +32,12 @@ public class UIManagement : MonoBehaviour
         tooltipTimer = 0.0f;
         DisplayTooltip(Tooltip.Look);
         foreach (GameObject canvas in HUDCanvases)
-        canvas.SetActive(false);
+            canvas.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !interactionManager.GetComponent<InteractScript>().inUI)
-        {
-            HUDCanvases[5].SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
         //foreach (GameObject canvas in HUDCanvases)
         //    canvas.SetActive(false);
         HUDCanvases[4].SetActive(false);
@@ -116,22 +103,5 @@ public class UIManagement : MonoBehaviour
     {
         currentTooltip = tooltip;
         tooltipTimer = seconds;
-    }
-
-    public void ContinueButton()
-    {
-        HUDCanvases[5].SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
-    public void ExitButton()
-    {
-        Application.Quit();
-    }
-
-    public void Slider()
-    {
-        player.GetComponent<FirstPersonController>().RotationSpeed = pauseSlider.value;
     }
 }
