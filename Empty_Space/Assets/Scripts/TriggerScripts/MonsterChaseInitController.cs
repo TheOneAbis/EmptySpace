@@ -76,5 +76,6 @@ public class MonsterChaseInitController : MonoBehaviour
         player.GetComponent<FirstPersonController>().enabled = true;
 
         enemy.GetComponent<MonsterChaseController>().SetGoal(new Vector3(-106, 3, -66));
+        enemy.GetComponent<MonsterChaseController>().MoveToGoal();
     }
 }
