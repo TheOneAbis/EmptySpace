@@ -75,7 +75,7 @@ public class MonsterChaseInitController : MonoBehaviour
         crosshairUI.SetActive(true);
         player.GetComponent<FirstPersonController>().enabled = true;
 
-        enemy.GetComponent<MonsterChaseController>().SetGoal(new Vector3(-106, 3, -66));
+        enemy.GetComponent<MonsterChaseController>().SetGoal(new Vector3(-98, 3, -66));
         enemy.GetComponent<MonsterChaseController>().MoveToGoal();
     }
 }
