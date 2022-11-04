@@ -8,11 +8,13 @@ public class TitleManager : MonoBehaviour
 {
     public GameObject canvas;
     public GameObject journal;
+    AsyncOperation asyncLoad;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        asyncLoad = SceneManager.LoadSceneAsync("Playground");
+        asyncLoad.allowSceneActivation = false;
     }
 
     // Awake
@@ -37,7 +39,8 @@ public class TitleManager : MonoBehaviour
         journal.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        SceneManager.LoadScene("Playground");
+        asyncLoad.allowSceneActivation = true;
+        //SceneManager.LoadScene("Playground");
     }
 
     public void StartButton()

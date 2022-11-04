@@ -115,9 +115,9 @@ public class Cryo_Pod_Script : MonoBehaviour
             Debug.Log(player.transform.position);
             player.transform.position = devStart.transform.position;
             Debug.Log(player.transform.position);
-        }  
+        }
         //escaped = true;
-        UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.None);
+        UIManager.GetComponent<UIManagement>().mouseUI = false;
         player.transform.rotation = Quaternion.Euler(0, 90, 0);
         player.transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, 0);
         foreach (GameObject s in switches) s.SetActive(false);

@@ -20,13 +20,16 @@ public class UIManagement : MonoBehaviour
     public bool mouseUI = true;
     private float timer = 0.0f;
     private float goal;
+
     public GameObject[] HUDCanvases;
     private Tooltip currentTooltip;
+    private float tooltipTimer;
 
     // Start is called before the first frame update
     void Start()
     {
         goal = 10.0f;
+        tooltipTimer = 0.0f;
         DisplayTooltip(Tooltip.Look);
         foreach (GameObject canvas in HUDCanvases)
             canvas.SetActive(false);
@@ -39,25 +42,20 @@ public class UIManagement : MonoBehaviour
         //    canvas.SetActive(false);
         HUDCanvases[4].SetActive(false);
         HUDCanvases[0].SetActive(false);
+
         if (currentTooltip != Tooltip.None)
             HUDCanvases[(int)currentTooltip].SetActive(true);
-        currentTooltip = Tooltip.None;
+
+        // Keep tooltip displayed until timer hits 0
+        if (tooltipTimer > 0.0f) 
+            tooltipTimer -= Time.deltaTime;
+        else
+            currentTooltip = Tooltip.None;
 
         if (!mouseUI)
-        {
             HUDCanvases[3].SetActive(false);
-        }
 
-        if (eUI)
-        {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                timer = 0.0f;
-                eUI = false;
-                HUDCanvases[0].SetActive(false);
-            }
-        }
-        else if (wASDUI)
+        if (wASDUI)
         {
             timer += Time.deltaTime;
             if (timer >= goal)
@@ -89,10 +87,21 @@ public class UIManagement : MonoBehaviour
                 delay = false;
             }
         }
+
+
     }
    
+    // Display a tooltip on the screen (to be used in update methods, as this appears for one frame)
     public void DisplayTooltip(Tooltip tooltip)
     {
         currentTooltip = tooltip;
+        tooltipTimer = 0.0f;
+    }
+
+    // Display a tooltip on the screen for a specified amount of seconds
+    public void DisplayTooltip(Tooltip tooltip, float seconds)
+    {
+        currentTooltip = tooltip;
+        tooltipTimer = seconds;
     }
 }
