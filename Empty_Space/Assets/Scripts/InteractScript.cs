@@ -10,65 +10,24 @@ public class InteractScript : MonoBehaviour
     public float timer;
     public GameObject canvas1;
     public GameObject canvas2;
-    public GameObject[] inactivePipes;
+    public GameObject canvas3;
+    public GameObject[] inactivePipes1;
+    public GameObject[] inactivePipes2;
     public GameObject player;
     [SerializeField]
     public bool inUI = false;
 
     public GameObject battery1;
     public GameObject battery2;
+    public GameObject battery3;
+    public GameObject battery4;
     public GameObject battery1Holder;
     public GameObject battery2Holder;
+    public GameObject battery3Holder;
+    public GameObject battery4Holder;
 
     private UIManagement UIManager;
 
-
-    /*
-    void OnTriggerStay(Collider col)
-    {
-        if(Input.GetKey(KeyCode.E))
-        {
-            if(inUI)
-            {
-                
-            }
-            else
-            {
-                OpenUI();
-                inUI = true;
-            }
-        }
-        if(Input.GetKey(KeyCode.Escape))
-        {
-            if(inUI)
-            {
-                CloseUI();
-                inUI = false;
-            }
-        }
-    }
-    */
-
-    //need to rework these
-    /*
-    public void CloseUI()
-    {
-        canvas.SetActive(false);
-        player.GetComponent<FirstPersonController>().enabled = true;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        inUI = false;
-    }
-
-    public void OpenUI()
-    {
-        canvas.SetActive(true);
-        player.GetComponent<FirstPersonController>().enabled = false;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        inUI = true;
-    }
-    */
 
     public float raycastDistance = 3; //Adjust to suit your use case
 
@@ -114,9 +73,9 @@ public class InteractScript : MonoBehaviour
                     if (!inUI)
                     {
                         canvas2.SetActive(true);
-                        for (int i = 0; i < inactivePipes.Length; i++)
+                        for (int i = 0; i < inactivePipes1.Length; i++)
                         {
-                            inactivePipes[i].SetActive(false);
+                            inactivePipes1[i].SetActive(false);
                         }
                         
                         if(player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 2)
@@ -142,12 +101,42 @@ public class InteractScript : MonoBehaviour
                     }
                 }
             }
-            else //If nothing at all with an above tag was hit with the Raycast within the specified distance then run this
+            else if (hit.collider.CompareTag("puzzleThree"))//If nothing at all with an above tag was hit with the Raycast within the specified distance then run this
             {
-                //if (interactText.text != "")//If the interactText is not already set as nothing then set it to nothing - this is to help optimise and save from constantly spamming this request
-                //{
-                //    interactText.text = ""; //Removing the text as nothing was detected by the raycast
-                //}
+                UIManager.DisplayTooltip(Tooltip.Interact);
+                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                {
+                    if (!inUI)
+                    {
+                        canvas3.SetActive(true);
+                        for (int i = 0; i < inactivePipes2.Length; i++)
+                        {
+                            inactivePipes2[i].SetActive(false);
+                        }
+
+                        if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 4)
+                        {
+                            battery3.SetActive(true);
+                            battery4.SetActive(true);
+                        }
+                        else if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 3)
+                        {
+                            battery3.SetActive(true);
+                            battery4.SetActive(false);
+                        }
+                        else
+                        {
+                            battery3.SetActive(false);
+                            battery4.SetActive(false);
+                        }
+
+                        player.GetComponent<FirstPersonController>().enabled = false;
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        inUI = true;
+                    }
+                }
             }
         }
         
@@ -155,6 +144,7 @@ public class InteractScript : MonoBehaviour
         {
             canvas1.SetActive(false);
             canvas2.SetActive(false);
+            canvas3.SetActive(false);
             player.GetComponent<FirstPersonController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -164,16 +154,30 @@ public class InteractScript : MonoBehaviour
         //for battery stuff
         if (battery1Holder.GetComponent<BatteryDrop>().placed == true)
         {
-            for (int i = 0; i < inactivePipes.Length - 4; i++)
+            for (int i = 0; i < inactivePipes1.Length - 4; i++)
             {
-                inactivePipes[i].SetActive(true);
+                inactivePipes1[i].SetActive(true);
             }
         }
         if(battery2Holder.GetComponent<BatteryDrop>().placed == true)
         {
-            for (int i = inactivePipes.Length - 4; i < inactivePipes.Length; i++)
+            for (int i = inactivePipes1.Length - 4; i < inactivePipes1.Length; i++)
             {
-                inactivePipes[i].SetActive(true);
+                inactivePipes1[i].SetActive(true);
+            }
+        }
+        if(battery3Holder.GetComponent<BatteryDrop>().placed == true)
+        {
+            for (int i = 0; i < inactivePipes2.Length - 5; i++)
+            {
+                inactivePipes2[i].SetActive(true);
+            }
+        }
+        if(battery4Holder.GetComponent<BatteryDrop>().placed == true)
+        {
+            for (int i = inactivePipes2.Length - 5; i < inactivePipes2.Length; i++)
+            {
+                inactivePipes2[i].SetActive(true);
             }
         }
     }
