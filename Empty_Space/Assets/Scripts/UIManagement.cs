@@ -24,6 +24,7 @@ public class UIManagement : MonoBehaviour
     private float goal;
     private float rotationSpeed;
     private float speed;
+    public bool paused = false;
 
     public GameObject[] HUDCanvases;
     private Tooltip currentTooltip;
@@ -46,7 +47,7 @@ public class UIManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !interactionManager.GetComponent<InteractScript>().inUI)
+        if (Input.GetKeyDown(KeyCode.Escape) && !interactionManager.GetComponent<InteractScript>().inUI && !paused)
         {
             rotationSpeed = player.GetComponent<FirstPersonController>().RotationSpeed;
             player.GetComponent<FirstPersonController>().RotationSpeed = 0;
@@ -55,6 +56,7 @@ public class UIManagement : MonoBehaviour
             HUDCanvases[5].SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            paused = true;
         }
 
         //foreach (GameObject canvas in HUDCanvases)
@@ -131,6 +133,7 @@ public class UIManagement : MonoBehaviour
         Cursor.visible = false;
         player.GetComponent<FirstPersonController>().RotationSpeed = rotationSpeed;
         player.GetComponent<FirstPersonController>().MoveSpeed = speed;
+        paused = false;
     }
 
     public void ExitButton()
@@ -140,6 +143,6 @@ public class UIManagement : MonoBehaviour
 
     public void Slider()
     {
-        player.GetComponent<FirstPersonController>().RotationSpeed = pauseSlider.value;
+        rotationSpeed = pauseSlider.value;
     }
 }
