@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5990927340776259745}
   - component: {fileID: 4176595379500190594}
   - component: {fileID: -8619829253105643343}
+  - component: {fileID: 1741777130411765271}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -4824,7 +4825,7 @@ Light:
   m_GameObject: {fileID: 6239897149204724503}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 0
+  m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.9056604, g: 0.46109554, b: 0, a: 1}
   m_Intensity: 5
@@ -4909,4 +4910,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39d5c2107b3cfb4e98a5ca14d4bec3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 4.5
+--- !u!65 &1741777130411765271
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6239897149204724503}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 5, z: 5}
+  m_Center: {x: 0, y: 0, z: 0}
