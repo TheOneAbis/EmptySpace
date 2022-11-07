@@ -40,6 +40,11 @@ public class MonsterChaseInitController : MonoBehaviour
         }
     }
 
+    public void ResetTrigger()
+    {
+        triggered = false;
+    }
+
     IEnumerator InitEnemyChaseSequence()
     {
         // disable player controls for cutscene
@@ -51,7 +56,7 @@ public class MonsterChaseInitController : MonoBehaviour
         RenderSettings.ambientIntensity = 0.0f;
         yield return new WaitForSeconds(1.0f);
         enemy.transform.position = new Vector3(-18, 3, -66); // enemy starting position
-        enemy.transform.Rotate(0, -90, 0);
+        enemy.transform.rotation = Quaternion.Euler(0, -90, 0);
         enemy.GetComponent<Light>().type = LightType.Spot;
         enemy.GetComponent<Light>().intensity = 50;
         enemy.GetComponent<Light>().range = 40;
@@ -75,7 +80,7 @@ public class MonsterChaseInitController : MonoBehaviour
         crosshairUI.SetActive(true);
         player.GetComponent<FirstPersonController>().enabled = true;
 
-        enemy.GetComponent<MonsterChaseController>().SetGoal(new Vector3(-98, 3, -66));
+        enemy.GetComponent<MonsterChaseController>().SetGoal(new Vector3(-115, 3, -66));
         enemy.GetComponent<MonsterChaseController>().MoveToGoal();
     }
 }

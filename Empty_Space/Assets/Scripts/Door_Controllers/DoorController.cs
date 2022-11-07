@@ -8,10 +8,10 @@ public class DoorController : MonoBehaviour
     private GameObject player; // player ref
     private Animator doorAnimator; // this door's animation component
     private float distToPlayer; // player's distance from this door
-    private bool isOpen = false; // is this door currently open? (not meant for public use; use 'locked' for that)
+    private bool isOpen; // is this door currently open? (not meant for public use; use 'locked' for that)
     private Light[] doorLights = new Light[2];
     private float randomInterval;
-    private float clickForce;
+    private int clickForce;
     private bool interacted;
     private UIManagement UIManager;
 
@@ -34,6 +34,7 @@ public class DoorController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isOpen = false;
         // Set door bools properly based on what the developer put it as in Unity
         if (!interactable)
         {
@@ -70,8 +71,12 @@ public class DoorController : MonoBehaviour
         }
         else if (locked || dynamic) 
             doorAnimator.Play($"Base Layer.{closeAnimationString}", 0, 0);
-        else 
+        else
+        {
+            isOpen = true;
             doorAnimator.Play($"Base Layer.{openAnimationString}", 0, 0);
+        } 
+
 
         if (interactable)
         {
@@ -81,7 +86,6 @@ public class DoorController : MonoBehaviour
                 light.color = locked ? Color.red : Color.green;
             }
         }
-        
     }
 
     // Update is called once per frame
@@ -182,17 +186,34 @@ public class DoorController : MonoBehaviour
     }
 
     // Internal helper function; opens the door, playing its respective open animation
-    private void Open()
+    public void Open()
     {
         doorAnimator.Play($"Base Layer.{openAnimationString}", 0, 0);
         isOpen = true;
     }
     // Internal helper function; closes the door, playing its respective close animation
-    private void Close()
+    public void Close()
     {
         doorAnimator.Play($"Base Layer.{closeAnimationString}", 0, 0);
         isOpen = false;
     }
+
+    public int ClickForce
+    {
+        get { return clickForce; }
+        set { clickForce = value; }
+    }
+
+    // Resets this door to its initial state on startup.
+    public void ResetState(bool interactable, bool jammed, bool locked, bool dynamic)
+    {
+        this.interactable = interactable;
+        this.jammed = jammed;
+        this.locked = locked;
+        this.dynamic = dynamic;
+        Start();
+    }
+
 
     // -- USE THE BELOW COROUTINE FUNCTIONS ON JAMMED DOORS ONLY -- \\
 

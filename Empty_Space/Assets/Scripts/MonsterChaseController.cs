@@ -11,6 +11,7 @@ public class MonsterChaseController : MonoBehaviour
     public float moveSpeed;
     private bool shouldMove;
     private GameObject player;
+    private CheckpointController cpController;
     private CinemachineVirtualCamera mainCam;
 
     // Start is called before the first frame update
@@ -20,6 +21,7 @@ public class MonsterChaseController : MonoBehaviour
         shouldMove = false;
         player = GameObject.FindGameObjectWithTag("Player");
         mainCam = GameObject.Find("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>();
+        cpController = GameObject.Find("CheckpointManager").GetComponent<CheckpointController>();
     }
 
     // Update is called once per frame
@@ -63,6 +65,7 @@ public class MonsterChaseController : MonoBehaviour
     {
         Stop();
         player.GetComponent<FirstPersonController>().enabled = false;
+        float originalFOV = mainCam.m_Lens.FieldOfView;
 
         Quaternion startRotation = player.transform.rotation;
         Vector3 lookDirection = (transform.position - player.transform.position);
@@ -85,6 +88,10 @@ public class MonsterChaseController : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
         // TODO: Invoke death screen here
+        cpController.Respawn();
+
+        mainCam.m_Lens.FieldOfView = originalFOV; // reset fov
     }
 }
