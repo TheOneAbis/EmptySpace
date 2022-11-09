@@ -55,9 +55,14 @@ public class MonsterChaseController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other);
         if (other.gameObject == player)
         {
             StartCoroutine(DeathSequence());
+        }
+        else if (other.gameObject.name == "JammedDoor3")
+        {
+            if (other.GetComponent<DoorController>().locked == true) Stop();
         }
     }
 

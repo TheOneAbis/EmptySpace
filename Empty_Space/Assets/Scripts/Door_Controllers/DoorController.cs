@@ -162,7 +162,7 @@ public class DoorController : MonoBehaviour
     }
 
     // Lock this door.
-    void Lock()
+    public void Lock()
     {
         if (interactable)
         {

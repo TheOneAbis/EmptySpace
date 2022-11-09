@@ -12,6 +12,7 @@ public class PipeManager : MonoBehaviour
     public GameObject canvas;
     public GameObject player;
     public GameObject interactionManager;
+    public bool thatOnePuzzle;
 
     [SerializeField]
     int totalPipes = 0;
@@ -59,7 +60,15 @@ public class PipeManager : MonoBehaviour
         player.GetComponent<FirstPersonController>().enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        door.GetComponent<DoorController>().Unlock();
+        if(thatOnePuzzle)
+        {
+            door.GetComponent<DoorController>().Lock();
+        }
+        else
+        {
+            door.GetComponent<DoorController>().Unlock();
+        }
+        
         interactionManager.GetComponent<InteractScript>().inUI = false;
     }
 }

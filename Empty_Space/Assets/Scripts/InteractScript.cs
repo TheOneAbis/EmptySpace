@@ -11,6 +11,7 @@ public class InteractScript : MonoBehaviour
     public GameObject canvas1;
     public GameObject canvas2;
     public GameObject canvas3;
+    public GameObject canvas4;
     public GameObject[] inactivePipes1;
     public GameObject[] inactivePipes2;
     public GameObject player;
@@ -131,6 +132,23 @@ public class InteractScript : MonoBehaviour
                             battery4.SetActive(false);
                         }
 
+                        player.GetComponent<FirstPersonController>().enabled = false;
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        inUI = true;
+                    }
+                }
+            }
+            else if (hit.collider.CompareTag("puzzleFour"))
+            {
+                UIManager.DisplayTooltip(Tooltip.Interact);
+                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                {
+
+                    if (!inUI)
+                    {
+                        canvas4.SetActive(true);
                         player.GetComponent<FirstPersonController>().enabled = false;
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;

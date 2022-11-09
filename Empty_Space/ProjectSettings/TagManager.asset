@@ -16,6 +16,7 @@ TagManager:
   - UIManager
   - Enemy
   - puzzleThree
+  - puzzleFour
   layers:
   - Default
   - TransparentFX
