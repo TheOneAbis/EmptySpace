@@ -43,6 +43,10 @@ public class Enemy_Jumpscare : MonoBehaviour
             triggerable = false;
             switch (name)
             {
+                case "StopAudio":
+                    // Stop and set to new creepy music
+                    StartCoroutine(FadeOutAudio());
+                    break;
                 case "Jumpscare_1":
                     StartCoroutine(Jumpscare1Sequence());
                     GameObject.Find("Enable_Jumpscare_2").GetComponent<Enemy_Jumpscare>().triggerable = true;
@@ -58,12 +62,29 @@ public class Enemy_Jumpscare : MonoBehaviour
         }
     }
 
-    IEnumerator Jumpscare1Sequence()
+    IEnumerator FadeOutAudio()
     {
-        // Stop and set to new creepy music
+        for (float i = 1.0f; i >= 0.0f; i -= Time.deltaTime * 2)
+        {
+            playerAudio.volume = i / 1.0f;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        // After fading, stop and set to new audio
         playerAudio.Stop();
         playerAudio.clip = newAudio;
+    }
 
+    IEnumerator Jumpscare1Sequence()
+    {
+        // Begin and fade in new audio
+        playerAudio.Play();
+        for (float i = 0; i <= 1.0f; i += Time.deltaTime * 2)
+        {
+            playerAudio.volume = i / 1.0f;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        
         yield return new WaitForSeconds(0.25f); // delay 1/4 second before moving monster
 
         // P[t] = P[0] + t(P[1] - P[0])
