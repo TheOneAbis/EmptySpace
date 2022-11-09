@@ -31,6 +31,7 @@ public class MonsterChaseController : MonoBehaviour
         if (shouldMove)
         {
             if ((goal - transform.position).magnitude > 0.1f)
+                //GetComponent<Rigidbody>().AddForce((goal - transform.position).normalized * moveSpeed * Time.deltaTime);
                 transform.position += (goal - transform.position).normalized * moveSpeed * Time.deltaTime;
             else
                 shouldMove = false;
@@ -55,7 +56,6 @@ public class MonsterChaseController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other);
         if (other.gameObject == player)
         {
             StartCoroutine(DeathSequence());

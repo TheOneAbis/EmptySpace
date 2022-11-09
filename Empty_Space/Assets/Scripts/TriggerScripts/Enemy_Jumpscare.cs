@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy_Jumpscare : MonoBehaviour
 {
     private GameObject enemy;
+    private AudioSource playerAudio;
     private Vector3[] positionsScare1 =
     {
         new Vector3(25, 10, -41),
@@ -18,11 +19,13 @@ public class Enemy_Jumpscare : MonoBehaviour
         new Vector3(4, 3, -50),
     };
     public bool triggerable;
+    public AudioClip newAudio;
 
     // Start is called before the first frame update
     void Start()
     {
         enemy = GameObject.FindGameObjectWithTag("Enemy");
+        playerAudio = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
         triggerable = name == "Jumpscare_1" ? true : false;
     }
 
@@ -57,6 +60,10 @@ public class Enemy_Jumpscare : MonoBehaviour
 
     IEnumerator Jumpscare1Sequence()
     {
+        // Stop and set to new creepy music
+        playerAudio.Stop();
+        playerAudio.clip = newAudio;
+
         yield return new WaitForSeconds(0.25f); // delay 1/4 second before moving monster
 
         // P[t] = P[0] + t(P[1] - P[0])
@@ -76,6 +83,9 @@ public class Enemy_Jumpscare : MonoBehaviour
         }
         // move it to where it is unseeable
         enemy.transform.position = new Vector3(70, 8, -50);
+
+        // play new creepy music
+        playerAudio.Play();
     }
 
     IEnumerator Jumpscare2Sequence()
