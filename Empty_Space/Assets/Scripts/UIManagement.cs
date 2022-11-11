@@ -35,6 +35,9 @@ public class UIManagement : MonoBehaviour
     public GameObject player;
 
     public GameObject deathCanvas;
+    public GameObject deathText;
+    public GameObject deathRetry;
+    public GameObject deathQuit;
 
     // Start is called before the first frame update
     void Start()
@@ -153,6 +156,9 @@ public class UIManagement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         deathCanvas.GetComponent<FadeDeathScreen>().fadeOut = true;
+        deathText.SetActive(false);
+        deathRetry.SetActive(false);
+        deathQuit.SetActive(false);
 
         // Transfrom the player back to the checkpoint position here:
         GameObject.Find("CheckpointManager").GetComponent<CheckpointController>().Respawn();

@@ -41,4 +41,12 @@ public class FadeDeathScreen : MonoBehaviour
             elapsedTime = 0.0f;
         }
     }
+
+    private void OnEnable()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(true);
+        }
+    }
 }
