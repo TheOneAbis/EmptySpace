@@ -19,7 +19,7 @@ public class FadeDeathScreen : MonoBehaviour
     private void Awake()
     {
         canvasGroup = gameObject.GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 0.0f;
+        canvasGroup.alpha = 1.0f;
         elapsedTime = 0.0f;
         fadeTime = 4.0f;
         fadeOut = false;
@@ -28,7 +28,7 @@ public class FadeDeathScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(canvasGroup.alpha < 1.0f && fadeOut)
+        if(canvasGroup.alpha > 0.0f && fadeOut)
         {
             elapsedTime += Time.deltaTime;
             canvasGroup.alpha = Mathf.Clamp01(1.0f - (elapsedTime / fadeTime));

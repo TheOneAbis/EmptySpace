@@ -105,7 +105,7 @@ public class MonsterChaseController : MonoBehaviour
         // TODO: Invoke death screen here
         UnityEngine.Cursor.lockState = CursorLockMode.None;
         UnityEngine.Cursor.visible = true;
-        deathCanvas.GetComponent<CanvasGroup>().alpha = 0.0f;
+        deathCanvas.GetComponent<CanvasGroup>().alpha = 1.0f;
         deathCanvas.SetActive(true);
 
         cpController.Respawn();
