@@ -10,6 +10,7 @@ public class MonsterChaseController : MonoBehaviour
     private Vector3 goal;
     public float moveSpeed;
     private bool shouldMove;
+    public bool canKill;
     private GameObject player;
     private CheckpointController cpController;
     private CinemachineVirtualCamera mainCam;
@@ -17,6 +18,7 @@ public class MonsterChaseController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canKill = false;
         goal = transform.position;
         shouldMove = false;
         player = GameObject.FindGameObjectWithTag("Player");
@@ -58,11 +60,15 @@ public class MonsterChaseController : MonoBehaviour
     {
         if (other.gameObject == player)
         {
-            StartCoroutine(DeathSequence());
+            if (canKill) StartCoroutine(DeathSequence());
         }
         else if (other.gameObject.name == "JammedDoor3")
         {
-            if (other.GetComponent<DoorController>().locked == true) Stop();
+            if (other.GetComponent<DoorController>().locked == true)
+            {
+                Stop();
+                StartCoroutine(EscapeSequence());
+            }
         }
     }
 
@@ -98,5 +104,18 @@ public class MonsterChaseController : MonoBehaviour
         cpController.Respawn();
 
         mainCam.m_Lens.FieldOfView = originalFOV; // reset fov
+    }
+
+    IEnumerator EscapeSequence()
+    {
+        yield return new WaitForSeconds(3.0f);
+        GetComponent<AudioSource>().Stop();
+        transform.position += new Vector3(0, 100, 0);
+
+        for (float i = 0; i < 1.0f; i += Time.deltaTime / 10)
+        {
+            RenderSettings.ambientIntensity = i;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
     }
 }

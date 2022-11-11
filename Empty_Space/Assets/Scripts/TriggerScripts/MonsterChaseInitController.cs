@@ -6,17 +6,21 @@ using UnityEngine;
 public class MonsterChaseInitController : MonoBehaviour
 {
     private GameObject player;
+    private AudioSource playerAudio;
     private GameObject enemy;
     private GameObject crosshairUI;
 
     // Instance Editable
     public GameObject doorToCheck;
+    public AudioClip lightsOffSFX;
+    public AudioClip hallChaseMusic;
     private bool triggered;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerAudio = player.GetComponent<AudioSource>();
         enemy = GameObject.FindGameObjectWithTag("Enemy");
         crosshairUI = GameObject.Find("Crosshair");
         triggered = false;
@@ -54,7 +58,12 @@ public class MonsterChaseInitController : MonoBehaviour
         // Cutscene
         yield return new WaitForSeconds(0.5f);
         RenderSettings.ambientIntensity = 0.0f;
-        yield return new WaitForSeconds(1.0f);
+        playerAudio.Stop();
+        playerAudio.clip = lightsOffSFX;
+        playerAudio.loop = false;
+        playerAudio.Play();
+        yield return new WaitForSeconds(2.0f);
+
         enemy.transform.position = new Vector3(-18, 3, -66); // enemy starting position
         enemy.transform.rotation = Quaternion.Euler(0, -90, 0);
         enemy.GetComponent<Light>().type = LightType.Spot;
@@ -62,7 +71,7 @@ public class MonsterChaseInitController : MonoBehaviour
         enemy.GetComponent<Light>().range = 40;
         enemy.GetComponent<Light>().innerSpotAngle = 50;
         enemy.GetComponent<Light>().spotAngle = 90;
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(1.25f);
 
         Quaternion startRotation = player.transform.rotation;
         Vector3 lookDirection = (enemy.transform.position - player.transform.position);
@@ -74,7 +83,13 @@ public class MonsterChaseInitController : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(0.5f);
+        // Monster scare
+        playerAudio.clip = hallChaseMusic;
+        playerAudio.Play();
+        enemy.GetComponent<AudioSource>().Play();
+
+        yield return new WaitForSeconds(1.5f);
         GameObject.Find("UIManager").GetComponent<UIManagement>().DisplayTooltip(Tooltip.Sprint, 5.0f);
         // re-enable player controls
         crosshairUI.SetActive(true);
@@ -82,5 +97,6 @@ public class MonsterChaseInitController : MonoBehaviour
 
         enemy.GetComponent<MonsterChaseController>().SetGoal(new Vector3(-115, 3, -66));
         enemy.GetComponent<MonsterChaseController>().MoveToGoal();
+        enemy.GetComponent<MonsterChaseController>().canKill = true;
     }
 }

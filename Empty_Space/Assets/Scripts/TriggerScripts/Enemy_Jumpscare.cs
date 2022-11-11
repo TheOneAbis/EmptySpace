@@ -26,7 +26,6 @@ public class Enemy_Jumpscare : MonoBehaviour
     {
         enemy = GameObject.FindGameObjectWithTag("Enemy");
         playerAudio = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
-        triggerable = name == "Jumpscare_1" ? true : false;
     }
 
     // Update is called once per frame
@@ -48,6 +47,7 @@ public class Enemy_Jumpscare : MonoBehaviour
                     StartCoroutine(FadeOutAudio());
                     break;
                 case "Jumpscare_1":
+                    StartCoroutine(FadeInAudio());
                     StartCoroutine(Jumpscare1Sequence());
                     GameObject.Find("Enable_Jumpscare_2").GetComponent<Enemy_Jumpscare>().triggerable = true;
                     break;
@@ -75,16 +75,19 @@ public class Enemy_Jumpscare : MonoBehaviour
         playerAudio.clip = newAudio;
     }
 
-    IEnumerator Jumpscare1Sequence()
+    IEnumerator FadeInAudio()
     {
         // Begin and fade in new audio
         playerAudio.Play();
-        for (float i = 0; i <= 1.0f; i += Time.deltaTime * 2)
+        for (float i = 0; i <= 1.0f; i += Time.deltaTime)
         {
             playerAudio.volume = i / 1.0f;
             yield return new WaitForSeconds(Time.deltaTime);
         }
-        
+    }
+
+    IEnumerator Jumpscare1Sequence()
+    {
         yield return new WaitForSeconds(0.25f); // delay 1/4 second before moving monster
 
         // P[t] = P[0] + t(P[1] - P[0])

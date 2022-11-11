@@ -111,6 +111,8 @@ namespace StarterAssets
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
+
+			GameObject.Find("DevStart").GetComponent<MeshRenderer>().enabled = false; // make devstart sphere invisible during gameplay
 		}
 
 		private void Update()
