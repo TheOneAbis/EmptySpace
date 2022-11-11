@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.UIElements;
+using StarterAssets;
 
 public class MonsterChaseController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class MonsterChaseController : MonoBehaviour
     private GameObject player;
     private CheckpointController cpController;
     private CinemachineVirtualCamera mainCam;
+    public GameObject deathCanvas;
 
     // Start is called before the first frame update
     void Start()
@@ -101,6 +103,11 @@ public class MonsterChaseController : MonoBehaviour
 
         player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
         // TODO: Invoke death screen here
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true;
+        deathCanvas.GetComponent<CanvasGroup>().alpha = 0.0f;
+        deathCanvas.SetActive(true);
+
         cpController.Respawn();
 
         mainCam.m_Lens.FieldOfView = originalFOV; // reset fov

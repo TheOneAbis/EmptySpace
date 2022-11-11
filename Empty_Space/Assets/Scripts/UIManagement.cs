@@ -145,4 +145,14 @@ public class UIManagement : MonoBehaviour
     {
         rotationSpeed = pauseSlider.value;
     }
+
+    public void RetryButton()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // Transfrom the player back to the checkpoint position here:
+
+        player.GetComponent<FirstPersonController>().enabled = true;
+    }
 }
