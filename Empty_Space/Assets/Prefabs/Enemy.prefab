@@ -4914,6 +4914,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 50
   canKill: 0
+  deathCanvas: {fileID: 7608277452481470641, guid: 284c210f6a258e841a9fc2e4cc0cfdc2,
+    type: 3}
 --- !u!65 &1741777130411765271
 BoxCollider:
   m_ObjectHideFlags: 0
