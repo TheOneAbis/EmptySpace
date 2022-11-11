@@ -17,6 +17,9 @@ public class MonsterChaseController : MonoBehaviour
     private CinemachineVirtualCamera mainCam;
     public GameObject deathCanvas;
 
+    private AudioController gameAudio;
+    public AudioClip SuccessSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,7 @@ public class MonsterChaseController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         mainCam = GameObject.Find("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>();
         cpController = GameObject.Find("CheckpointManager").GetComponent<CheckpointController>();
+        gameAudio = GameObject.Find("AudioPlayer").GetComponent<AudioController>();
     }
 
     // Update is called once per frame
@@ -107,6 +111,8 @@ public class MonsterChaseController : MonoBehaviour
         UnityEngine.Cursor.visible = true;
         deathCanvas.GetComponent<CanvasGroup>().alpha = 1.0f;
         deathCanvas.GetComponent<CanvasGroup>().interactable = true;
+
+        gameAudio.StopPlaying(); // Stop playing scary music
         deathCanvas.SetActive(true);
 
         cpController.Respawn();
@@ -116,6 +122,7 @@ public class MonsterChaseController : MonoBehaviour
 
     IEnumerator EscapeSequence()
     {
+        gameAudio.SwitchAudio(SuccessSound, .025f, false);
         yield return new WaitForSeconds(3.0f);
         GetComponent<AudioSource>().Stop();
         transform.position += new Vector3(0, 100, 0);

@@ -7,13 +7,15 @@ public class MonsterChaseInitController : MonoBehaviour
 {
     private GameObject player;
     private AudioSource playerAudio;
+    private AudioController gameAudio;
     private GameObject enemy;
     private GameObject crosshairUI;
 
     // Instance Editable
     public GameObject doorToCheck;
     public AudioClip lightsOffSFX;
-    public AudioClip hallChaseMusic;
+    public AudioClip hallChaseIntroStinger;
+    public AudioClip hallChaseMainMusic;
     private bool triggered;
 
     // Start is called before the first frame update
@@ -21,6 +23,7 @@ public class MonsterChaseInitController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerAudio = player.GetComponent<AudioSource>();
+        gameAudio = GameObject.Find("AudioPlayer").GetComponent<AudioController>();
         enemy = GameObject.FindGameObjectWithTag("Enemy");
         crosshairUI = GameObject.Find("Crosshair");
         triggered = false;
@@ -77,20 +80,20 @@ public class MonsterChaseInitController : MonoBehaviour
         Vector3 lookDirection = (enemy.transform.position - player.transform.position);
         lookDirection.y = 0;
         
-        for (float i = 0; i < 1.0f; i += Time.deltaTime)
+        for (float i = 0; i < 1.0f; i += Time.deltaTime * 1.5f)
         {
             player.transform.rotation = Quaternion.Lerp(startRotation, Quaternion.LookRotation(lookDirection.normalized, player.transform.up), i);
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        yield return new WaitForSeconds(0.5f);
+        gameAudio.SwitchAudio(hallChaseIntroStinger, .25f, false);
+        yield return new WaitForSeconds(0.75f);
         // Monster scare
-        playerAudio.clip = hallChaseMusic;
-        playerAudio.Play();
         enemy.GetComponent<AudioSource>().Play();
 
         yield return new WaitForSeconds(1.0f);
 
+        // Turn player back around to where they were initially facing
         startRotation = player.transform.rotation;
         lookDirection = (player.transform.position - enemy.transform.position);
         lookDirection.y = 0;
@@ -102,6 +105,8 @@ public class MonsterChaseInitController : MonoBehaviour
         }
         
         GameObject.Find("UIManager").GetComponent<UIManagement>().DisplayTooltip(Tooltip.Sprint, 5.0f);
+        gameAudio.SwitchAudio(hallChaseMainMusic, .25f, false);
+
         // re-enable player controls
         crosshairUI.SetActive(true);
         player.GetComponent<FirstPersonController>().enabled = true;
