@@ -8,6 +8,7 @@ public class FadeDeathScreen : MonoBehaviour
     private CanvasGroup canvasGroup;
     private float elapsedTime;
     private float fadeTime;
+    public bool fadeOut = false;
 
     // Start is called before the first frame update
     void Start()
@@ -21,18 +22,20 @@ public class FadeDeathScreen : MonoBehaviour
         canvasGroup.alpha = 0.0f;
         elapsedTime = 0.0f;
         fadeTime = 4.0f;
+        fadeOut = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(canvasGroup.alpha < 1.0f)
+        if(canvasGroup.alpha < 1.0f && fadeOut)
         {
             elapsedTime += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Clamp01((elapsedTime / fadeTime));
+            canvasGroup.alpha = Mathf.Clamp01(1.0f - (elapsedTime / fadeTime));
         }
-        else
+        else if(elapsedTime > 0)
         {
+            fadeOut = false;
             elapsedTime = 0.0f;
         }
     }

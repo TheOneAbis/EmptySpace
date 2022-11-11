@@ -34,6 +34,8 @@ public class UIManagement : MonoBehaviour
     public Slider pauseSlider;
     public GameObject player;
 
+    public GameObject deathCanvas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -150,9 +152,9 @@ public class UIManagement : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        deathCanvas.GetComponent<FadeDeathScreen>().fadeOut = true;
 
         // Transfrom the player back to the checkpoint position here:
-
-        player.GetComponent<FirstPersonController>().enabled = true;
+        GameObject.Find("CheckpointManager").GetComponent<CheckpointController>().Respawn();
     }
 }
