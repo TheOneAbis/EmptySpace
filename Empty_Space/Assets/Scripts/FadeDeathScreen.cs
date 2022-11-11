@@ -19,6 +19,7 @@ public class FadeDeathScreen : MonoBehaviour
     private void Awake()
     {
         canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        canvasGroup.interactable = true;
         canvasGroup.alpha = 1.0f;
         elapsedTime = 0.0f;
         fadeTime = 4.0f;
