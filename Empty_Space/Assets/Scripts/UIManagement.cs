@@ -29,7 +29,6 @@ public class UIManagement : MonoBehaviour
     public GameObject[] HUDCanvases;
     private Tooltip currentTooltip;
     private float tooltipTimer;
-    private bool isTimed;
 
     public GameObject interactionManager;
     public Slider pauseSlider;
@@ -45,7 +44,6 @@ public class UIManagement : MonoBehaviour
     {
         goal = 10.0f;
         tooltipTimer = 0.0f;
-        isTimed = false;
         DisplayTooltip(Tooltip.Look);
         foreach (GameObject canvas in HUDCanvases)
         canvas.SetActive(false);
@@ -75,16 +73,11 @@ public class UIManagement : MonoBehaviour
             HUDCanvases[(int)currentTooltip].SetActive(true);
 
         // Keep tooltip displayed until timer hits 0
-        if (isTimed)
-        {
-            if (tooltipTimer > 0.0f)
-                tooltipTimer -= Time.deltaTime;
-            else
-            {
-                currentTooltip = Tooltip.None;
-                isTimed = false;
-            }
-        }
+        
+        if (tooltipTimer > 0.0f)
+            tooltipTimer -= Time.deltaTime;
+        else
+            currentTooltip = Tooltip.None;
         
 
         if (!mouseUI)
@@ -138,7 +131,6 @@ public class UIManagement : MonoBehaviour
     {
         currentTooltip = tooltip;
         tooltipTimer = seconds;
-        isTimed = true;
     }
 
     public void ContinueButton()

@@ -132,11 +132,11 @@ public class DoorController : MonoBehaviour
                     else
                     {
                         // Stop interacting w/ door
-                        if (Input.GetKeyDown(KeyCode.Escape))
-                        {
-                            interacted = false;
-                            player.GetComponent<FirstPersonController>().enabled = true;
-                        }
+                        //if (Input.GetKeyDown(KeyCode.Escape))
+                        //{
+                        //    interacted = false;
+                        //    player.GetComponent<FirstPersonController>().enabled = true;
+                        //}
 
                         // Click rapidly to force open the door
                         UIManager.DisplayTooltip(Tooltip.LeftClick);

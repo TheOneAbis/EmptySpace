@@ -10,6 +10,7 @@ public class Collectible : MonoBehaviour
     public float keyHoldTime = 0.0f;
     private float keyHoldTimeLeft;
     private UIManagement UIManager;
+    private bool showInteract;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,12 @@ public class Collectible : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         keyHoldTimeLeft = keyHoldTime;
         UIManager = GameObject.Find("UIManager").GetComponent<UIManagement>();
+        showInteract = false;
+    }
+
+    private void Update()
+    {
+        if (showInteract) UIManager.DisplayTooltip(Tooltip.Interact);
     }
 
     // Player comes within collectible radius
@@ -24,7 +31,7 @@ public class Collectible : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            UIManager.DisplayTooltip(Tooltip.Interact);
+            showInteract = true;
             // Player presses (or holds depending on keyHoldTime setting) interaction key, collect this object
             if (Input.GetKey(KeyCode.E))
             {
@@ -32,15 +39,15 @@ public class Collectible : MonoBehaviour
                 if (keyHoldTimeLeft <= 0)
                 {
                     player.GetComponent<PlayerInventoryManager>().AddToInventory(gameObject);
-                    UIManager.DisplayTooltip(Tooltip.None);
+                    showInteract = false;
                 }
             }
             else keyHoldTimeLeft = keyHoldTime; // if not holding down (or released), reset timer
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
-            UIManager.DisplayTooltip(Tooltip.None);
+        if (other.tag == "Player") showInteract = false;
     }
 }

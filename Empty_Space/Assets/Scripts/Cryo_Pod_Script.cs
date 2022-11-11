@@ -15,7 +15,6 @@ public class Cryo_Pod_Script : MonoBehaviour
     private float playerSpeed, gravity;
     private GameObject[] switches;
     private bool canExit;
-    private bool showInteract;
     private UIManagement UIManager;
 
     private bool escaped = false;
@@ -49,18 +48,12 @@ public class Cryo_Pod_Script : MonoBehaviour
     {
         // Player can exit if all lights are activated
         canExit = true;
-        showInteract = false;
         foreach (GameObject s in switches)
         {
             ExitLightController sLight = s.GetComponent<ExitLightController>();
             if (!sLight.Activated)
-            {
                 canExit = false;
-                if (sLight.IsLookedAt()) showInteract = true;
-            }
         }
-        if (showInteract) UIManager.DisplayTooltip(Tooltip.Interact);
-        else UIManager.DisplayTooltip(Tooltip.None);
 
 
         // After pressing the buttons, force your way out by holding left click
@@ -77,7 +70,6 @@ public class Cryo_Pod_Script : MonoBehaviour
         if (clickForce > 10 && !escaped)
         {
             UIManager.delay = true;
-            UIManager.DisplayTooltip(Tooltip.None);
             escaped = true;
             foreach (GameObject s in switches) s.SetActive(false);
             StartCoroutine(leavePodAnimSequence()); // animation sequence
@@ -119,24 +111,31 @@ public class Cryo_Pod_Script : MonoBehaviour
     private void DevSkip()
     {
         GameObject devStart = GameObject.FindGameObjectWithTag("Respawn");
+
+        IEnumerator Teleport()
+        {
+            player.GetComponent<FirstPersonController>().enabled = false;
+            yield return new WaitForSeconds(0.25f);
+            player.transform.position = devStart.transform.position;
+            yield return new WaitForSeconds(0.25f);
+            player.GetComponent<FirstPersonController>().enabled = true;
+
+            escaped = true;
+            UIManager.mouseUI = false;
+            player.transform.rotation = Quaternion.Euler(0, 90, 0);
+            player.transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, 0);
+            foreach (GameObject s in switches) s.SetActive(false);
+            player.GetComponent<FirstPersonController>().MoveSpeed = playerSpeed;
+            player.GetComponent<FirstPersonController>().Gravity = gravity;
+            player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
+            player.GetComponent<AudioSource>().Play(); // begin ambient music loop
+            enabled = false;
+        }
+
         // TP player to DevStart, if it exists
         if (devStart != null)
-        {
-            Debug.Log(player.transform.position);
-            player.transform.position = devStart.transform.position;
-            Debug.Log(player.transform.position);
-        }
-        //escaped = true;
-        UIManager.mouseUI = false;
-        player.transform.rotation = Quaternion.Euler(0, 90, 0);
-        player.transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, 0);
-        foreach (GameObject s in switches) s.SetActive(false);
-        player.GetComponent<FirstPersonController>().MoveSpeed = playerSpeed;
-        player.GetComponent<FirstPersonController>().Gravity = gravity;
-        player.GetComponent<FirstPersonController>().enabled = true;
-        player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
-        player.GetComponent<AudioSource>().Play(); // begin ambient music loop
+            StartCoroutine(Teleport());
 
-        //enabled = false;
+        
     }
 }

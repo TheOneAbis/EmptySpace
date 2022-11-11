@@ -17,7 +17,6 @@ public class InteractScript : MonoBehaviour
     public GameObject player;
     [SerializeField]
     public bool inUI = false;
-    private bool lookingAtPuzzle = false;
 
     public GameObject battery1;
     public GameObject battery2;
@@ -51,11 +50,7 @@ public class InteractScript : MonoBehaviour
             //Item Raycast Detection
             if (hit.collider.CompareTag("puzzleOne"))
             {
-                if (!lookingAtPuzzle)
-                {
-                    UIManager.DisplayTooltip(Tooltip.Interact);
-                    lookingAtPuzzle = true;
-                }
+                UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
                 if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
                 {
@@ -72,11 +67,7 @@ public class InteractScript : MonoBehaviour
             }
             else if (hit.collider.CompareTag("puzzleTwo"))
             {
-                if (!lookingAtPuzzle)
-                {
-                    UIManager.DisplayTooltip(Tooltip.Interact);
-                    lookingAtPuzzle = true;
-                }
+                UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
                 if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
                 {
@@ -113,11 +104,7 @@ public class InteractScript : MonoBehaviour
             }
             else if (hit.collider.CompareTag("puzzleThree"))//If nothing at all with an above tag was hit with the Raycast within the specified distance then run this
             {
-                if (!lookingAtPuzzle)
-                {
-                    UIManager.DisplayTooltip(Tooltip.Interact);
-                    lookingAtPuzzle = true;
-                }
+                UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
                 if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
                 {
@@ -154,11 +141,7 @@ public class InteractScript : MonoBehaviour
             }
             else if (hit.collider.CompareTag("puzzleFour"))
             {
-                if (!lookingAtPuzzle)
-                {
-                    UIManager.DisplayTooltip(Tooltip.Interact);
-                    lookingAtPuzzle = true;
-                }
+                UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
                 if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
                 {
@@ -171,14 +154,6 @@ public class InteractScript : MonoBehaviour
                         Cursor.visible = true;
                         inUI = true;
                     }
-                }
-            }
-            else
-            {
-                if (lookingAtPuzzle)
-                {
-                    UIManager.DisplayTooltip(Tooltip.None);
-                    lookingAtPuzzle = false;
                 }
             }
         }
