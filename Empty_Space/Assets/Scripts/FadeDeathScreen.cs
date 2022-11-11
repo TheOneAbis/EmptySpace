@@ -30,11 +30,13 @@ public class FadeDeathScreen : MonoBehaviour
     {
         if(canvasGroup.alpha > 0.0f && fadeOut)
         {
+            canvasGroup.interactable = false;
             elapsedTime += Time.deltaTime;
             canvasGroup.alpha = Mathf.Clamp01(1.0f - (elapsedTime / fadeTime));
         }
-        else if(elapsedTime > 0)
+        else if(elapsedTime > 4 || canvasGroup.alpha <= 0)
         {
+            gameObject.SetActive(false);
             fadeOut = false;
             elapsedTime = 0.0f;
         }
