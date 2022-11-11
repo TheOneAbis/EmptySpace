@@ -95,7 +95,7 @@ public class DoorController : MonoBehaviour
             distToPlayer = Vector3.Distance(player.transform.position, transform.position);
 
             // Automatic opening/closing if dynamic and unlocked
-            if (dynamic)
+            if (dynamic && !locked)
             {
                 if (!isOpen && distToPlayer < openDistance) Open();
                 else if (isOpen && distToPlayer > openDistance) Close();

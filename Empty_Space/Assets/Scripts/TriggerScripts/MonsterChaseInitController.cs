@@ -89,7 +89,18 @@ public class MonsterChaseInitController : MonoBehaviour
         playerAudio.Play();
         enemy.GetComponent<AudioSource>().Play();
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.0f);
+
+        startRotation = player.transform.rotation;
+        lookDirection = (player.transform.position - enemy.transform.position);
+        lookDirection.y = 0;
+        
+        for (float i = 0; i < 1.0f; i += Time.deltaTime * 5)
+        {
+            player.transform.rotation = Quaternion.Lerp(startRotation, Quaternion.LookRotation(lookDirection.normalized, player.transform.up), i);
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        
         GameObject.Find("UIManager").GetComponent<UIManagement>().DisplayTooltip(Tooltip.Sprint, 5.0f);
         // re-enable player controls
         crosshairUI.SetActive(true);
