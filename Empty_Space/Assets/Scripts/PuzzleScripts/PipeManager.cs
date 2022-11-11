@@ -62,7 +62,11 @@ public class PipeManager : MonoBehaviour
         Cursor.visible = false;
         if(thatOnePuzzle)
         {
+            // Lock hallway door to block monster
             door.GetComponent<DoorController>().Lock();
+            // Unlock doors to lvl 2
+            for (int i = 1; i <= 3; i++)
+                GameObject.Find($"DoorEnterLvl2_{i}").GetComponent<DoorController>().Unlock();
         }
         else
         {

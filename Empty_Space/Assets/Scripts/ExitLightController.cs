@@ -16,20 +16,24 @@ public class ExitLightController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ray lookRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         // If player is looking at the light, press E to activate it
-        if (GetComponent<SphereCollider>().bounds.IntersectRay(lookRay))
+        if (IsLookedAt())
         {
             UIManager.GetComponent<UIManagement>().mouseUI = false;
-            if (!active) UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.Interact);
             if (Input.GetKey(KeyCode.E))
             {
-                active = true;
+                Activated = true;
                 GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.green);
                 GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.green);
                 GetComponent<Light>().color = Color.green;
             }
         }
+    }
+
+    public bool IsLookedAt()
+    {
+        Ray lookRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        return GetComponent<SphereCollider>().bounds.IntersectRay(lookRay);
     }
 
     public bool Activated

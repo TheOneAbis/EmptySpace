@@ -54,8 +54,6 @@ public class DoorController : MonoBehaviour
             clickForce = 0;
             interacted = false;
         }
-        else if (locked)
-            dynamic = false;
 
         player = GameObject.FindGameObjectWithTag("Player");
         doorLights[0] = transform.Find("Point Light").GetComponent<Light>();

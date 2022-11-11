@@ -15,7 +15,8 @@ public class Cryo_Pod_Script : MonoBehaviour
     private float playerSpeed, gravity;
     private GameObject[] switches;
     private bool canExit;
-    private GameObject UIManager;
+    private bool showInteract;
+    private UIManagement UIManager;
 
     private bool escaped = false;
     private float camStartFOV;
@@ -26,7 +27,7 @@ public class Cryo_Pod_Script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UIManager = GameObject.Find("UIManager");
+        UIManager = GameObject.Find("UIManager").GetComponent<UIManagement>();
 
         switches = GameObject.FindGameObjectsWithTag("ExitLight");
         player = GameObject.FindGameObjectWithTag("Player");
@@ -48,14 +49,24 @@ public class Cryo_Pod_Script : MonoBehaviour
     {
         // Player can exit if all lights are activated
         canExit = true;
+        showInteract = false;
         foreach (GameObject s in switches)
-            if (!s.GetComponent<ExitLightController>().Activated) 
-                canExit = false;
-
-        // After pressing the buttons, force your way out by spamming left click
-        if (canExit)
         {
-            UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.LeftClick);
+            ExitLightController sLight = s.GetComponent<ExitLightController>();
+            if (!sLight.Activated)
+            {
+                canExit = false;
+                if (sLight.IsLookedAt()) showInteract = true;
+            }
+        }
+        if (showInteract) UIManager.DisplayTooltip(Tooltip.Interact);
+        else UIManager.DisplayTooltip(Tooltip.None);
+
+
+        // After pressing the buttons, force your way out by holding left click
+        if (canExit && !escaped)
+        {
+            UIManager.DisplayTooltip(Tooltip.LeftClick);
             mainCam.m_Lens.FieldOfView = camStartFOV - clickForce; // alter fov base on click amt
             if (Input.GetMouseButton(0) && !escaped) clickForce += Time.deltaTime * 8;
             else if (clickForce > 0) // slowly decrease force - player must hold down
@@ -65,13 +76,12 @@ public class Cryo_Pod_Script : MonoBehaviour
         // If enough force applied (clicked enough), Begin cyo pod escape cutscene
         if (clickForce > 10 && !escaped)
         {
-            UIManager.GetComponent<UIManagement>().delay = true;
-            UIManager.GetComponent<UIManagement>().DisplayTooltip(Tooltip.None);
+            UIManager.delay = true;
+            UIManager.DisplayTooltip(Tooltip.None);
             escaped = true;
             foreach (GameObject s in switches) s.SetActive(false);
             StartCoroutine(leavePodAnimSequence()); // animation sequence
         }
-
 
         // -- DEV CHEAT - SKIP THIS MECHANIC -- \\
         if (Input.GetKeyDown(KeyCode.Alpha1) && !escaped)
@@ -117,7 +127,7 @@ public class Cryo_Pod_Script : MonoBehaviour
             Debug.Log(player.transform.position);
         }
         //escaped = true;
-        UIManager.GetComponent<UIManagement>().mouseUI = false;
+        UIManager.mouseUI = false;
         player.transform.rotation = Quaternion.Euler(0, 90, 0);
         player.transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, 0);
         foreach (GameObject s in switches) s.SetActive(false);

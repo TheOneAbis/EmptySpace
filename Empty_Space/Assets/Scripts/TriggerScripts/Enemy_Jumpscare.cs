@@ -107,9 +107,6 @@ public class Enemy_Jumpscare : MonoBehaviour
         }
         // move it to where it is unseeable
         enemy.transform.position = new Vector3(70, 8, -50);
-
-        // play new creepy music
-        playerAudio.Play();
     }
 
     IEnumerator Jumpscare2Sequence()
