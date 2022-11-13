@@ -131,16 +131,9 @@ public class DoorController : MonoBehaviour
                     }
                     else
                     {
-                        // Stop interacting w/ door
-                        //if (Input.GetKeyDown(KeyCode.Escape))
-                        //{
-                        //    interacted = false;
-                        //    player.GetComponent<FirstPersonController>().enabled = true;
-                        //}
-
                         // Click rapidly to force open the door
-                        UIManager.DisplayTooltip(Tooltip.LeftClick);
-                        if (Input.GetMouseButtonDown(0))
+                        UIManager.DisplayCustomTooltip("[Left Click] Force Open Door");
+                        if (Input.GetMouseButton(0))
                         {
                             clickForce++;
                             if (clickForce < 10) StartCoroutine(IncreaseDoorOpen());

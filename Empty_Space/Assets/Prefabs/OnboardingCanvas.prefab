@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 4281640871895484008}
   - component: {fileID: 4281640871895484011}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -204,7 +204,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rapidly press [Left Mouse Button] to force open the cryo pod door.
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c02d8536182b92140bcf30beca6ddaba, type: 2}
   m_sharedMaterial: {fileID: 3326325269747885741, guid: c02d8536182b92140bcf30beca6ddaba,
@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 4281640872449539343}
   - component: {fileID: 4281640872449539342}
   m_Layer: 5
-  m_Name: MouseLeftToEscape
+  m_Name: Custom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

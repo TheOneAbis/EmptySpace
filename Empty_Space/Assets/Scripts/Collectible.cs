@@ -33,7 +33,7 @@ public class Collectible : MonoBehaviour
         {
             showInteract = true;
             // Player presses (or holds depending on keyHoldTime setting) interaction key, collect this object
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetMouseButton(0))
             {
                 keyHoldTimeLeft -= Time.deltaTime;
                 if (keyHoldTimeLeft <= 0)

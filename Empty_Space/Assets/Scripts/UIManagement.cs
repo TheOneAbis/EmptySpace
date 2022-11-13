@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using StarterAssets;
+using TMPro;
 
 public enum Tooltip
 {
@@ -10,7 +11,7 @@ public enum Tooltip
     Move,
     Sprint,
     Look,
-    LeftClick,
+    Custom,
     None
 };
 public class UIManagement : MonoBehaviour
@@ -115,8 +116,6 @@ public class UIManagement : MonoBehaviour
                 delay = false;
             }
         }
-
-        Debug.Log(currentTooltip);
     }
    
     // Display a tooltip on the screen (to be used in update methods, as this appears for one frame)
@@ -124,6 +123,12 @@ public class UIManagement : MonoBehaviour
     {
         currentTooltip = tooltip;
         tooltipTimer = 0.0f;
+    }
+
+    public void DisplayCustomTooltip(string message)
+    {
+        currentTooltip = Tooltip.Custom;
+        HUDCanvases[(int)currentTooltip].GetComponentInChildren<TextMeshProUGUI>().text = message;
     }
 
     // Display a tooltip on the screen for a specified amount of seconds

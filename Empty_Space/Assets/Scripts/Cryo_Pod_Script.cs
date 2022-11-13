@@ -26,7 +26,7 @@ public class Cryo_Pod_Script : MonoBehaviour
     {
         UIManager = GameObject.Find("UIManager").GetComponent<UIManagement>();
 
-        canExit = true;
+        canExit = false;
 
         switches = GameObject.FindGameObjectsWithTag("ExitLight");
         player = GameObject.FindGameObjectWithTag("Player");
@@ -44,20 +44,10 @@ public class Cryo_Pod_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Player can exit if all lights are activated
-        
-        foreach (GameObject s in switches)
-        {
-            ExitLightController sLight = s.GetComponent<ExitLightController>();
-            if (!sLight.Activated)
-                canExit = false;
-        }
-
-
         // After pressing the buttons, force your way out by holding left click
         if (canExit && !escaped)
         {
-            UIManager.DisplayTooltip(Tooltip.LeftClick);
+            UIManager.DisplayCustomTooltip("[Left Click] Open Cryo Pod Door");
             if (Input.GetMouseButtonDown(0))
             {
                 UIManager.delay = true;
@@ -65,6 +55,15 @@ public class Cryo_Pod_Script : MonoBehaviour
                 foreach (GameObject s in switches) s.SetActive(false);
                 StartCoroutine(leavePodAnimSequence()); // animation sequence
             }
+        }
+
+        // Player can exit if all lights are activated
+        canExit = true;
+        foreach (GameObject s in switches)
+        {
+            ExitLightController sLight = s.GetComponent<ExitLightController>();
+            if (!sLight.Activated)
+                canExit = false;
         }
 
         // -- DEV CHEAT - SKIP THIS MECHANIC -- \\
