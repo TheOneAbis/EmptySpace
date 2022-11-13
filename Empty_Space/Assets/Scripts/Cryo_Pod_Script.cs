@@ -18,8 +18,6 @@ public class Cryo_Pod_Script : MonoBehaviour
     private UIManagement UIManager;
 
     private bool escaped = false;
-    private float camStartFOV;
-    private float clickForce; // max amt to force open the pod
 
     public float progress = 0;
 
@@ -27,6 +25,8 @@ public class Cryo_Pod_Script : MonoBehaviour
     void Start()
     {
         UIManager = GameObject.Find("UIManager").GetComponent<UIManagement>();
+
+        canExit = true;
 
         switches = GameObject.FindGameObjectsWithTag("ExitLight");
         player = GameObject.FindGameObjectWithTag("Player");
@@ -39,15 +39,13 @@ public class Cryo_Pod_Script : MonoBehaviour
         // disable player physics, essentially
         player.GetComponent<FirstPersonController>().MoveSpeed = 0;
         player.GetComponent<FirstPersonController>().Gravity = 0;
-
-        camStartFOV = mainCam.m_Lens.FieldOfView;
     }
 
     // Update is called once per frame
     void Update()
     {
         // Player can exit if all lights are activated
-        canExit = true;
+        
         foreach (GameObject s in switches)
         {
             ExitLightController sLight = s.GetComponent<ExitLightController>();
@@ -60,19 +58,13 @@ public class Cryo_Pod_Script : MonoBehaviour
         if (canExit && !escaped)
         {
             UIManager.DisplayTooltip(Tooltip.LeftClick);
-            mainCam.m_Lens.FieldOfView = camStartFOV - clickForce; // alter fov base on click amt
-            if (Input.GetMouseButton(0) && !escaped) clickForce += Time.deltaTime * 8;
-            else if (clickForce > 0) // slowly decrease force - player must hold down
-                clickForce -= (Time.deltaTime * 3);
-        }
-
-        // If enough force applied (clicked enough), Begin cyo pod escape cutscene
-        if (clickForce > 10 && !escaped)
-        {
-            UIManager.delay = true;
-            escaped = true;
-            foreach (GameObject s in switches) s.SetActive(false);
-            StartCoroutine(leavePodAnimSequence()); // animation sequence
+            if (Input.GetMouseButtonDown(0))
+            {
+                UIManager.delay = true;
+                escaped = true;
+                foreach (GameObject s in switches) s.SetActive(false);
+                StartCoroutine(leavePodAnimSequence()); // animation sequence
+            }
         }
 
         // -- DEV CHEAT - SKIP THIS MECHANIC -- \\

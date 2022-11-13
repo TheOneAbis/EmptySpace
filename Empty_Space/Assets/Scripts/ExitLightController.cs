@@ -21,7 +21,7 @@ public class ExitLightController : MonoBehaviour
         {
             UIManager.DisplayTooltip(Tooltip.Interact);
             UIManager.mouseUI = false;
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetMouseButton(0))
             {
                 Activated = true;
                 GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.green);
