@@ -8,10 +8,12 @@ using StarterAssets;
 public class InteractScript : MonoBehaviour
 {
     public float timer;
-    public GameObject canvas1;
-    public GameObject canvas2;
-    public GameObject canvas3;
-    public GameObject canvas4;
+    public GameObject puzzle1;
+    public GameObject puzzle2;
+    public GameObject puzzle3;
+    public GameObject puzzle4;
+    public GameObject lorePoint1;
+    public GameObject lorePoint2;
     public GameObject[] inactivePipes1;
     public GameObject[] inactivePipes2;
     public GameObject player;
@@ -57,7 +59,7 @@ public class InteractScript : MonoBehaviour
 
                     if (!inUI)
                     {
-                        canvas1.SetActive(true);
+                        puzzle1.SetActive(true);
                         player.GetComponent<FirstPersonController>().enabled = false;
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
@@ -73,7 +75,7 @@ public class InteractScript : MonoBehaviour
                 {
                     if (!inUI)
                     {
-                        canvas2.SetActive(true);
+                        puzzle2.SetActive(true);
                         for (int i = 0; i < inactivePipes1.Length; i++)
                         {
                             inactivePipes1[i].SetActive(false);
@@ -110,7 +112,7 @@ public class InteractScript : MonoBehaviour
                 {
                     if (!inUI)
                     {
-                        canvas3.SetActive(true);
+                        puzzle3.SetActive(true);
                         for (int i = 0; i < inactivePipes2.Length; i++)
                         {
                             inactivePipes2[i].SetActive(false);
@@ -148,7 +150,41 @@ public class InteractScript : MonoBehaviour
 
                     if (!inUI)
                     {
-                        canvas4.SetActive(true);
+                        puzzle4.SetActive(true);
+                        player.GetComponent<FirstPersonController>().enabled = false;
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        inUI = true;
+                    }
+                }
+            }
+            else if (hit.collider.CompareTag("LorePoint1"))
+            {
+                UIManager.DisplayTooltip(Tooltip.Interact);
+                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                {
+
+                    if (!inUI)
+                    {
+                        lorePoint1.SetActive(true);
+                        player.GetComponent<FirstPersonController>().enabled = false;
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        inUI = true;
+                    }
+                }
+            }
+            else if (hit.collider.CompareTag("LorePoint2"))
+            {
+                UIManager.DisplayTooltip(Tooltip.Interact);
+                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                {
+
+                    if (!inUI)
+                    {
+                        lorePoint2.SetActive(true);
                         player.GetComponent<FirstPersonController>().enabled = false;
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
@@ -160,9 +196,12 @@ public class InteractScript : MonoBehaviour
         
         if (inUI && Input.GetKey(KeyCode.Escape))
         {
-            canvas1.SetActive(false);
-            canvas2.SetActive(false);
-            canvas3.SetActive(false);
+            puzzle1.SetActive(false);
+            puzzle2.SetActive(false);
+            puzzle3.SetActive(false);
+            puzzle4.SetActive(false);
+            lorePoint1.SetActive(false);
+            lorePoint2.SetActive(false);
             player.GetComponent<FirstPersonController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

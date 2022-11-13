@@ -17,6 +17,8 @@ TagManager:
   - Enemy
   - puzzleThree
   - puzzleFour
+  - LorePoint1
+  - LorePoint2
   layers:
   - Default
   - TransparentFX
