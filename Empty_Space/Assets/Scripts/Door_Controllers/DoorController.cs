@@ -13,6 +13,7 @@ public class DoorController : MonoBehaviour
     private float randomInterval;
     private int clickForce;
     private bool interacted;
+    private float jamCooldown;
     private UIManagement UIManager;
 
     [Tooltip("Minimum distance the player must be from the door for it to automatically open (if dynamic)")]
@@ -84,6 +85,7 @@ public class DoorController : MonoBehaviour
                 light.color = locked ? Color.red : Color.green;
             }
         }
+        jamCooldown = 0;
     }
 
     // Update is called once per frame
@@ -132,10 +134,12 @@ public class DoorController : MonoBehaviour
                     else
                     {
                         // Click rapidly to force open the door
-                        UIManager.DisplayCustomTooltip("[Left Click] Force Open Door");
-                        if (Input.GetMouseButton(0))
+                        UIManager.DisplayCustomTooltip("[Left Click] Rapidly: Force Open Door");
+                        jamCooldown -= Time.deltaTime;
+                        if (Input.GetMouseButton(0) && jamCooldown <= 0)
                         {
                             clickForce++;
+                            jamCooldown = .15f;
                             if (clickForce < 10) StartCoroutine(IncreaseDoorOpen());
                             else
                             {
