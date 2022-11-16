@@ -54,7 +54,7 @@ public class InteractScript : MonoBehaviour
             {
                 UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
-                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
                 {
 
                     if (!inUI)
@@ -71,7 +71,7 @@ public class InteractScript : MonoBehaviour
             {
                 UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
-                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
                 {
                     if (!inUI)
                     {
@@ -108,7 +108,7 @@ public class InteractScript : MonoBehaviour
             {
                 UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
-                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
                 {
                     if (!inUI)
                     {
@@ -145,9 +145,8 @@ public class InteractScript : MonoBehaviour
             {
                 UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
-                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
                 {
-
                     if (!inUI)
                     {
                         puzzle4.SetActive(true);
@@ -155,6 +154,7 @@ public class InteractScript : MonoBehaviour
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
                         inUI = true;
+                        StartCoroutine(TurnPlayer());
                     }
                 }
             }
@@ -162,7 +162,7 @@ public class InteractScript : MonoBehaviour
             {
                 UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
-                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
                 {
 
                     if (!inUI)
@@ -179,7 +179,7 @@ public class InteractScript : MonoBehaviour
             {
                 UIManager.DisplayTooltip(Tooltip.Interact);
                 //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
-                if (Input.GetKeyDown(KeyCode.E))//Check if the player has pressed the Interaction button
+                if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
                 {
 
                     if (!inUI)
@@ -236,6 +236,20 @@ public class InteractScript : MonoBehaviour
             {
                 inactivePipes2[i].SetActive(true);
             }
+        }
+    }
+
+    IEnumerator TurnPlayer()
+    {
+        GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
+        Quaternion startRotation = player.transform.rotation;
+        Vector3 lookDirection = (enemy.transform.position - player.transform.position);
+        lookDirection.y = 0;
+
+        for (float i = 0; i <= 0.775f; i += Time.deltaTime * 5)
+        {
+            player.transform.rotation = Quaternion.Lerp(startRotation, Quaternion.LookRotation(lookDirection.normalized, player.transform.up), i);
+            yield return new WaitForSeconds(Time.deltaTime);
         }
     }
 }

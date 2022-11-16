@@ -23,6 +23,7 @@ public class CheckpointController : MonoBehaviour
 
     // Set in editor
     public GameObject[] hallwayJammedDoors;
+    public GameObject[] endDoors;
     public GameObject chaseInitTrigger;
 
     // Start is called before the first frame update
@@ -70,6 +71,9 @@ public class CheckpointController : MonoBehaviour
 
                 foreach (GameObject door in hallwayJammedDoors)
                     door.GetComponent<DoorController>().ResetState(true, true, false, false);
+
+                foreach (GameObject door in endDoors)
+                    door.GetComponent<DoorController>().ResetState(true, false, true, true);
 
                 enemy.transform.position += new Vector3(0, 100, 0); // move monster out of view
                 chaseInitTrigger.GetComponent<MonsterChaseInitController>().ResetTrigger();

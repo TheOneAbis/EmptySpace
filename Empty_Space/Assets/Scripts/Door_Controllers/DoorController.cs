@@ -124,7 +124,7 @@ public class DoorController : MonoBehaviour
                     if (!interacted)
                     {
                         UIManager.DisplayTooltip(Tooltip.Interact);
-                        if (Input.GetKeyDown(KeyCode.E))
+                        if (Input.GetMouseButtonDown(0))
                         {
                             interacted = true;
                             player.GetComponent<FirstPersonController>().enabled = false;
