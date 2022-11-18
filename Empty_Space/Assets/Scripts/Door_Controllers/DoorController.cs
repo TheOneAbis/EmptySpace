@@ -15,6 +15,7 @@ public class DoorController : MonoBehaviour
     private bool interacted;
     private float jamCooldown;
     private UIManagement UIManager;
+    private RadialProgressController clickDisplayer;
 
     [Tooltip("Minimum distance the player must be from the door for it to automatically open (if dynamic)")]
     public float openDistance = 4.0f;
@@ -52,6 +53,7 @@ public class DoorController : MonoBehaviour
             // set up vars related to jammed door interaction
             randomInterval = 0.0f;
             UIManager = GameObject.Find("UIManager").GetComponent<UIManagement>();
+            clickDisplayer = GameObject.Find("RadialProgress").GetComponent<RadialProgressController>();
             clickForce = 0;
             interacted = false;
         }
@@ -139,6 +141,7 @@ public class DoorController : MonoBehaviour
                         if (Input.GetMouseButton(0) && jamCooldown <= 0)
                         {
                             clickForce++;
+                            clickDisplayer.clickDisplay(clickForce, 10.0f);
                             jamCooldown = .15f;
                             if (clickForce < 10) StartCoroutine(IncreaseDoorOpen());
                             else
@@ -148,6 +151,7 @@ public class DoorController : MonoBehaviour
                                 Unlock();
                                 jammed = false;
                                 player.GetComponent<FirstPersonController>().enabled = true;
+                                clickDisplayer.clickReset();
                             }
                         }
                     }
