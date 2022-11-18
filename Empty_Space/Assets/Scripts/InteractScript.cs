@@ -107,7 +107,7 @@ public class InteractScript : MonoBehaviour
             else if (hit.collider.CompareTag("puzzleThree"))//If nothing at all with an above tag was hit with the Raycast within the specified distance then run this
             {
                 UIManager.DisplayTooltip(Tooltip.Interact);
-                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                //interactText.text = "Press [leftclick] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
                 if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
                 {
                     if (!inUI)

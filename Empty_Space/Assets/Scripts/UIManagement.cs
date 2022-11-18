@@ -60,13 +60,13 @@ public class UIManagement : MonoBehaviour
             speed = player.GetComponent<FirstPersonController>().MoveSpeed;
             player.GetComponent<FirstPersonController>().MoveSpeed = 0;
             HUDCanvases[5].SetActive(true);
+            
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             paused = true;
             Time.timeScale = 0;
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape) && paused)
+        else if (Input.GetKeyDown(KeyCode.Escape) && paused)
         {
             HUDCanvases[5].SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
