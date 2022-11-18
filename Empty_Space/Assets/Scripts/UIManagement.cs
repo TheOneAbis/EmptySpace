@@ -63,8 +63,19 @@ public class UIManagement : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             paused = true;
+            Time.timeScale = 0;
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape) && paused)
+        {
+            HUDCanvases[5].SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            player.GetComponent<FirstPersonController>().RotationSpeed = rotationSpeed;
+            player.GetComponent<FirstPersonController>().MoveSpeed = speed;
+            paused = false;
+            Time.timeScale = 1;
+        }
         //foreach (GameObject canvas in HUDCanvases)
         //    canvas.SetActive(false);
         HUDCanvases[4].SetActive(false);
@@ -146,6 +157,7 @@ public class UIManagement : MonoBehaviour
         player.GetComponent<FirstPersonController>().RotationSpeed = rotationSpeed;
         player.GetComponent<FirstPersonController>().MoveSpeed = speed;
         paused = false;
+        Time.timeScale = 1;
     }
 
     public void ExitButton()
