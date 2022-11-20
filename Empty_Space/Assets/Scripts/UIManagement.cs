@@ -14,21 +14,39 @@ public enum Tooltip
     Custom,
     None
 };
+
+// Struct to hold dialogue information
+public struct UIDialogue
+{
+    public readonly string name;
+    public readonly string message;
+    public readonly float time;
+    public readonly float delay;
+    public UIDialogue(string name, string message, float time, float delay)
+    {
+        this.name = name;
+        this.message = message;
+        this.time = time;
+        this.delay = delay;
+    }
+}
+
 public class UIManagement : MonoBehaviour
 {
     public bool eUI = true;
     public bool wASDUI = false;
     public bool sprintUI = false;
     public bool delay = false;
-    private float timer = 0.0f;
-    private float goal;
     private float rotationSpeed;
     private float speed;
     public bool paused = false;
 
     public GameObject[] HUDCanvases;
     private Tooltip currentTooltip;
+
     private float tooltipTimer;
+    private float dialogueTimer;
+    private float dialogueDelay;
 
     public GameObject interactionManager;
     public Slider pauseSlider;
@@ -41,11 +59,21 @@ public class UIManagement : MonoBehaviour
     public GameObject deathRetry;
     public GameObject deathQuit;
 
+    public GameObject dialogueCanvas;
+
+    private Queue<UIDialogue> dialogueQueue;
+
+    private void Awake()
+    {
+        dialogueQueue = new Queue<UIDialogue>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        goal = 10.0f;
         tooltipTimer = 0.0f;
+        dialogueTimer = 0.0f;
+        dialogueDelay = 0.0f;
         DisplayTooltip(Tooltip.Look);
         foreach (GameObject canvas in HUDCanvases)
             canvas.SetActive(false);
@@ -54,6 +82,7 @@ public class UIManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Press ESC to pause/unpause the game
         if (Input.GetKeyDown(KeyCode.Escape) && !interactionManager.GetComponent<InteractScript>().inUI && !paused)
         {
             rotationSpeed = player.GetComponent<FirstPersonController>().RotationSpeed;
@@ -61,7 +90,7 @@ public class UIManagement : MonoBehaviour
             speed = player.GetComponent<FirstPersonController>().MoveSpeed;
             player.GetComponent<FirstPersonController>().MoveSpeed = 0;
             pauseCanvas.SetActive(true);
-            
+
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             paused = true;
@@ -78,50 +107,39 @@ public class UIManagement : MonoBehaviour
             Time.timeScale = 1;
         }
 
+        // Set all HUD canvases to inactive, and reactivate one depending on tooltip state per frame
         foreach (GameObject canvas in HUDCanvases)
             canvas.SetActive(false);
 
         if (currentTooltip != Tooltip.None)
             HUDCanvases[(int)currentTooltip].SetActive(true);
 
-        // Keep tooltip displayed until timer hits 0
-        
-        if (tooltipTimer > 0.0f)
-            tooltipTimer -= Time.deltaTime;
-        else
+        // If tooltip isn't displayed indefinitely, keep tooltip displayed until timer hits 0
+        tooltipTimer -= Time.deltaTime;
+        if (tooltipTimer < 0.0f)
             currentTooltip = Tooltip.None;
 
-        if (wASDUI)
+        // Display dialogue in the dialogue queue
+        dialogueDelay -= Time.deltaTime;
+        if (dialogueDelay < 0)
         {
-            timer += Time.deltaTime;
-            if (timer >= goal)
-            {
-                timer = 0.0f;
-                wASDUI = false;
-                sprintUI = true;
-                HUDCanvases[1].SetActive(false);
-                HUDCanvases[2].SetActive(true);
-            }
+            dialogueTimer -= Time.deltaTime;
+            dialogueCanvas.SetActive(true);
         }
-        else if (sprintUI)
+        if (dialogueTimer < 0)
         {
-            timer += Time.deltaTime;
-            if (timer >= goal)
+            try
             {
-                timer = 0.0f;
-                sprintUI = false;
-                HUDCanvases[2].SetActive(false);
+                UIDialogue currentDialogue = dialogueQueue.Dequeue();
+                TextMeshProUGUI[] canvasElements = dialogueCanvas.GetComponentsInChildren<TextMeshProUGUI>();
+                canvasElements[0].text = currentDialogue.name;
+                canvasElements[1].text = currentDialogue.message;
+                dialogueTimer = currentDialogue.time;
+                dialogueDelay = currentDialogue.delay;
             }
-        }
-        else if(delay)
-        {
-            timer += Time.deltaTime;
-            if(timer >= 4.8f)
-            {
-                wASDUI = true;
-                HUDCanvases[1].SetActive(true);
-                delay = false;
-            }
+            catch {}
+
+            dialogueCanvas.SetActive(false);
         }
     }
    
@@ -143,6 +161,18 @@ public class UIManagement : MonoBehaviour
     {
         currentTooltip = tooltip;
         tooltipTimer = seconds;
+    }
+
+    /// <summary>
+    /// Queues a new dialogue quote to display on the player's screen.
+    /// </summary>
+    /// <param name="name">The name of the person saying the dialogue.</param>
+    /// <param name="quote">The message the person is saying.</param>
+    /// <param name="delay">Amount of seconds to wait before displaying this dialogue.</param>
+    /// <param name="seconds">Amount of seconds this dialogue should be displayed for.</param>
+    public void QueueDialogue(string name, string quote, float delay, float seconds)
+    {
+        dialogueQueue.Enqueue(new UIDialogue(name, quote, seconds, delay));
     }
 
     public void ContinueButton()

@@ -41,6 +41,9 @@ public class Cryo_Pod_Script : MonoBehaviour
         // disable player physics, essentially
         player.GetComponent<FirstPersonController>().MoveSpeed = 0;
         player.GetComponent<FirstPersonController>().Gravity = 0;
+
+        UIManager.QueueDialogue("Space Boi:",
+            "\"Where am I? The FUCK is going on? Why can't I FUCKING MOVE?! LET ME OUT OF THIS SHIT WHAT THE FUCK THIS IS SO TOXIC\"", 3, 6);
     }
 
     // Update is called once per frame
@@ -103,6 +106,12 @@ public class Cryo_Pod_Script : MonoBehaviour
         player.GetComponent<FirstPersonController>().enabled = true;
         player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
         player.GetComponent<AudioSource>().Play(); // begin ambient music loop
+
+        // Show tooltips
+        UIManager.DisplayTooltip(Tooltip.Move, 6);
+        yield return new WaitForSeconds(6);
+        UIManager.DisplayTooltip(Tooltip.Sprint, 6);
+
         enabled = false; // disable this script
     }
 
@@ -132,7 +141,5 @@ public class Cryo_Pod_Script : MonoBehaviour
         // TP player to DevStart, if it exists
         if (devStart != null)
             StartCoroutine(Teleport());
-
-        
     }
 }
