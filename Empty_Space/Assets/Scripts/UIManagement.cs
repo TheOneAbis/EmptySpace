@@ -20,7 +20,6 @@ public class UIManagement : MonoBehaviour
     public bool wASDUI = false;
     public bool sprintUI = false;
     public bool delay = false;
-    public bool mouseUI = true;
     private float timer = 0.0f;
     private float goal;
     private float rotationSpeed;
@@ -35,6 +34,8 @@ public class UIManagement : MonoBehaviour
     public Slider pauseSlider;
     public GameObject player;
 
+    public GameObject pauseCanvas;
+
     public GameObject deathCanvas;
     public GameObject deathText;
     public GameObject deathRetry;
@@ -47,7 +48,7 @@ public class UIManagement : MonoBehaviour
         tooltipTimer = 0.0f;
         DisplayTooltip(Tooltip.Look);
         foreach (GameObject canvas in HUDCanvases)
-        canvas.SetActive(false);
+            canvas.SetActive(false);
     }
 
     // Update is called once per frame
@@ -59,7 +60,7 @@ public class UIManagement : MonoBehaviour
             player.GetComponent<FirstPersonController>().RotationSpeed = 0;
             speed = player.GetComponent<FirstPersonController>().MoveSpeed;
             player.GetComponent<FirstPersonController>().MoveSpeed = 0;
-            HUDCanvases[5].SetActive(true);
+            pauseCanvas.SetActive(true);
             
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -68,7 +69,7 @@ public class UIManagement : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && paused)
         {
-            HUDCanvases[5].SetActive(false);
+            pauseCanvas.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             player.GetComponent<FirstPersonController>().RotationSpeed = rotationSpeed;
@@ -76,10 +77,9 @@ public class UIManagement : MonoBehaviour
             paused = false;
             Time.timeScale = 1;
         }
-        //foreach (GameObject canvas in HUDCanvases)
-        //    canvas.SetActive(false);
-        HUDCanvases[4].SetActive(false);
-        HUDCanvases[0].SetActive(false);
+
+        foreach (GameObject canvas in HUDCanvases)
+            canvas.SetActive(false);
 
         if (currentTooltip != Tooltip.None)
             HUDCanvases[(int)currentTooltip].SetActive(true);
@@ -90,10 +90,6 @@ public class UIManagement : MonoBehaviour
             tooltipTimer -= Time.deltaTime;
         else
             currentTooltip = Tooltip.None;
-        
-
-        if (!mouseUI)
-            HUDCanvases[3].SetActive(false);
 
         if (wASDUI)
         {
@@ -151,7 +147,7 @@ public class UIManagement : MonoBehaviour
 
     public void ContinueButton()
     {
-        HUDCanvases[5].SetActive(false);
+        pauseCanvas.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         player.GetComponent<FirstPersonController>().RotationSpeed = rotationSpeed;

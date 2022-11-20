@@ -15,6 +15,7 @@ public class Cryo_Pod_Script : MonoBehaviour
     private float playerSpeed, gravity;
     private GameObject[] switches;
     private bool canExit;
+    private bool beganLooking;
     private UIManagement UIManager;
 
     private bool escaped = false;
@@ -27,6 +28,7 @@ public class Cryo_Pod_Script : MonoBehaviour
         UIManager = GameObject.Find("UIManager").GetComponent<UIManagement>();
 
         canExit = false;
+        beganLooking = false;
 
         switches = GameObject.FindGameObjectsWithTag("ExitLight");
         player = GameObject.FindGameObjectWithTag("Player");
@@ -44,6 +46,9 @@ public class Cryo_Pod_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!beganLooking)
+            UIManager.DisplayTooltip(Tooltip.Look);
+
         // After pressing the buttons, force your way out by holding left click
         if (canExit && !escaped)
         {
@@ -64,6 +69,8 @@ public class Cryo_Pod_Script : MonoBehaviour
             ExitLightController sLight = s.GetComponent<ExitLightController>();
             if (!sLight.Activated)
                 canExit = false;
+            
+            if (sLight.IsLookedAt()) beganLooking = true;
         }
 
         // -- DEV CHEAT - SKIP THIS MECHANIC -- \\
@@ -112,7 +119,6 @@ public class Cryo_Pod_Script : MonoBehaviour
             player.GetComponent<FirstPersonController>().enabled = true;
 
             escaped = true;
-            UIManager.mouseUI = false;
             player.transform.rotation = Quaternion.Euler(0, 90, 0);
             player.transform.GetChild(0).localRotation = Quaternion.Euler(0, 0, 0);
             foreach (GameObject s in switches) s.SetActive(false);

@@ -10,6 +10,7 @@ public class Collectible : MonoBehaviour
     public float keyHoldTime = 0.0f;
     private float keyHoldTimeLeft;
     private UIManagement UIManager;
+    private RadialProgressController clickDisplayer;
     private bool showInteract;
 
     // Start is called before the first frame update
@@ -18,6 +19,7 @@ public class Collectible : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         keyHoldTimeLeft = keyHoldTime;
         UIManager = GameObject.Find("UIManager").GetComponent<UIManagement>();
+        clickDisplayer = GameObject.Find("RadialProgress").GetComponent<RadialProgressController>();
         showInteract = false;
     }
 
@@ -36,13 +38,19 @@ public class Collectible : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 keyHoldTimeLeft -= Time.deltaTime;
+                clickDisplayer.clickDisplay(keyHoldTime - keyHoldTimeLeft, keyHoldTime);
                 if (keyHoldTimeLeft <= 0)
                 {
                     player.GetComponent<PlayerInventoryManager>().AddToInventory(gameObject);
                     showInteract = false;
+                    clickDisplayer.clickReset();
                 }
             }
-            else keyHoldTimeLeft = keyHoldTime; // if not holding down (or released), reset timer
+            else
+            {
+                keyHoldTimeLeft = keyHoldTime; // if not holding down (or released), reset timer
+                clickDisplayer.clickReset();
+            }
         }
     }
 

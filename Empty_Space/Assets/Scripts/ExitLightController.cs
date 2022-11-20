@@ -20,7 +20,6 @@ public class ExitLightController : MonoBehaviour
         if (!Activated && IsLookedAt())
         {
             UIManager.DisplayTooltip(Tooltip.Interact);
-            UIManager.mouseUI = false;
             if (Input.GetMouseButton(0))
             {
                 Activated = true;
