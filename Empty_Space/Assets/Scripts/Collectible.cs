@@ -25,7 +25,7 @@ public class Collectible : MonoBehaviour
 
     private void Update()
     {
-        if (showInteract) UIManager.DisplayTooltip(Tooltip.Interact);
+        if (showInteract) UIManager.DisplayCustomTooltip("[Hold Left Click] Pick Up Battery");
     }
 
     // Player comes within collectible radius
