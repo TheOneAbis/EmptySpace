@@ -16,6 +16,7 @@ public class MonsterChaseController : MonoBehaviour
     private CheckpointController cpController;
     private CinemachineVirtualCamera mainCam;
     public GameObject deathCanvas;
+    public GameObject puzzle4;
 
     private AudioController gameAudio;
     public AudioClip SuccessSound;
@@ -81,6 +82,11 @@ public class MonsterChaseController : MonoBehaviour
     IEnumerator DeathSequence()
     {
         Stop();
+        //check if canvas is open and close it
+        if(GameObject.Find("InteractionManager").GetComponent<InteractScript>().inUI)
+        {
+            puzzle4.SetActive(false);
+        }
         player.GetComponent<FirstPersonController>().enabled = false;
         float originalFOV = mainCam.m_Lens.FieldOfView;
 
