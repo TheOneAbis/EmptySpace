@@ -3,23 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using UnityEngine.UIElements;
-using StarterAssets;
 
 public class MonsterChaseController : MonoBehaviour
 {
     private Vector3 goal;
-    public float moveSpeed;
     private bool shouldMove;
-    public bool canKill;
     private GameObject player;
     private CheckpointController cpController;
     private CinemachineVirtualCamera mainCam;
+    private AudioController gameAudio;
+
+    public float hallMoveSpeed;
+    public float patrolMoveSpeed;
+    public float triggeredMoveSpeed;
+    public bool canKill;
     public GameObject deathCanvas;
     public GameObject puzzle4;
-
-    private AudioController gameAudio;
     public AudioClip SuccessSound;
+    public GameObject mainCPs;
+
+    private bool patrolMode;
+    private Vector3 engineRoomSpawn;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +36,8 @@ public class MonsterChaseController : MonoBehaviour
         mainCam = GameObject.Find("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>();
         cpController = GameObject.Find("CheckpointManager").GetComponent<CheckpointController>();
         gameAudio = GameObject.Find("AudioPlayer").GetComponent<AudioController>();
+        patrolMode = false;
+        engineRoomSpawn = new Vector3(-62.5f, -2.5f, -54.5f);
     }
 
     // Update is called once per frame
@@ -41,10 +48,12 @@ public class MonsterChaseController : MonoBehaviour
         {
             if ((goal - transform.position).magnitude > 0.1f)
                 //GetComponent<Rigidbody>().AddForce((goal - transform.position).normalized * moveSpeed * Time.deltaTime);
-                transform.position += (goal - transform.position).normalized * moveSpeed * Time.deltaTime;
+                transform.position += (goal - transform.position).normalized * hallMoveSpeed * Time.deltaTime;
             else
                 shouldMove = false;
         }
+
+        // TODO: patrol mode functionality
     }
 
     public void SetGoal(Vector3 goalPosition)
@@ -61,6 +70,16 @@ public class MonsterChaseController : MonoBehaviour
     {
         if (shouldMove)
             shouldMove = false;
+    }
+
+    public void InitPatrolMode()
+    {
+        // Reduce the X bounds of the BV to better fit the monster now that we are in an open area, not the corridor
+        GetComponent<BoxCollider>().size = new Vector3(5, 5, 5);
+        // TP monster to engine room and have it immediately look at the player
+        transform.position = engineRoomSpawn;
+        transform.LookAt(player.transform.position);
+        patrolMode = true;
     }
 
     private void OnTriggerEnter(Collider other)
