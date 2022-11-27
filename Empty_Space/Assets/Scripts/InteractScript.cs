@@ -16,6 +16,9 @@ public class InteractScript : MonoBehaviour
     public GameObject lorePoint2;
     public GameObject[] inactivePipes1;
     public GameObject[] inactivePipes2;
+    public GameObject[] inactivePipes3;
+    public GameObject[] inactivePipes4;
+    public GameObject[] inactivePipes5;
     public GameObject player;
     [SerializeField]
     public bool inUI = false;
@@ -24,6 +27,9 @@ public class InteractScript : MonoBehaviour
     public GameObject battery2;
     public GameObject battery3;
     public GameObject battery4;
+    public GameObject battery5;
+    public GameObject battery6;
+    public GameObject battery7;
     public GameObject battery1Holder;
     public GameObject battery2Holder;
     public GameObject battery3Holder;
@@ -158,6 +164,84 @@ public class InteractScript : MonoBehaviour
                     }
                 }
             }
+            else if (hit.collider.CompareTag("puzzleFive"))
+            {
+                UIManager.DisplayTooltip(Tooltip.Interact);
+                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
+                {
+                    if (!inUI)
+                    {
+                        puzzle2.SetActive(true);
+                        for (int i = 0; i < inactivePipes3.Length; i++)
+                        {
+                            inactivePipes3[i].SetActive(false);
+                        }
+
+                        if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 2)
+                        {
+                            battery5.SetActive(true);
+                        }
+
+                        player.GetComponent<FirstPersonController>().enabled = false;
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        inUI = true;
+                    }
+                }
+            }
+            else if (hit.collider.CompareTag("puzzleSix"))
+            {
+                UIManager.DisplayTooltip(Tooltip.Interact);
+                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
+                {
+                    if (!inUI)
+                    {
+                        puzzle2.SetActive(true);
+                        for (int i = 0; i < inactivePipes4.Length; i++)
+                        {
+                            inactivePipes4[i].SetActive(false);
+                        }
+
+                        if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 2)
+                        {
+                            battery6.SetActive(true);
+                        }
+
+                        player.GetComponent<FirstPersonController>().enabled = false;
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        inUI = true;
+                    }
+                }
+            }
+            else if (hit.collider.CompareTag("puzzleSeven"))
+            {
+                UIManager.DisplayTooltip(Tooltip.Interact);
+                //interactText.text = "Press [E] to interact"; //Setting the Interaction Text to let the player know they are now hovering an interactable object
+                if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
+                {
+                    if (!inUI)
+                    {
+                        puzzle2.SetActive(true);
+                        for (int i = 0; i < inactivePipes5.Length; i++)
+                        {
+                            inactivePipes5[i].SetActive(false);
+                        }
+
+                        if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 2)
+                        {
+                            battery7.SetActive(true);
+                        }
+
+                        player.GetComponent<FirstPersonController>().enabled = false;
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        inUI = true;
+                    }
+                }
+            }
             else if (hit.collider.CompareTag("LorePoint1"))
             {
                 UIManager.DisplayTooltip(Tooltip.Interact);
@@ -192,6 +276,7 @@ public class InteractScript : MonoBehaviour
                     }
                 }
             }
+
         }
         
         if (inUI && Input.GetKey(KeyCode.Escape))
@@ -235,6 +320,28 @@ public class InteractScript : MonoBehaviour
             for (int i = inactivePipes2.Length - 5; i < inactivePipes2.Length; i++)
             {
                 inactivePipes2[i].SetActive(true);
+            }
+        }
+        //update these
+        if (battery5Holder.GetComponent<BatteryDrop>().placed == true)
+        {
+            for (int i = inactivePipes3.Length; i < inactivePipes2.Length; i++)
+            {
+                inactivePipes3[i].SetActive(true);
+            }
+        }
+        if (battery6Holder.GetComponent<BatteryDrop>().placed == true)
+        {
+            for (int i = inactivePipes4.Length; i < inactivePipes2.Length; i++)
+            {
+                inactivePipes4[i].SetActive(true);
+            }
+        }
+        if (battery7Holder.GetComponent<BatteryDrop>().placed == true)
+        {
+            for (int i = inactivePipe5.Length; i < inactivePipes2.Length; i++)
+            {
+                inactivePipes5[i].SetActive(true);
             }
         }
     }
