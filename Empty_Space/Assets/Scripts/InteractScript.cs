@@ -34,6 +34,9 @@ public class InteractScript : MonoBehaviour
     public GameObject battery2Holder;
     public GameObject battery3Holder;
     public GameObject battery4Holder;
+    public GameObject battery5Holder;
+    public GameObject battery6Holder;
+    public GameObject battery7Holder;
 
     private UIManagement UIManager;
 
@@ -325,21 +328,21 @@ public class InteractScript : MonoBehaviour
         //update these
         if (battery5Holder.GetComponent<BatteryDrop>().placed == true)
         {
-            for (int i = inactivePipes3.Length; i < inactivePipes2.Length; i++)
+            for (int i = inactivePipes3.Length; i < inactivePipes3.Length; i++)
             {
                 inactivePipes3[i].SetActive(true);
             }
         }
         if (battery6Holder.GetComponent<BatteryDrop>().placed == true)
         {
-            for (int i = inactivePipes4.Length; i < inactivePipes2.Length; i++)
+            for (int i = inactivePipes4.Length; i < inactivePipes4.Length; i++)
             {
                 inactivePipes4[i].SetActive(true);
             }
         }
         if (battery7Holder.GetComponent<BatteryDrop>().placed == true)
         {
-            for (int i = inactivePipe5.Length; i < inactivePipes2.Length; i++)
+            for (int i = inactivePipes5.Length; i < inactivePipes5.Length; i++)
             {
                 inactivePipes5[i].SetActive(true);
             }
