@@ -19,6 +19,9 @@ TagManager:
   - puzzleFour
   - LorePoint1
   - LorePoint2
+  - puzzleFive
+  - puzzleSix
+  - puzzleSeven
   layers:
   - Default
   - TransparentFX
