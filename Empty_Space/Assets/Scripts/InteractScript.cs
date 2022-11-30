@@ -12,6 +12,9 @@ public class InteractScript : MonoBehaviour
     public GameObject puzzle2;
     public GameObject puzzle3;
     public GameObject puzzle4;
+    public GameObject puzzle5;
+    public GameObject puzzle6;
+    public GameObject puzzle7;
     public GameObject lorePoint1;
     public GameObject lorePoint2;
     public GameObject[] inactivePipes1;
@@ -175,7 +178,7 @@ public class InteractScript : MonoBehaviour
                 {
                     if (!inUI)
                     {
-                        puzzle2.SetActive(true);
+                        puzzle5.SetActive(true);
                         for (int i = 0; i < inactivePipes3.Length; i++)
                         {
                             inactivePipes3[i].SetActive(false);
@@ -201,7 +204,7 @@ public class InteractScript : MonoBehaviour
                 {
                     if (!inUI)
                     {
-                        puzzle2.SetActive(true);
+                        puzzle6.SetActive(true);
                         for (int i = 0; i < inactivePipes4.Length; i++)
                         {
                             inactivePipes4[i].SetActive(false);
@@ -227,7 +230,7 @@ public class InteractScript : MonoBehaviour
                 {
                     if (!inUI)
                     {
-                        puzzle2.SetActive(true);
+                        puzzle7.SetActive(true);
                         for (int i = 0; i < inactivePipes5.Length; i++)
                         {
                             inactivePipes5[i].SetActive(false);
