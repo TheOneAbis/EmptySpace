@@ -20,7 +20,9 @@ public class MonsterChaseController : MonoBehaviour
     public GameObject deathCanvas;
     public GameObject puzzle4;
     public AudioClip SuccessSound;
+
     public GameObject mainCPs;
+    private List<GameObject> visibleCPs;
 
     private bool patrolMode;
     private Vector3 engineRoomSpawn;
@@ -38,6 +40,7 @@ public class MonsterChaseController : MonoBehaviour
         gameAudio = GameObject.Find("AudioPlayer").GetComponent<AudioController>();
         patrolMode = false;
         engineRoomSpawn = new Vector3(-62.5f, -2.5f, -54.5f);
+        visibleCPs = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -54,6 +57,24 @@ public class MonsterChaseController : MonoBehaviour
         }
 
         // TODO: patrol mode functionality
+        if (patrolMode)
+        {
+            if (!shouldMove)
+            {
+                visibleCPs.Clear();
+                RaycastHit hit = new RaycastHit();
+
+                for (int i = 0; i < mainCPs.transform.childCount; i++)
+                {
+                    Physics.Raycast(transform.position, mainCPs.transform.GetChild(i).position - transform.position, out hit);
+                    if (hit.collider == mainCPs.transform.GetChild(i).GetComponent<SphereCollider>())
+                        visibleCPs.Add(mainCPs.transform.GetChild(i).gameObject);
+                }
+
+                SetGoal(visibleCPs[Random.Range(0, visibleCPs.Count)].transform.position);
+                MoveToGoal();
+            }
+        }
     }
 
     public void SetGoal(Vector3 goalPosition)
