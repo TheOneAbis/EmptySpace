@@ -51,12 +51,12 @@ public class MonsterChaseController : MonoBehaviour
         {
             if ((goal - transform.position).magnitude > 0.1f)
                 //GetComponent<Rigidbody>().AddForce((goal - transform.position).normalized * moveSpeed * Time.deltaTime);
-                transform.position += (goal - transform.position).normalized * hallMoveSpeed * Time.deltaTime;
+                transform.position += (goal - transform.position).normalized * (patrolMode ? patrolMoveSpeed : hallMoveSpeed) * Time.deltaTime;
             else
                 shouldMove = false;
         }
 
-        // TODO: patrol mode functionality
+        // patrol mode functionality
         if (patrolMode)
         {
             if (!shouldMove)
@@ -70,7 +70,7 @@ public class MonsterChaseController : MonoBehaviour
                     if (hit.collider == mainCPs.transform.GetChild(i).GetComponent<SphereCollider>())
                         visibleCPs.Add(mainCPs.transform.GetChild(i).gameObject);
                 }
-
+                
                 SetGoal(visibleCPs[Random.Range(0, visibleCPs.Count)].transform.position);
                 MoveToGoal();
             }
