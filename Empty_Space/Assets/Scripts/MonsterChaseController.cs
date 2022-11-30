@@ -4,8 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
+enum MonsterMode
+{
+    Hallway,
+    Patrol,
+    Chase
+}
+
 public class MonsterChaseController : MonoBehaviour
 {
+    
+
     private Vector3 goal;
     private bool shouldMove;
     private GameObject player;
@@ -22,9 +31,8 @@ public class MonsterChaseController : MonoBehaviour
     public AudioClip SuccessSound;
 
     public GameObject mainCPs;
-    private List<GameObject> visibleCPs;
 
-    private bool patrolMode;
+    private MonsterMode mode;
     private Vector3 engineRoomSpawn;
 
 
@@ -38,9 +46,8 @@ public class MonsterChaseController : MonoBehaviour
         mainCam = GameObject.Find("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>();
         cpController = GameObject.Find("CheckpointManager").GetComponent<CheckpointController>();
         gameAudio = GameObject.Find("AudioPlayer").GetComponent<AudioController>();
-        patrolMode = false;
+        mode = MonsterMode.Hallway;
         engineRoomSpawn = new Vector3(-62.5f, -2.5f, -54.5f);
-        visibleCPs = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -50,28 +57,34 @@ public class MonsterChaseController : MonoBehaviour
         if (shouldMove)
         {
             if ((goal - transform.position).magnitude > 0.1f)
+            {
+                float speed;
+                if (mode == MonsterMode.Hallway) speed = hallMoveSpeed;
+                else if (mode == MonsterMode.Patrol) speed = patrolMoveSpeed;
+                else speed = 7.0f;
+
                 //GetComponent<Rigidbody>().AddForce((goal - transform.position).normalized * moveSpeed * Time.deltaTime);
-                transform.position += (goal - transform.position).normalized * (patrolMode ? patrolMoveSpeed : hallMoveSpeed) * Time.deltaTime;
+                transform.position += (goal - transform.position).normalized * speed * Time.deltaTime;
+            }
             else
                 shouldMove = false;
         }
 
         // patrol mode functionality
-        if (patrolMode)
+        if (mode == MonsterMode.Patrol)
         {
             if (!shouldMove)
             {
-                visibleCPs.Clear();
-                RaycastHit hit = new RaycastHit();
+                SetGoal(FindNextCPPos());
+                MoveToGoal();
+            }
 
-                for (int i = 0; i < mainCPs.transform.childCount; i++)
-                {
-                    Physics.Raycast(transform.position, mainCPs.transform.GetChild(i).position - transform.position, out hit);
-                    if (hit.collider == mainCPs.transform.GetChild(i).GetComponent<SphereCollider>())
-                        visibleCPs.Add(mainCPs.transform.GetChild(i).gameObject);
-                }
-                
-                SetGoal(visibleCPs[Random.Range(0, visibleCPs.Count)].transform.position);
+            if (Vector3.Angle(transform.forward, player.transform.position - transform.position) < 45.0f && 
+                (player.transform.position - transform.position).sqrMagnitude < 100000)
+            {
+                Debug.Log("AAAHAHAHAH");
+                mode = MonsterMode.Chase;
+                SetGoal(player.transform.position);
                 MoveToGoal();
             }
         }
@@ -79,6 +92,7 @@ public class MonsterChaseController : MonoBehaviour
 
     public void SetGoal(Vector3 goalPosition)
     {
+        StartCoroutine(Turn(goalPosition));
         goal = goalPosition;
     }
 
@@ -96,11 +110,34 @@ public class MonsterChaseController : MonoBehaviour
     public void InitPatrolMode()
     {
         // Reduce the X bounds of the BV to better fit the monster now that we are in an open area, not the corridor
-        GetComponent<BoxCollider>().size = new Vector3(5, 5, 5);
+        GetComponent<BoxCollider>().size = new Vector3(4, 4, 4);
         // TP monster to engine room and have it immediately look at the player
         transform.position = engineRoomSpawn;
         transform.LookAt(player.transform.position);
-        patrolMode = true;
+        mode = MonsterMode.Patrol;
+    }
+
+    public Vector3 FindNextCPPos()
+    {
+        List<GameObject> visibleCPs = new List<GameObject>();
+        RaycastHit hit;
+
+        for (int i = 0; i < mainCPs.transform.childCount; i++)
+        {
+            Physics.Raycast(transform.position, mainCPs.transform.GetChild(i).position - transform.position, out hit);
+            if (hit.collider == mainCPs.transform.GetChild(i).GetComponent<SphereCollider>())
+                visibleCPs.Add(mainCPs.transform.GetChild(i).gameObject);
+        }
+
+        return visibleCPs[Random.Range(0, visibleCPs.Count)].transform.position;
+    }
+
+    public void ResetWithRandomCP()
+    {
+        mode = MonsterMode.Patrol;
+        transform.position = mainCPs.transform.GetChild(Random.Range(0, mainCPs.transform.childCount)).transform.position;
+        SetGoal(FindNextCPPos());
+        MoveToGoal();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -109,12 +146,20 @@ public class MonsterChaseController : MonoBehaviour
         {
             if (canKill) StartCoroutine(DeathSequence());
         }
-        else if (other.gameObject.name == "JammedDoor3")
+        else if (mode == MonsterMode.Hallway && other.gameObject.name == "JammedDoor3")
         {
             if (other.GetComponent<DoorController>().locked == true)
             {
                 Stop();
                 StartCoroutine(EscapeSequence());
+            }
+        }
+        else
+        {
+            if (mode == MonsterMode.Chase)
+            {
+                Stop();
+                ResetWithRandomCP();
             }
         }
     }
@@ -176,6 +221,18 @@ public class MonsterChaseController : MonoBehaviour
         for (float i = 0; i < 1.0f; i += Time.deltaTime / 10)
         {
             RenderSettings.ambientIntensity = i;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+    }
+
+    IEnumerator Turn(Vector3 goalPosition)
+    {
+        Quaternion startRot = transform.rotation;
+        Quaternion endRot = Quaternion.LookRotation(goalPosition - transform.position);
+
+        for (float i = 0; i < 1.0f; i += Time.deltaTime * 5)
+        {
+            transform.rotation = Quaternion.Lerp(startRot, endRot, i);
             yield return new WaitForSeconds(Time.deltaTime);
         }
     }

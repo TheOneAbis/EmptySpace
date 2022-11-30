@@ -134,6 +134,14 @@ public class Cryo_Pod_Script : MonoBehaviour
             player.GetComponent<FirstPersonController>().MoveSpeed = playerSpeed;
             player.GetComponent<FirstPersonController>().Gravity = gravity;
             player.GetComponent<FirstPersonController>().UpdateCinemachineTargetPitch();
+
+            GameObject enemy = GameObject.FindGameObjectWithTag("Enemy");
+            enemy.GetComponent<Light>().type = LightType.Spot;
+            enemy.GetComponent<Light>().intensity = 50;
+            enemy.GetComponent<Light>().range = 40;
+            enemy.GetComponent<Light>().innerSpotAngle = 50;
+            enemy.GetComponent<Light>().spotAngle = 90;
+
             player.GetComponent<AudioSource>().Play(); // begin ambient music loop
             enabled = false;
         }
