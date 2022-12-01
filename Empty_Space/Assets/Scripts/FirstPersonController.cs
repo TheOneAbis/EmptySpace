@@ -51,9 +51,18 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+        [Header("Boosting Variables")]
+        [Tooltip("The speed at which the player may move while floating")]
+        public float floatSpeed = 2.0f;
+        [Tooltip("The seconds of delay between boosts")]
+        public float boostTimeout = 3.0f;
+        [Tooltip("The speed of the boosts")]
+        public float boostSpeed = 10.0f;
+        [Tooltip("How much force is applied backwards on the player after the boost, more causes the drifting to end sooner")]
+        public float drag = 0.08f;
 
-		// cinemachine
-		private float _cinemachineTargetPitch;
+        // cinemachine
+        private float _cinemachineTargetPitch;
 
 		// player
 		private float _speed;
@@ -65,6 +74,11 @@ namespace StarterAssets
 		private float _jumpTimeoutDelta;
 		private float _fallTimeoutDelta;
 
+        // boost variables
+        private float boostTimeoutDelta;
+        private Vector3 boostDirection;
+        private Vector3 boostVelocity;
+        private Vector3 originalVelocity = Vector3.zero;
 	
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 		private PlayerInput _playerInput;
@@ -112,14 +126,27 @@ namespace StarterAssets
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
 
+            // Initialize boost values
+            boostTimeoutDelta = boostTimeout;
+
 			GameObject.Find("DevStart").GetComponent<MeshRenderer>().enabled = false; // make devstart sphere invisible during gameplay
 		}
 
 		private void Update()
 		{
-			JumpAndGravity();
-			GroundedCheck();
-			Move();
+            if(Gravity != 0)
+            {
+                JumpAndGravity();
+                GroundedCheck();
+                Move();
+            }
+            else
+            {
+                Boost();
+                MoveZeroG();
+            }
+
+
 
             /*
 			if(canInteract)
@@ -168,7 +195,6 @@ namespace StarterAssets
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? MoveSpeed * SprintSpeed : MoveSpeed;
-
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
 			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
@@ -211,7 +237,90 @@ namespace StarterAssets
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 		}
 
-		private void JumpAndGravity()
+        private void MoveZeroG()
+        {
+            // set target speed based on move speed, sprint speed and if sprint is pressed
+            float targetSpeed = floatSpeed;
+
+            // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
+
+            // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+            // if there is no input, set the target speed to 0
+            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+
+            // a reference to the players current horizontal velocity
+            float currentVelocity = new Vector3(_controller.velocity.x, _controller.velocity.y, _controller.velocity.z).magnitude;
+
+            float speedOffset = 0.1f;
+            float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+
+            // accelerate or decelerate to target speed
+            if (currentVelocity < targetSpeed - speedOffset || currentVelocity > targetSpeed + speedOffset)
+            {
+                // creates curved result rather than a linear one giving a more organic speed change
+                // note T in Lerp is clamped, so we don't need to clamp our speed
+                _speed = Mathf.Lerp(currentVelocity, targetSpeed * inputMagnitude, Time.deltaTime * SpeedChangeRate);
+
+                // round speed to 3 decimal places
+                _speed = Mathf.Round(_speed * 1000f) / 1000f;
+            }
+            else
+            {
+                _speed = targetSpeed;
+            }
+
+            // normalise input direction
+            Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+
+            // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+            // if there is a move input rotate player when the player is moving
+            if (_input.move != Vector2.zero)
+            {
+                // move
+                inputDirection = transform.right * _input.move.x + Camera.main.transform.forward * _input.move.y;
+            }
+
+            // move the player
+            _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + boostVelocity * Time.deltaTime);
+        }
+
+        private void Boost()
+        {
+            if (_input.sprint && boostTimeoutDelta <= 0.0f)
+            {
+                boostDirection = Camera.main.transform.forward;
+                boostDirection = boostDirection.normalized;
+                boostVelocity = boostDirection * boostSpeed;
+                originalVelocity = boostVelocity;
+                boostTimeoutDelta = boostTimeout;
+            }
+            else
+            {
+                boostTimeoutDelta -= Time.deltaTime;
+
+                if (boostVelocity.magnitude > 0)
+                {
+                    boostVelocity.x -= (Mathf.Abs(boostVelocity.x) / boostVelocity.x) * boostDirection.x * drag;
+                    boostVelocity.y -= (Mathf.Abs(boostVelocity.y) / boostVelocity.y) * boostDirection.y * drag;
+                    boostVelocity.y -= (Mathf.Abs(boostVelocity.z) / boostVelocity.z) * boostDirection.z * drag;
+                    if (originalVelocity.x < 0 && boostVelocity.x >= 0 || originalVelocity.x > 0 && boostVelocity.x <= 0)
+                    {
+                        boostVelocity.x = 0.0f;
+                    }
+                    if (originalVelocity.y < 0 && boostVelocity.y >= 0 || originalVelocity.y > 0 && boostVelocity.y <= 0)
+                    {
+                        boostVelocity.y = 0.0f;
+                    }
+                    if (originalVelocity.z < 0 && boostVelocity.z >= 0 || originalVelocity.z > 0 && boostVelocity.z <= 0)
+                    {
+                        boostVelocity.z = 0.0f;
+                    }
+                    Debug.Log(boostVelocity);
+                }
+            }
+        }
+
+        private void JumpAndGravity()
 		{
 			if (Grounded)
 			{
