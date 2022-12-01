@@ -156,7 +156,7 @@ public class MonsterChaseController : MonoBehaviour
         }
         else
         {
-            if (mode == MonsterMode.Chase)
+            if (mode == MonsterMode.Chase && other.tag != "MonsterCP")
             {
                 Stop();
                 ResetWithRandomCP();
