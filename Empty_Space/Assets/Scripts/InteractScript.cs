@@ -297,6 +297,9 @@ public class InteractScript : MonoBehaviour
             puzzle2.SetActive(false);
             puzzle3.SetActive(false);
             puzzle4.SetActive(false);
+            puzzle5.SetActive(false);
+            puzzle6.SetActive(false);
+            puzzle7.SetActive(false);
             lorePoint.SetActive(false);
             player.GetComponent<FirstPersonController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
@@ -336,21 +339,21 @@ public class InteractScript : MonoBehaviour
         //update these
         if (battery5Holder.GetComponent<BatteryDrop>().placed == true)
         {
-            for (int i = inactivePipes3.Length; i < inactivePipes3.Length; i++)
+            for (int i = 0; i < inactivePipes3.Length; i++)
             {
                 inactivePipes3[i].SetActive(true);
             }
         }
         if (battery6Holder.GetComponent<BatteryDrop>().placed == true)
         {
-            for (int i = inactivePipes4.Length; i < inactivePipes4.Length; i++)
+            for (int i = 0; i < inactivePipes4.Length; i++)
             {
                 inactivePipes4[i].SetActive(true);
             }
         }
         if (battery7Holder.GetComponent<BatteryDrop>().placed == true)
         {
-            for (int i = inactivePipes5.Length; i < inactivePipes5.Length; i++)
+            for (int i = 0; i < inactivePipes5.Length; i++)
             {
                 inactivePipes5[i].SetActive(true);
             }
