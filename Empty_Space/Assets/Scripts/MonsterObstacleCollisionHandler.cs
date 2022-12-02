@@ -29,7 +29,11 @@ public class MonsterObstacleCollisionHandler : MonoBehaviour
 
     IEnumerator DelayRespawn()
     {
-        yield return new WaitForSeconds(6);
+        transform.parent.GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        yield return new WaitForSeconds(1);
+        transform.parent.position = new Vector3(0, 500, 0);
+        yield return new WaitForSeconds(5);
         parentController.ResetWithRandomCP();
+        transform.parent.GetComponent<ParticleSystem>().Play();
     }
 }
