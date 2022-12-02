@@ -280,6 +280,7 @@ public class InteractScript : MonoBehaviour
                     if (!inUI)
                     {
                         lorePoint.SetActive(true);
+                        loreText.text = "No lore for lore point 1";
                         player.GetComponent<FirstPersonController>().enabled = false;
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
@@ -297,6 +298,7 @@ public class InteractScript : MonoBehaviour
                     if (!inUI)
                     {
                         lorePoint.SetActive(true);
+                        loreText.text = "No lore for lore point 2";
                         player.GetComponent<FirstPersonController>().enabled = false;
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
