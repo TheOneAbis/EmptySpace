@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UserLogController : MonoBehaviour
 {
-    private Light light;
+    private Light logLight;
     private float intensity;
     public float blinkRate = 3;
 
@@ -14,11 +14,11 @@ public class UserLogController : MonoBehaviour
         try
         {
             transform.GetChild(1);
-            light = transform.GetChild(1).gameObject.GetComponent<Light>();
+            logLight = transform.GetChild(1).gameObject.GetComponent<Light>();
         }
         catch
         {
-            light = GetComponent<Light>();
+            logLight = GetComponent<Light>();
         }
         intensity = 0;
     }
@@ -27,6 +27,6 @@ public class UserLogController : MonoBehaviour
     void Update()
     {
         intensity += Time.deltaTime * blinkRate;
-        light.intensity = (Mathf.Sin(intensity) + 1) / 2.0f;
+        logLight.intensity = (Mathf.Sin(intensity) + 1) / 2.0f;
     }
 }

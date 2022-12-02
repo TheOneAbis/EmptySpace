@@ -5,14 +5,13 @@ using UnityEngine;
 
 public class PlayerInventoryManager : MonoBehaviour
 {
-    public List<List<GameObject>> inventory;
+    public Dictionary<string, Stack<GameObject>> inventory;
+
     // Start is called before the first frame update
     void Start()
     {
         // Init the inventory
-        inventory = new List<List<GameObject>>();
-        for (int i = 0; i < 4; i++)
-            inventory.Add(new List<GameObject>());
+        inventory = new Dictionary<string, Stack<GameObject>>();
     }
 
     // Update is called once per frame
@@ -24,56 +23,40 @@ public class PlayerInventoryManager : MonoBehaviour
     // Add a new game object to the player's inventory
     public void AddToInventory(GameObject obj)
     {
-        void AddToSlot(GameObject obj, List<GameObject> slot) 
-        { 
-            slot.Add(obj);
+        if (inventory.ContainsKey(obj.tag))
+        {
+            inventory[obj.tag].Push(obj);
             obj.SetActive(false);
-            Debug.Log(slot.Count + " items in slot " + inventory.IndexOf(slot) + " of tag " + obj.tag);
+            Debug.Log(inventory[obj.tag].Count + " items in slot of tag " + inventory[obj.tag]);
         }
-
-        // Look for a slot with objects matching this one's tag to add it to that pool
-        foreach (List<GameObject> slot in inventory)
+        else
         {
-            if (slot.Count > 0 && slot[0].tag == obj.tag)
-            {
-                AddToSlot(obj, slot);
-                return;
-            }
+            inventory.Add(obj.tag, new Stack<GameObject>());
+            Debug.Log($"New object tag added to inventory: {obj}");
         }
+    }
 
-        // Did not find any existing slot with this gameobject tag; find an empty slot to put it in
-        foreach (List<GameObject> slot in inventory)
+    // Remove a specified amount of objects from the inventory, if there are enough of them. If not, does nothing.
+    public void Remove(string objectTag, int amountToRemove)
+    {
+        if (GetAmount(objectTag) >= amountToRemove)
         {
-            if (slot.Count == 0)
-            {
-                AddToSlot(obj, slot);
-                return;
-            }
-        }
+            for (int i = 0; i < inventory[objectTag].Count; i++)
+                inventory[objectTag].Pop();
 
-        // If the function reaches this point, player's inventory is too full for this item
-        Debug.Log($"Inventory full; cannot add {obj}");
+            if (GetAmount(objectTag) == 0) inventory.Remove(objectTag);
+        }
     }
 
     // Check to see if player's inventory contains items with the provided tag
     public bool Contains(string objectTag)
     {
-        foreach (List<GameObject> slot in inventory)
-        {
-            if (slot.Count > 0 && slot[0].tag == objectTag)
-                return true;
-        }
-        return false;
+        return inventory.ContainsKey(objectTag);
     }
 
     // Return how many gameobjects of the specified tag the player has in their inventory
     public int GetAmount(string objectTag)
     {
-        foreach (List<GameObject> slot in inventory)
-        {
-            if (slot.Count > 0 && slot[0].tag == objectTag)
-                return slot.Count;
-        }
-        return 0;
+        return inventory.ContainsKey(objectTag) ? inventory[objectTag].Count : 0;
     }
 }

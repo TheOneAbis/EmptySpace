@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using StarterAssets;
+using TMPro;
 
 
 public class InteractScript : MonoBehaviour
@@ -15,8 +16,8 @@ public class InteractScript : MonoBehaviour
     public GameObject puzzle5;
     public GameObject puzzle6;
     public GameObject puzzle7;
-    public GameObject lorePoint1;
-    public GameObject lorePoint2;
+    public GameObject lorePoint;
+    public TMP_Text loreText;
     public GameObject[] inactivePipes1;
     public GameObject[] inactivePipes2;
     public GameObject[] inactivePipes3;
@@ -42,6 +43,9 @@ public class InteractScript : MonoBehaviour
     public GameObject battery7Holder;
 
     private UIManagement UIManager;
+    private bool puzzle1batteryInputted = false;
+    private bool puzzle2batteryInputted = false;
+    private bool puzzle3batteryInputted = false;
 
 
     public float raycastDistance = 3; //Adjust to suit your use case
@@ -184,8 +188,14 @@ public class InteractScript : MonoBehaviour
                             inactivePipes3[i].SetActive(false);
                         }
 
-                        if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 2)
+                        if (puzzle1batteryInputted)
                         {
+                            battery5.SetActive(true);
+                        }
+                        else if(player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") >= 5)
+                        {
+                            player.GetComponent<PlayerInventoryManager>().Remove("Battery", 1);
+                            puzzle1batteryInputted = true;
                             battery5.SetActive(true);
                         }
 
@@ -210,8 +220,14 @@ public class InteractScript : MonoBehaviour
                             inactivePipes4[i].SetActive(false);
                         }
 
-                        if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 2)
+                        if (puzzle1batteryInputted)
                         {
+                            battery6.SetActive(true);
+                        }
+                        else if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") >= 5)
+                        {
+                            player.GetComponent<PlayerInventoryManager>().Remove("Battery", 1);
+                            puzzle1batteryInputted = true;
                             battery6.SetActive(true);
                         }
 
@@ -236,8 +252,14 @@ public class InteractScript : MonoBehaviour
                             inactivePipes5[i].SetActive(false);
                         }
 
-                        if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") == 2)
+                        if (puzzle1batteryInputted)
                         {
+                            battery7.SetActive(true);
+                        }
+                        else if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") >= 5)
+                        {
+                            player.GetComponent<PlayerInventoryManager>().Remove("Battery", 1);
+                            puzzle1batteryInputted = true;
                             battery7.SetActive(true);
                         }
 
@@ -257,7 +279,7 @@ public class InteractScript : MonoBehaviour
 
                     if (!inUI)
                     {
-                        lorePoint1.SetActive(true);
+                        lorePoint.SetActive(true);
                         player.GetComponent<FirstPersonController>().enabled = false;
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
@@ -274,7 +296,7 @@ public class InteractScript : MonoBehaviour
 
                     if (!inUI)
                     {
-                        lorePoint2.SetActive(true);
+                        lorePoint.SetActive(true);
                         player.GetComponent<FirstPersonController>().enabled = false;
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
@@ -291,8 +313,7 @@ public class InteractScript : MonoBehaviour
             puzzle2.SetActive(false);
             puzzle3.SetActive(false);
             puzzle4.SetActive(false);
-            lorePoint1.SetActive(false);
-            lorePoint2.SetActive(false);
+            lorePoint.SetActive(false);
             player.GetComponent<FirstPersonController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
