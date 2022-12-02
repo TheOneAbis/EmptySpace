@@ -2614,6 +2614,7 @@ GameObject:
   - component: {fileID: 8861391284627632454}
   - component: {fileID: 8861391284626923050}
   - component: {fileID: 8861391284622770436}
+  - component: {fileID: -2564399588584151745}
   m_Layer: 0
   m_Name: KeypadConsole
   m_TagString: Untagged
@@ -2710,6 +2711,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2988695, y: 2.1534793, z: 0.89121544}
   m_Center: {x: -0.0036635995, y: 1.0767397, z: 0.106455386}
+--- !u!114 &-2564399588584151745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861391284624458048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a98846ac01751f43bb9a5eafef83934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exitDoor: {fileID: 0}
+  interactDistance: 0
 --- !u!1 &8992349231380367870
 GameObject:
   m_ObjectHideFlags: 0
