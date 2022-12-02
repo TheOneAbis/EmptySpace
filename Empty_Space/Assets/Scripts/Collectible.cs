@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using StarterAssets;
 
 public class Collectible : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Collectible : MonoBehaviour
     private UIManagement UIManager;
     private RadialProgressController clickDisplayer;
     private bool showInteract;
+    public bool gravityBattery = false;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +46,10 @@ public class Collectible : MonoBehaviour
                     player.GetComponent<PlayerInventoryManager>().AddToInventory(gameObject);
                     showInteract = false;
                     clickDisplayer.clickReset();
+                    if (gravityBattery)
+                    {
+                        player.GetComponent<FirstPersonController>().Gravity = 0;
+                    }
                 }
             }
             else
