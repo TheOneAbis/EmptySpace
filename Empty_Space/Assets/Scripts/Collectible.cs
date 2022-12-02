@@ -49,6 +49,7 @@ public class Collectible : MonoBehaviour
                     if (gravityBattery)
                     {
                         player.GetComponent<FirstPersonController>().Gravity = 0;
+                        player.GetComponent<FirstPersonController>().zeroG = true;
                     }
                 }
             }
