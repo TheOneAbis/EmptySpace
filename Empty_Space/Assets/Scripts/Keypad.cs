@@ -9,7 +9,7 @@ public class Keypad : MonoBehaviour
     private GameObject enemy;
     private UIManagement UIManager;
     private float distanceSquared;
-    private float number;
+    private int number;
     private string correctSequence;
     private string inputSequence;
 
@@ -36,7 +36,6 @@ public class Keypad : MonoBehaviour
         // If player is within interaction distance of keypad
         if (distanceSquared < Mathf.Pow(interactDistance, 2))
         {
-            
             // Find the button being looked at
             for (int i = 0; i < transform.childCount; i++)
             {
@@ -53,8 +52,10 @@ public class Keypad : MonoBehaviour
             {
                 if (number != -1)
                 {
+                    Debug.Log(inputSequence);
                     inputSequence += $"{number}";
                     inputSequence.Remove(0, 1);
+                    StartCoroutine(ShowFeedback(transform.GetChild(number).gameObject));
                 }
                 if (inputSequence.Equals(correctSequence))
                     StartCoroutine(InvokeWinCondition());
@@ -85,5 +86,14 @@ public class Keypad : MonoBehaviour
         enemy.GetComponent<MonsterChaseController>().Stop();
         yield return new WaitForSeconds(5);
         enemy.transform.position += new Vector3(0, 500, 0); // move monster out of view
+    }
+
+    IEnumerator ShowFeedback(GameObject button)
+    {
+        Color temp = button.GetComponent<Material>().color;
+        button.GetComponent<Material>().color = Color.green;
+
+        yield return new WaitForSeconds(0.75f);
+        button.GetComponent<Material>().color = temp;
     }
 }
