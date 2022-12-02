@@ -80,6 +80,7 @@ namespace StarterAssets
         private Vector3 boostVelocity;
         private Vector3 originalVelocity = Vector3.zero;
         private RadialProgressController clickDisplayer;
+        public bool zeroG = false;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -137,7 +138,7 @@ namespace StarterAssets
 
 		private void Update()
 		{
-            if(Gravity != 0)
+            if(Gravity != 0 && !zeroG)
             {
                 JumpAndGravity();
                 GroundedCheck();
