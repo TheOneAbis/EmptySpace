@@ -267,7 +267,7 @@ public class InteractScript : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
                 {
                     lorePoint.SetActive(true);
-                    loreText.text = "No lore for lore point 1";
+                    loreText.text = GameObject.Find("UserLog").GetComponentInChildren<TextMeshPro>().text;
                     player.GetComponent<FirstPersonController>().enabled = false;
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -281,7 +281,7 @@ public class InteractScript : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))//Check if the player has pressed the Interaction button
                 {
                     lorePoint.SetActive(true);
-                    loreText.text = "No lore for lore point 2";
+                    loreText.text = GameObject.Find("UserLog (1)").GetComponentInChildren<TextMeshPro>().text;
                     player.GetComponent<FirstPersonController>().enabled = false;
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;

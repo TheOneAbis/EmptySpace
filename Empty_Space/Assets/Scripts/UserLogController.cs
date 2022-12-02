@@ -6,6 +6,7 @@ public class UserLogController : MonoBehaviour
 {
     private Light logLight;
     private float intensity;
+    private float initIntensity;
     public float blinkRate = 3;
 
     // Start is called before the first frame update
@@ -21,12 +22,13 @@ public class UserLogController : MonoBehaviour
             logLight = GetComponent<Light>();
         }
         intensity = 0;
+        initIntensity = logLight.intensity;
     }
 
     // Update is called once per frame
     void Update()
     {
         intensity += Time.deltaTime * blinkRate;
-        logLight.intensity = (Mathf.Sin(intensity) + 1) / 2.0f;
+        logLight.intensity = (Mathf.Sin(intensity) + 1) * (initIntensity);
     }
 }
