@@ -23,17 +23,15 @@ public class PlayerInventoryManager : MonoBehaviour
     // Add a new game object to the player's inventory
     public void AddToInventory(GameObject obj)
     {
-        if (inventory.ContainsKey(obj.tag))
-        {
-            inventory[obj.tag].Push(obj);
-            Debug.Log(inventory[obj.tag].Count + " items in slot of tag " + inventory[obj.tag]);
-        }
-        else
+        if (!inventory.ContainsKey(obj.tag))
         {
             inventory.Add(obj.tag, new Stack<GameObject>());
             Debug.Log($"New object tag added to inventory: {obj}");
         }
+        inventory[obj.tag].Push(obj);
         obj.SetActive(false);
+
+        Debug.Log(inventory[obj.tag].Count + " items in slot of tag " + inventory[obj.tag]);
     }
 
     // Remove a specified amount of objects from the inventory, if there are enough of them. If not, does nothing.
