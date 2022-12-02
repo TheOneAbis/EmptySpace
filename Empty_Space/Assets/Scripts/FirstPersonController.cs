@@ -133,8 +133,12 @@ namespace StarterAssets
             // Initialize boost values
             boostTimeoutDelta = boostTimeout;
 
-			GameObject.Find("DevStart").GetComponent<MeshRenderer>().enabled = false; // make devstart sphere invisible during gameplay
-		}
+			// disable dev markers visibility
+			GameObject.Find("DevStart").GetComponent<MeshRenderer>().enabled = false;
+			GameObject cps = GameObject.Find("EnemyPatrolCPs_Main");
+            for (int i = 0; i < cps.transform.childCount; i++)
+                cps.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = false;
+        }
 
 		private void Update()
 		{
