@@ -187,7 +187,7 @@ public class InteractScript : MonoBehaviour
                         {
                             inactivePipes3[i].SetActive(false);
                         }
-
+                        
                         if (puzzle1batteryInputted)
                         {
                             battery5.SetActive(true);
@@ -197,6 +197,10 @@ public class InteractScript : MonoBehaviour
                             player.GetComponent<PlayerInventoryManager>().Remove("Battery", 1);
                             puzzle1batteryInputted = true;
                             battery5.SetActive(true);
+                        }
+                        else
+                        {
+                            battery5.SetActive(false);
                         }
 
                         player.GetComponent<FirstPersonController>().enabled = false;
@@ -230,6 +234,10 @@ public class InteractScript : MonoBehaviour
                             puzzle1batteryInputted = true;
                             battery6.SetActive(true);
                         }
+                        else
+                        {
+                            battery6.SetActive(false);
+                        }
 
                         player.GetComponent<FirstPersonController>().enabled = false;
                         Cursor.lockState = CursorLockMode.None;
@@ -261,6 +269,10 @@ public class InteractScript : MonoBehaviour
                             player.GetComponent<PlayerInventoryManager>().Remove("Battery", 1);
                             puzzle1batteryInputted = true;
                             battery7.SetActive(true);
+                        }
+                        else
+                        {
+                            battery7.SetActive(false);
                         }
 
                         player.GetComponent<FirstPersonController>().enabled = false;
