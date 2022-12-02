@@ -46,7 +46,6 @@ public class Collectible : MonoBehaviour
                 if (keyHoldTimeLeft <= 0)
                 {
                     collected = true;
-                    player.GetComponent<PlayerInventoryManager>().AddToInventory(gameObject);
                     showInteract = false;
                     clickDisplayer.clickReset();
 
@@ -56,17 +55,12 @@ public class Collectible : MonoBehaviour
                         player.GetComponent<FirstPersonController>().Gravity = 0;
                         player.GetComponent<FirstPersonController>().zeroG = true;
                         GameObject.FindGameObjectWithTag("Enemy").GetComponent<MonsterChaseController>().canKill = true;
-
-                        IEnumerator DelayTooltip()
-                        {
-                            yield return new WaitForSeconds(13.0f);
-                            UIManager.DisplayCustomTooltip("[Shift] to use Thruster", 10);
-                        }
-                        StartCoroutine(DelayTooltip());
-
+                        
                         UIManager.QueueDialogue("Vivy:", "WARNING: Artificial Gravity Generator has been disabled.", 0, 6);
                         UIManager.QueueDialogue("Space Boi:", "This battery must have been powering it. Fortunately, I can use my suit's thruster to get around.", 0.25f, 7);
+                        UIManager.DisplayCustomTooltip("[Shift] to use Thruster", 13, 6);
                     }
+                    player.GetComponent<PlayerInventoryManager>().AddToInventory(gameObject);
                 }
             }
             else

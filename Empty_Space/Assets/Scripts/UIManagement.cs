@@ -45,6 +45,7 @@ public class UIManagement : MonoBehaviour
     private Tooltip currentTooltip;
 
     private float tooltipTimer;
+    private float tooltipDelay;
     private float dialogueTimer;
     private float dialogueDelay;
 
@@ -72,6 +73,7 @@ public class UIManagement : MonoBehaviour
     void Start()
     {
         tooltipTimer = 0.0f;
+        tooltipDelay = 0.0f;
         dialogueTimer = 0.0f;
         dialogueDelay = 0.0f;
         DisplayTooltip(Tooltip.Look);
@@ -111,11 +113,12 @@ public class UIManagement : MonoBehaviour
         foreach (GameObject canvas in HUDCanvases)
             canvas.SetActive(false);
 
-        if (currentTooltip != Tooltip.None)
+        tooltipDelay -= Time.deltaTime;
+        if (currentTooltip != Tooltip.None && tooltipDelay <= 0.0f)
             HUDCanvases[(int)currentTooltip].SetActive(true);
 
         // If tooltip isn't displayed indefinitely, keep tooltip displayed until timer hits 0
-        tooltipTimer -= Time.deltaTime;
+        if (tooltipDelay <= 0.0f) tooltipTimer -= Time.deltaTime;
         if (tooltipTimer < 0.0f)
             currentTooltip = Tooltip.None;
 
@@ -150,24 +153,25 @@ public class UIManagement : MonoBehaviour
         tooltipTimer = 0.0f;
     }
 
+    // Display a tooltip on the screen for a specified amount of seconds
+    public void DisplayTooltip(Tooltip tooltip, float seconds)
+    {
+        currentTooltip = tooltip;
+        tooltipTimer = seconds;
+    }
+
     public void DisplayCustomTooltip(string message)
     {
         currentTooltip = Tooltip.Custom;
         HUDCanvases[(int)currentTooltip].GetComponentInChildren<TextMeshProUGUI>().text = message;
     }
 
-    public void DisplayCustomTooltip(string message, float seconds)
+    public void DisplayCustomTooltip(string message, float delaySeconds, float displaySeconds)
     {
         currentTooltip = Tooltip.Custom;
         HUDCanvases[(int)currentTooltip].GetComponentInChildren<TextMeshProUGUI>().text = message;
-        tooltipTimer = seconds;
-    }
-
-    // Display a tooltip on the screen for a specified amount of seconds
-    public void DisplayTooltip(Tooltip tooltip, float seconds)
-    {
-        currentTooltip = tooltip;
-        tooltipTimer = seconds;
+        tooltipDelay = delaySeconds;
+        tooltipTimer = displaySeconds;
     }
 
     /// <summary>

@@ -308,7 +308,11 @@ namespace StarterAssets
             // If shift is pressed and boost is off cooldown, boost
             if (_input.sprint && boostTimeoutDelta <= 0.0f)
             {
-                boostDirection = Camera.main.transform.forward;
+				if (_input.move != Vector2.zero)
+					boostDirection = transform.right * _input.move.x + Camera.main.transform.forward * _input.move.y;
+				else
+					boostDirection = Camera.main.transform.forward;
+
                 boostDirection = boostDirection.normalized;
                 boostVelocity = boostDirection * boostSpeed;
                 originalVelocity = boostVelocity;
