@@ -35,7 +35,7 @@ public class MonsterChaseController : MonoBehaviour
     public GameObject mainCPs;
 
     public MonsterMode mode;
-    public Vector3 engineRoomSpawn;
+    private Vector3 engineRoomSpawn;
 
 
     // Start is called before the first frame update
@@ -147,10 +147,13 @@ public class MonsterChaseController : MonoBehaviour
 
     public void ResetWithRandomCP()
     {
-        mode = MonsterMode.Patrol;
-        transform.position = mainCPs.transform.GetChild(Random.Range(0, mainCPs.transform.childCount)).transform.position;
-        SetGoal(FindNextCPPos());
-        MoveToGoal();
+        if (mode != MonsterMode.None)
+        {
+            mode = MonsterMode.Patrol;
+            transform.position = mainCPs.transform.GetChild(Random.Range(0, mainCPs.transform.childCount)).transform.position;
+            SetGoal(FindNextCPPos());
+            MoveToGoal();
+        }
     }
 
     private void OnTriggerEnter(Collider other)

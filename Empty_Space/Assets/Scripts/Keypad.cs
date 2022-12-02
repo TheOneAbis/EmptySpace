@@ -1,6 +1,7 @@
 using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Keypad : MonoBehaviour
@@ -12,8 +13,9 @@ public class Keypad : MonoBehaviour
     private int number;
     private string correctSequence;
     private string inputSequence;
+    private bool activated;
 
-    public GameObject exitDoor;
+    public GameObject[] exitDoors;
     public float interactDistance;
 
     // Start is called before the first frame update
@@ -26,39 +28,46 @@ public class Keypad : MonoBehaviour
 
         correctSequence = "326";
         inputSequence = "000";
+        activated = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        distanceSquared = (player.transform.position - transform.position).sqrMagnitude;
-
-        // If player is within interaction distance of keypad
-        if (distanceSquared < Mathf.Pow(interactDistance, 2))
+        if (!activated)
         {
-            // Find the button being looked at
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                if (IsLookedAt(transform.GetChild(i).gameObject))
-                {
-                    number = i;
-                    UIManager.DisplayCustomTooltip($"[Left Click] Input {i}");
-                    break;
-                }
-                number = -1;
-            }
+            distanceSquared = (player.transform.position - transform.position).sqrMagnitude;
 
-            if (Input.GetMouseButtonDown(0))
+            // If player is within interaction distance of keypad
+            if (distanceSquared < Mathf.Pow(interactDistance, 2))
             {
-                if (number != -1)
+                // Find the button being looked at
+                for (int i = 0; i < transform.childCount; i++)
                 {
-                    Debug.Log(inputSequence);
-                    inputSequence += $"{number}";
-                    inputSequence.Remove(0, 1);
-                    StartCoroutine(ShowFeedback(transform.GetChild(number).gameObject));
+                    if (IsLookedAt(transform.GetChild(i).gameObject))
+                    {
+                        number = i;
+                        UIManager.DisplayCustomTooltip($"[Left Click] Input {i}");
+                        break;
+                    }
+                    number = -1;
                 }
-                if (inputSequence.Equals(correctSequence))
-                    StartCoroutine(InvokeWinCondition());
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (number != -1)
+                    {
+                        inputSequence += $"{number}";
+                        inputSequence = inputSequence.Substring(inputSequence.Length > 3 ? inputSequence.Length - 3 : 0);
+                        Debug.Log(inputSequence);
+                        StartCoroutine(ShowFeedback(transform.GetChild(number).gameObject));
+                    }
+                    if (inputSequence.Equals(correctSequence))
+                    {
+                        activated = true;
+                        StartCoroutine(InvokeWinCondition());
+                    }
+                }
             }
         }
     }
@@ -74,9 +83,22 @@ public class Keypad : MonoBehaviour
         player.GetComponent<FirstPersonController>().zeroG = false;
         player.GetComponent<FirstPersonController>().Gravity = -15.0f;
         enemy.GetComponent<MonsterChaseController>().mode = MonsterMode.None;
-        enemy.transform.position = enemy.GetComponent<MonsterChaseController>().engineRoomSpawn; // move it out of view
-        yield return new WaitForSeconds(1);
-        enemy.GetComponent<MonsterChaseController>().SetSpeed(3.0f);
+        enemy.GetComponent<MonsterChaseController>().canKill = false;
+
+        // LET THERE BE LIGHT
+        for (float i = 0; i <= 1.0f; i += Time.deltaTime * 3)
+        {
+            RenderSettings.ambientIntensity = Mathf.Lerp(1.0f, 2.25f, i);
+            yield return new WaitForEndOfFrame();
+        }
+        enemy.transform.position = new Vector3(-53.5f, -5.0f, -66.0f); // move it out of view
+
+        foreach (GameObject door in exitDoors)
+            door.GetComponent<DoorController>().Unlock();
+
+        yield return new WaitForSeconds(0.67f);
+
+        enemy.GetComponent<MonsterChaseController>().SetSpeed(0.4f);
         enemy.GetComponent<MonsterChaseController>().SetGoal(player.transform.position);
         enemy.GetComponent<MonsterChaseController>().MoveToGoal();
         yield return new WaitForSeconds(4);
@@ -90,10 +112,10 @@ public class Keypad : MonoBehaviour
 
     IEnumerator ShowFeedback(GameObject button)
     {
-        Color temp = button.GetComponent<Material>().color;
-        button.GetComponent<Material>().color = Color.green;
+        Color temp = button.GetComponent<MeshRenderer>().material.color;
+        button.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.cyan);
 
         yield return new WaitForSeconds(0.75f);
-        button.GetComponent<Material>().color = temp;
+        button.GetComponent<MeshRenderer>().material.SetColor("_Color", temp);
     }
 }
