@@ -26,7 +26,6 @@ public class PlayerInventoryManager : MonoBehaviour
         if (inventory.ContainsKey(obj.tag))
         {
             inventory[obj.tag].Push(obj);
-            obj.SetActive(false);
             Debug.Log(inventory[obj.tag].Count + " items in slot of tag " + inventory[obj.tag]);
         }
         else
@@ -34,6 +33,7 @@ public class PlayerInventoryManager : MonoBehaviour
             inventory.Add(obj.tag, new Stack<GameObject>());
             Debug.Log($"New object tag added to inventory: {obj}");
         }
+        obj.SetActive(false);
     }
 
     // Remove a specified amount of objects from the inventory, if there are enough of them. If not, does nothing.

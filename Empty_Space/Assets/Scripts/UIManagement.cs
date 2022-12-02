@@ -156,6 +156,13 @@ public class UIManagement : MonoBehaviour
         HUDCanvases[(int)currentTooltip].GetComponentInChildren<TextMeshProUGUI>().text = message;
     }
 
+    public void DisplayCustomTooltip(string message, float seconds)
+    {
+        currentTooltip = Tooltip.Custom;
+        HUDCanvases[(int)currentTooltip].GetComponentInChildren<TextMeshProUGUI>().text = message;
+        tooltipTimer = seconds;
+    }
+
     // Display a tooltip on the screen for a specified amount of seconds
     public void DisplayTooltip(Tooltip tooltip, float seconds)
     {

@@ -42,8 +42,8 @@ public class Cryo_Pod_Script : MonoBehaviour
         player.GetComponent<FirstPersonController>().MoveSpeed = 0;
         player.GetComponent<FirstPersonController>().Gravity = 0;
 
-        UIManager.QueueDialogue("Space Boi:",
-            "\"Where am I? The FUCK is going on? Why can't I FUCKING MOVE?! LET ME OUT OF THIS SHIT WHAT THE FUCK THIS IS SO TOXIC\"", 3, 6);
+        UIManager.QueueDialogue("Space Boi:", "What... Where am I... Why am I in a cryo pod?", 4, 6);
+        UIManager.QueueDialogue("Space Boi:", "I have to figure out how to force this thing open...", 0.25f, 6);
     }
 
     // Update is called once per frame
@@ -61,6 +61,7 @@ public class Cryo_Pod_Script : MonoBehaviour
                 UIManager.delay = true;
                 escaped = true;
                 foreach (GameObject s in switches) s.SetActive(false);
+                UIManager.QueueDialogue("Space Boi:", "Am I the only one in the whole cryo bay? I should look around, there's bound to be someone...", 5, 6.5f);
                 StartCoroutine(leavePodAnimSequence()); // animation sequence
             }
         }

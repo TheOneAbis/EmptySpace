@@ -1,3 +1,4 @@
+using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -27,7 +28,7 @@ public class EngineRoomMonsterSpawnController : MonoBehaviour
     // Spawn the monster and begin its patrol
     private void OnTriggerEnter(Collider other)
     {
-        if (!triggered && other.gameObject == player)
+        if (!triggered && other.gameObject == player && player.GetComponent<FirstPersonController>().zeroG == true)
         {
             triggered = true;
             monster.GetComponent<MonsterChaseController>().InitPatrolMode();

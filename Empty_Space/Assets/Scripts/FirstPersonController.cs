@@ -289,7 +289,7 @@ namespace StarterAssets
                 inputDirection = transform.right * _input.move.x + Camera.main.transform.forward * _input.move.y;
             }
 
-            Debug.Log(inputDirection.normalized * (_speed * Time.deltaTime) + boostVelocity * Time.deltaTime);
+            //Debug.Log(inputDirection.normalized * (_speed * Time.deltaTime) + boostVelocity * Time.deltaTime);
 
             // move the player
             if(boostVelocity.magnitude > 0)

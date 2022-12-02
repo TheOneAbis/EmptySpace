@@ -14,6 +14,7 @@ public class Collectible : MonoBehaviour
     private RadialProgressController clickDisplayer;
     private bool showInteract;
     public bool gravityBattery = false;
+    private bool collected;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,7 @@ public class Collectible : MonoBehaviour
         UIManager = GameObject.Find("UIManager").GetComponent<UIManagement>();
         clickDisplayer = GameObject.Find("RadialProgress").GetComponent<RadialProgressController>();
         showInteract = false;
+        collected = false;
     }
 
     private void Update()
@@ -33,7 +35,7 @@ public class Collectible : MonoBehaviour
     // Player comes within collectible radius
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
+        if (!collected && other.tag == "Player")
         {
             showInteract = true;
             // Player presses (or holds depending on keyHoldTime setting) interaction key, collect this object
@@ -43,13 +45,27 @@ public class Collectible : MonoBehaviour
                 clickDisplayer.clickDisplay(keyHoldTime - keyHoldTimeLeft, keyHoldTime);
                 if (keyHoldTimeLeft <= 0)
                 {
+                    collected = true;
                     player.GetComponent<PlayerInventoryManager>().AddToInventory(gameObject);
                     showInteract = false;
                     clickDisplayer.clickReset();
+
+                    // Activate Zero Gravity (this is only for the battery in the Artificial Gravity room)
                     if (gravityBattery)
                     {
                         player.GetComponent<FirstPersonController>().Gravity = 0;
                         player.GetComponent<FirstPersonController>().zeroG = true;
+                        GameObject.FindGameObjectWithTag("Enemy").GetComponent<MonsterChaseController>().canKill = true;
+
+                        IEnumerator DelayTooltip()
+                        {
+                            yield return new WaitForSeconds(13.0f);
+                            UIManager.DisplayCustomTooltip("[Shift] to use Thruster", 10);
+                        }
+                        StartCoroutine(DelayTooltip());
+
+                        UIManager.QueueDialogue("Vivy:", "WARNING: Artificial Gravity Generator has been disabled.", 0, 6);
+                        UIManager.QueueDialogue("Space Boi:", "This battery must have been powering it. Fortunately, I can use my suit's thruster to get around.", 0.25f, 7);
                     }
                 }
             }

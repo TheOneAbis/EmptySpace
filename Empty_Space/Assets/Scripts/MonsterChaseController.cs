@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-enum MonsterMode
+public enum MonsterMode
 {
     Hallway,
     Patrol,
@@ -32,7 +32,7 @@ public class MonsterChaseController : MonoBehaviour
 
     public GameObject mainCPs;
 
-    private MonsterMode mode;
+    public MonsterMode mode;
     private Vector3 engineRoomSpawn;
 
 
@@ -56,7 +56,7 @@ public class MonsterChaseController : MonoBehaviour
         // Move the monster if it is set to move toward the goal
         if (shouldMove)
         {
-            if ((goal - transform.position).magnitude > 0.1f)
+            if ((goal - transform.position).sqrMagnitude > Mathf.Pow(0.1f, 2))
             {
                 float speed;
                 if (mode == MonsterMode.Hallway) speed = hallMoveSpeed;
@@ -84,7 +84,7 @@ public class MonsterChaseController : MonoBehaviour
             {
                 Debug.Log("AAAHAHAHAH");
                 mode = MonsterMode.Chase;
-                SetGoal(player.transform.position);
+                SetGoal(player.transform.position + ((player.transform.position - transform.position).normalized * 1000)); // keep going past the player
                 MoveToGoal();
             }
         }
@@ -142,24 +142,32 @@ public class MonsterChaseController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == player)
+        if (mode == MonsterMode.Hallway)
         {
-            if (canKill) StartCoroutine(DeathSequence());
-        }
-        else if (mode == MonsterMode.Hallway && other.gameObject.name == "JammedDoor3")
-        {
-            if (other.GetComponent<DoorController>().locked == true)
+            if (other.gameObject == player)
             {
-                Stop();
-                StartCoroutine(EscapeSequence());
+                if (canKill) StartCoroutine(DeathSequence());
+            }
+            else if (other.gameObject.name == "JammedDoor3")
+            {
+                if (other.GetComponent<DoorController>().locked == true)
+                {
+                    Stop();
+                    StartCoroutine(EscapeSequence());
+                }
             }
         }
         else
         {
-            if (mode == MonsterMode.Chase && other.tag != "MonsterCP")
+            if (other.CompareTag("Player"))
             {
-                Stop();
-                ResetWithRandomCP();
+                Debug.Log(canKill);
+                if (canKill)
+                {
+                    StartCoroutine(DeathSequence());
+                    Debug.Log("Player dead. Resetting.");
+                }
+               
             }
         }
     }
