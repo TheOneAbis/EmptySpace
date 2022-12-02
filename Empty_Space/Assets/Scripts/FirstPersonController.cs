@@ -79,9 +79,10 @@ namespace StarterAssets
         private Vector3 boostDirection;
         private Vector3 boostVelocity;
         private Vector3 originalVelocity = Vector3.zero;
-	
+        private RadialProgressController clickDisplayer;
+
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
-		private PlayerInput _playerInput;
+        private PlayerInput _playerInput;
 #endif
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
@@ -110,7 +111,9 @@ namespace StarterAssets
 				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 			}
 			//playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera");
-		}
+
+            clickDisplayer = GameObject.Find("RadialProgress").GetComponent<RadialProgressController>();
+        }
 
 		private void Start()
 		{
@@ -253,7 +256,7 @@ namespace StarterAssets
 
             float speedOffset = 0.1f;
             float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
-
+            /*
             // accelerate or decelerate to target speed
             if (currentVelocity < targetSpeed - speedOffset || currentVelocity > targetSpeed + speedOffset)
             {
@@ -268,7 +271,8 @@ namespace StarterAssets
             {
                 _speed = targetSpeed;
             }
-
+            */
+            _speed = targetSpeed;
             // normalise input direction
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
@@ -280,12 +284,15 @@ namespace StarterAssets
                 inputDirection = transform.right * _input.move.x + Camera.main.transform.forward * _input.move.y;
             }
 
+            Debug.Log(inputDirection.normalized * (_speed * Time.deltaTime) + boostVelocity * Time.deltaTime);
+
             // move the player
             _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + boostVelocity * Time.deltaTime);
         }
 
         private void Boost()
         {
+            // If shift is pressed and boost is off cooldown, boost
             if (_input.sprint && boostTimeoutDelta <= 0.0f)
             {
                 boostDirection = Camera.main.transform.forward;
@@ -296,13 +303,34 @@ namespace StarterAssets
             }
             else
             {
-                boostTimeoutDelta -= Time.deltaTime;
+                // Cooldown controlling
+                if(boostTimeoutDelta > 0.0f)
+                {
+                    boostTimeoutDelta -= Time.deltaTime;
+                }
+                else
+                {
+                    boostTimeoutDelta = 0;
+                }
 
+                // Cooldown radial progress
+                clickDisplayer.clickDisplay(boostTimeoutDelta, boostTimeout);
+
+                // Slow down the player as time goes on
                 if (boostVelocity.magnitude > 0)
                 {
-                    boostVelocity.x -= (Mathf.Abs(boostVelocity.x) / boostVelocity.x) * boostDirection.x * drag;
-                    boostVelocity.y -= (Mathf.Abs(boostVelocity.y) / boostVelocity.y) * boostDirection.y * drag;
-                    boostVelocity.y -= (Mathf.Abs(boostVelocity.z) / boostVelocity.z) * boostDirection.z * drag;
+                    if(boostVelocity.x != 0)
+                    {
+                        boostVelocity.x -= (Mathf.Abs(boostVelocity.x) / boostVelocity.x) * drag;
+                    }
+                    if (boostVelocity.y != 0)
+                    {
+                        boostVelocity.y -= (Mathf.Abs(boostVelocity.y) / boostVelocity.y) * drag;
+                    }
+                    if (boostVelocity.z != 0)
+                    {
+                        boostVelocity.z -= (Mathf.Abs(boostVelocity.z) / boostVelocity.z) * drag;
+                    }
                     if (originalVelocity.x < 0 && boostVelocity.x >= 0 || originalVelocity.x > 0 && boostVelocity.x <= 0)
                     {
                         boostVelocity.x = 0.0f;
@@ -315,7 +343,6 @@ namespace StarterAssets
                     {
                         boostVelocity.z = 0.0f;
                     }
-                    Debug.Log(boostVelocity);
                 }
             }
         }
