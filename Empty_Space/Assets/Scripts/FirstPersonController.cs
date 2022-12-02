@@ -288,7 +288,15 @@ namespace StarterAssets
             Debug.Log(inputDirection.normalized * (_speed * Time.deltaTime) + boostVelocity * Time.deltaTime);
 
             // move the player
-            _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + boostVelocity * Time.deltaTime);
+            if(boostVelocity.magnitude > 0)
+            {
+                _controller.Move(boostVelocity * Time.deltaTime);
+            }
+            else
+            {
+                _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime));
+            }
+            
         }
 
         private void Boost()
@@ -322,15 +330,15 @@ namespace StarterAssets
                 {
                     if(boostVelocity.x != 0)
                     {
-                        boostVelocity.x -= (Mathf.Abs(boostVelocity.x) / boostVelocity.x) * drag;
+                        boostVelocity.x -= boostDirection.x * drag;
                     }
                     if (boostVelocity.y != 0)
                     {
-                        boostVelocity.y -= (Mathf.Abs(boostVelocity.y) / boostVelocity.y) * drag;
+                        boostVelocity.y -= boostDirection.y * drag;
                     }
                     if (boostVelocity.z != 0)
                     {
-                        boostVelocity.z -= (Mathf.Abs(boostVelocity.z) / boostVelocity.z) * drag;
+                        boostVelocity.z -= boostDirection.z * drag;
                     }
                     if (originalVelocity.x < 0 && boostVelocity.x >= 0 || originalVelocity.x > 0 && boostVelocity.x <= 0)
                     {
