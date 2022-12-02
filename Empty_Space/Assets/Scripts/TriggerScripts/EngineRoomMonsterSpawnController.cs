@@ -9,7 +9,7 @@ public class EngineRoomMonsterSpawnController : MonoBehaviour
     private GameObject player;
     private GameObject monster;
 
-    private bool triggered;
+    public bool triggered;
 
     // Start is called before the first frame update
     void Start()

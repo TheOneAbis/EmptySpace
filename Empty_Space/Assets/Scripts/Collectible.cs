@@ -14,7 +14,7 @@ public class Collectible : MonoBehaviour
     private RadialProgressController clickDisplayer;
     private bool showInteract;
     public bool gravityBattery = false;
-    private bool collected;
+    public bool collected;
 
     // Start is called before the first frame update
     void Start()

@@ -84,12 +84,17 @@ public class MonsterChaseController : MonoBehaviour
             }
 
             if (Vector3.Angle(transform.forward, player.transform.position - transform.position) < 45.0f && 
-                (player.transform.position - transform.position).sqrMagnitude < 100000)
+                (player.transform.position - transform.position).sqrMagnitude < Mathf.Pow(30, 2))
             {
-                Debug.Log("AAAHAHAHAH");
-                mode = MonsterMode.Chase;
-                SetGoal(player.transform.position + ((player.transform.position - transform.position).normalized * 1000)); // keep going past the player
-                MoveToGoal();
+                RaycastHit hit;
+                Physics.Raycast(transform.position, player.transform.position - transform.position, out hit);
+                if (hit.collider == player.GetComponentInChildren<CapsuleCollider>())
+                {
+                    Debug.Log("AAAHAHAHAH");
+                    mode = MonsterMode.Chase;
+                    SetGoal(player.transform.position + ((player.transform.position - transform.position).normalized * 1000)); // keep going past the player
+                    MoveToGoal();
+                }
             }
         }
     }
@@ -177,7 +182,6 @@ public class MonsterChaseController : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
-                Debug.Log(canKill);
                 if (canKill)
                 {
                     StartCoroutine(DeathSequence());

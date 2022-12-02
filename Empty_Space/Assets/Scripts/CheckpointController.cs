@@ -86,8 +86,10 @@ public class CheckpointController : MonoBehaviour
                 break;
             case Checkpoint.EngineRoom:
                 foreach (GameObject battery in batteriesToRespawn)
+                {
                     player.GetComponent<PlayerInventoryManager>().Remove(battery);
-
+                    battery.GetComponent<Collectible>().collected = false;
+                }
                 //foreach (GameObject puzzle in puzzlesToReset)
                 //{
                 //    puzzle.GetComponent<PipeManager>().
@@ -98,6 +100,8 @@ public class CheckpointController : MonoBehaviour
 
                 player.GetComponent<FirstPersonController>().Gravity = -15;
                 player.GetComponent<FirstPersonController>().zeroG = false;
+
+                GameObject.Find("EngineRoom_MonsterSpawnTrigger").GetComponent<EngineRoomMonsterSpawnController>().triggered = false;
 
                 break;
         }
