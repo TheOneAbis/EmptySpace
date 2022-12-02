@@ -12,7 +12,12 @@ public class PipeManager : MonoBehaviour
     public GameObject canvas;
     public GameObject player;
     public GameObject interactionManager;
+    public GameObject number1;
+    public GameObject number2;
+    public GameObject light1;
+    public GameObject light2;
     public bool thatOnePuzzle;
+    public bool isGenpuzzle = false;
 
     [SerializeField]
     int totalPipes = 0;
@@ -67,6 +72,13 @@ public class PipeManager : MonoBehaviour
             // Unlock doors to lvl 2
             for (int i = 1; i <= 3; i++)
                 GameObject.Find($"DoorEnterLvl2_{i}").GetComponent<DoorController>().Unlock();
+        }
+        else if(isGenpuzzle)
+        {
+            number1.SetActive(true);
+            number2.SetActive(true);
+            light1.SetActive(true);
+            light2.SetActive(true);
         }
         else
         {
