@@ -22,8 +22,14 @@ public class MonsterObstacleCollisionHandler : MonoBehaviour
         if (!other.CompareTag("Player") && !other.CompareTag("MonsterCP") && parentController.mode == MonsterMode.Chase)
         {
             parentController.Stop();
-            parentController.ResetWithRandomCP();
+            StartCoroutine(DelayRespawn());
             Debug.Log("Chase failed. Restarting.");
         }
+    }
+
+    IEnumerator DelayRespawn()
+    {
+        yield return new WaitForSeconds(6);
+        parentController.ResetWithRandomCP();
     }
 }

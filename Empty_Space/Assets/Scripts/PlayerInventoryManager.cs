@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class PlayerInventoryManager : MonoBehaviour
 {
-    public Dictionary<string, Stack<GameObject>> inventory;
+    public Dictionary<string, List<GameObject>> inventory;
 
     // Start is called before the first frame update
     void Start()
     {
         // Init the inventory
-        inventory = new Dictionary<string, Stack<GameObject>>();
+        inventory = new Dictionary<string, List<GameObject>>();
     }
 
     // Update is called once per frame
@@ -25,10 +25,10 @@ public class PlayerInventoryManager : MonoBehaviour
     {
         if (!inventory.ContainsKey(obj.tag))
         {
-            inventory.Add(obj.tag, new Stack<GameObject>());
+            inventory.Add(obj.tag, new List<GameObject>());
             Debug.Log($"New object tag added to inventory: {obj}");
         }
-        inventory[obj.tag].Push(obj);
+        inventory[obj.tag].Add(obj);
         obj.SetActive(false);
 
         Debug.Log(inventory[obj.tag].Count + " items in slot of tag " + inventory[obj.tag]);
@@ -39,10 +39,17 @@ public class PlayerInventoryManager : MonoBehaviour
     {
         if (GetAmount(objectTag) >= amountToRemove)
         {
-            for (int i = 0; i < inventory[objectTag].Count; i++)
-                inventory[objectTag].Pop();
-
+            inventory[objectTag].RemoveRange(0, amountToRemove);
             if (GetAmount(objectTag) == 0) inventory.Remove(objectTag);
+        }
+    }
+
+    public void Remove(GameObject objToRemove)
+    {
+        if (Contains(objToRemove.tag))
+        {
+            inventory[objToRemove.tag].Remove(objToRemove);
+            objToRemove.SetActive(true);
         }
     }
 

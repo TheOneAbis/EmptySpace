@@ -8,7 +8,8 @@ public enum MonsterMode
 {
     Hallway,
     Patrol,
-    Chase
+    Chase,
+    None
 }
 
 public class MonsterChaseController : MonoBehaviour
@@ -25,6 +26,7 @@ public class MonsterChaseController : MonoBehaviour
     public float hallMoveSpeed;
     public float patrolMoveSpeed;
     public float triggeredMoveSpeed;
+    private float customMoveSpeed;
     public bool canKill;
     public GameObject deathCanvas;
     public GameObject puzzle4;
@@ -33,12 +35,13 @@ public class MonsterChaseController : MonoBehaviour
     public GameObject mainCPs;
 
     public MonsterMode mode;
-    private Vector3 engineRoomSpawn;
+    public Vector3 engineRoomSpawn;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        customMoveSpeed = 0.0f;
         canKill = false;
         goal = transform.position;
         shouldMove = false;
@@ -61,7 +64,8 @@ public class MonsterChaseController : MonoBehaviour
                 float speed;
                 if (mode == MonsterMode.Hallway) speed = hallMoveSpeed;
                 else if (mode == MonsterMode.Patrol) speed = patrolMoveSpeed;
-                else speed = 7.0f;
+                else if (mode == MonsterMode.Chase) speed = 7.0f;
+                else speed = customMoveSpeed;
 
                 //GetComponent<Rigidbody>().AddForce((goal - transform.position).normalized * moveSpeed * Time.deltaTime);
                 transform.position += (goal - transform.position).normalized * speed * Time.deltaTime;
@@ -99,6 +103,15 @@ public class MonsterChaseController : MonoBehaviour
     public void MoveToGoal()
     {
         shouldMove = true;
+    }
+
+    /// <summary>
+    /// Sets the speed of the monster when it is in MonsterMode.None
+    /// </summary>
+    /// <param name="speed">The speed to set it to</param>
+    public void SetSpeed(float speed)
+    {
+        customMoveSpeed = speed;
     }
 
     public void Stop()

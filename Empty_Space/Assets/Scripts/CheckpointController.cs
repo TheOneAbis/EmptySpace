@@ -19,12 +19,15 @@ public class CheckpointController : MonoBehaviour
     private GameObject player;
     private GameObject enemy;
 
-    private Checkpoint currentCP;
+    public Checkpoint currentCP;
 
     // Set in editor
     public GameObject[] hallwayJammedDoors;
     public GameObject[] endDoors;
     public GameObject chaseInitTrigger;
+
+    public GameObject[] batteriesToRespawn;
+    public GameObject[] puzzlesToReset;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +57,8 @@ public class CheckpointController : MonoBehaviour
                     respawnRotation = new Vector3(0, -90, 0);
                     break;
                 case Checkpoint.EngineRoom:
+                    respawnPoint = new Vector3(-106, 3, -66); // beginning of hallway
+                    respawnRotation = new Vector3(0, -90, 0);
                     break;
             }
         }
@@ -80,6 +85,20 @@ public class CheckpointController : MonoBehaviour
 
                 break;
             case Checkpoint.EngineRoom:
+                foreach (GameObject battery in batteriesToRespawn)
+                    player.GetComponent<PlayerInventoryManager>().Remove(battery);
+
+                //foreach (GameObject puzzle in puzzlesToReset)
+                //{
+                //    puzzle.GetComponent<PipeManager>().
+                //}
+
+                enemy.transform.position += new Vector3(0, 500, 0);
+                enemy.GetComponent<MonsterChaseController>().mode = MonsterMode.Hallway;
+
+                player.GetComponent<FirstPersonController>().Gravity = -15;
+                player.GetComponent<FirstPersonController>().zeroG = false;
+
                 break;
         }
 

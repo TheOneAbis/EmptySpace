@@ -5,11 +5,13 @@ using UnityEngine;
 public class HallwayCheckpointTriggerScript : MonoBehaviour
 {
     private CheckpointController cpController;
+    private bool triggered;
 
     // Start is called before the first frame update
     void Start()
     {
         cpController = GameObject.Find("CheckpointManager").GetComponent<CheckpointController>();
+        triggered = false;
     }
 
     // Update is called once per frame
@@ -20,9 +22,18 @@ public class HallwayCheckpointTriggerScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (!triggered && other.gameObject.tag == "Player")
         {
-            cpController.SetCP(Checkpoint.Hallway);
+            triggered = true;
+            switch (cpController.currentCP)
+            {
+                case Checkpoint.Start:
+                    cpController.SetCP(Checkpoint.Hallway);
+                    break;
+                case Checkpoint.Hallway:
+                    cpController.SetCP(Checkpoint.EngineRoom);
+                    break;
+            }
         }
     }
 }
