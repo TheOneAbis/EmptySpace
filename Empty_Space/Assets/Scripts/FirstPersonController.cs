@@ -138,7 +138,7 @@ namespace StarterAssets
 
 		private void Update()
 		{
-            if(Gravity != 0 && !zeroG)
+            if(!zeroG)
             {
                 JumpAndGravity();
                 GroundedCheck();
