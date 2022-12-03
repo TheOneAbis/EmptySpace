@@ -242,10 +242,12 @@ public class InteractScript : MonoBehaviour
                     if (puzzle1batteryInputted)
                     {
                         battery7.SetActive(true);
+                        Debug.Log("test");
                     }
                     else if (player.GetComponent<PlayerInventoryManager>().GetAmount("Battery") >= 5)
                     {
                         player.GetComponent<PlayerInventoryManager>().Remove("Battery", 1);
+                        Debug.Log(player.GetComponent<PlayerInventoryManager>().GetAmount("Battery"));
                         puzzle1batteryInputted = true;
                         battery7.SetActive(true);
                     }

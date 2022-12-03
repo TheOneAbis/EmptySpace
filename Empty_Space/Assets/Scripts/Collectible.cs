@@ -45,22 +45,7 @@ public class Collectible : MonoBehaviour
                 clickDisplayer.clickDisplay(keyHoldTime - keyHoldTimeLeft, keyHoldTime);
                 if (keyHoldTimeLeft <= 0)
                 {
-                    collected = true;
-                    showInteract = false;
-                    clickDisplayer.clickReset();
-
-                    // Activate Zero Gravity (this is only for the battery in the Artificial Gravity room)
-                    if (gravityBattery)
-                    {
-                        player.GetComponent<FirstPersonController>().Gravity = 0;
-                        player.GetComponent<FirstPersonController>().zeroG = true;
-                        GameObject.FindGameObjectWithTag("Enemy").GetComponent<MonsterChaseController>().canKill = true;
-                        
-                        UIManager.QueueDialogue("Vivy:", "WARNING: Artificial Gravity Generator has been disabled.", 0, 6);
-                        UIManager.QueueDialogue("Space Boi:", "This battery must have been powering it. Fortunately, I can use my suit's thruster to get around.", 0.25f, 7);
-                        UIManager.DisplayCustomTooltip("[Shift] to use Thruster", 13, 6);
-                    }
-                    player.GetComponent<PlayerInventoryManager>().AddToInventory(gameObject);
+                    Collect();
                 }
             }
             else
@@ -71,6 +56,25 @@ public class Collectible : MonoBehaviour
         }
     }
 
+    public void Collect()
+    {
+        collected = true;
+        showInteract = false;
+        clickDisplayer.clickReset();
+
+        // Activate Zero Gravity (this is only for the battery in the Artificial Gravity room)
+        if (gravityBattery)
+        {
+            player.GetComponent<FirstPersonController>().Gravity = 0;
+            player.GetComponent<FirstPersonController>().zeroG = true;
+            GameObject.FindGameObjectWithTag("Enemy").GetComponent<MonsterChaseController>().canKill = true;
+
+            UIManager.QueueDialogue("Vivy:", "WARNING: Artificial Gravity Generator has been disabled.", 0, 6);
+            UIManager.QueueDialogue("Space Boi:", "This battery must have been powering it. Fortunately, I can use my suit's thruster to get around.", 0.25f, 7);
+            UIManager.DisplayCustomTooltip("[Shift] to use Thruster", 13, 6);
+        }
+        player.GetComponent<PlayerInventoryManager>().AddToInventory(gameObject);
+    }
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player") showInteract = false;

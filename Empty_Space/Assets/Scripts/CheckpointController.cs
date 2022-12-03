@@ -88,12 +88,9 @@ public class CheckpointController : MonoBehaviour
                 foreach (GameObject battery in batteriesToRespawn)
                 {
                     player.GetComponent<PlayerInventoryManager>().Remove(battery);
+                    battery.SetActive(true);
                     battery.GetComponent<Collectible>().collected = false;
                 }
-                //foreach (GameObject puzzle in puzzlesToReset)
-                //{
-                //    puzzle.GetComponent<PipeManager>().
-                //}
 
                 enemy.transform.position += new Vector3(0, 500, 0);
                 enemy.GetComponent<MonsterChaseController>().mode = MonsterMode.Hallway;

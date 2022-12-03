@@ -49,7 +49,6 @@ public class PlayerInventoryManager : MonoBehaviour
         if (Contains(objToRemove.tag))
         {
             inventory[objToRemove.tag].Remove(objToRemove);
-            objToRemove.SetActive(true);
         }
     }
 

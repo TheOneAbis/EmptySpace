@@ -1,4 +1,5 @@
 using Cinemachine;
+using JetBrains.Annotations;
 using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
@@ -142,6 +143,10 @@ public class Cryo_Pod_Script : MonoBehaviour
             enemy.GetComponent<Light>().range = 40;
             enemy.GetComponent<Light>().innerSpotAngle = 50;
             enemy.GetComponent<Light>().spotAngle = 90;
+
+            GameObject batteries = GameObject.Find("CollectibleBatteries");
+            for (int i = 0; i < 5; i++)
+                batteries.transform.GetChild(i).GetComponent<Collectible>().Collect();
 
             player.GetComponent<AudioSource>().Play(); // begin ambient music loop
             enabled = false;
